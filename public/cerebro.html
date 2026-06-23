@@ -85,7 +85,8 @@
   .mode{text-align:left;background:var(--carvao);border:1px solid var(--linha);border-radius:11px;padding:13px 14px;cursor:pointer;transition:.15s}
   .mode:hover{border-color:var(--linha2)}
   .mode.on{border-color:var(--vermelho);background:linear-gradient(135deg,rgba(212,17,30,.12),transparent)}
-  .mode b{display:block;font-size:13.5px;font-family:Archivo,system-ui,"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+  .mode b{display:flex;align-items:center;gap:8px;font-size:13.5px}
+  .mode b .ico,.console .ctitle .ico{flex:0 0 auto;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
   .mode span{font-size:11px;color:var(--cinza);display:block;margin-top:2px}
   .console{background:var(--carvao);border:1px solid var(--linha);border-radius:var(--raio);padding:20px;min-height:380px;display:flex;flex-direction:column}
   .console .ctitle{display:flex;align-items:center;gap:9px;font-family:'Archivo Narrow';text-transform:uppercase;letter-spacing:.06em;font-size:17px;margin-bottom:4px}
@@ -266,12 +267,12 @@ let curMode='pesquisa',lastOut='';
 
 function renderModes(){
   document.getElementById('modes').innerHTML=Object.entries(MODES).map(([k,m])=>`
-    <button class="mode ${k===curMode?'on':''}" data-m="${k}"><b>${m.icon} ${m.nome}</b><span>${m.desc}</span></button>`).join('');
+    <button class="mode ${k===curMode?'on':''}" data-m="${k}"><b><span class="ico">${m.icon}</span>${m.nome}</b><span>${m.desc}</span></button>`).join('');
   document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>{curMode=b.dataset.m;renderModes();renderConsole();}));
 }
 function renderConsole(){
   const m=MODES[curMode];
-  document.getElementById('cTitle').innerHTML=`${m.icon} ${m.nome}`;
+  document.getElementById('cTitle').innerHTML=`<span class="ico">${m.icon}</span>${m.nome}`;
   document.getElementById('cDesc').textContent=m.desc;
   document.getElementById('cChips').innerHTML=m.chips.map(c=>`<span class="chip">${c}</span>`).join('');
   document.querySelectorAll('.chip').forEach(ch=>ch.addEventListener('click',()=>{document.getElementById('cQ').value=ch.textContent;run();}));
