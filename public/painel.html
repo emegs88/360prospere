@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Comando — Grupo Prospere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Archivo+Narrow:wght@600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#08080a;--carvao:#131316;--carvao2:#1b1b20;--linha:#2a2a31;--linha2:#37373f;
+    --branco:#f5f5f7;--cinza:#8c8c95;--cinza2:#56565e;
+    --vermelho:#D4111E;--vermelho-l:#ff4651;--vermelho-d:#9c0c16;
+    --verde:#1faa59;--verde-l:#3ad17e;--ambar:#e3a008;--ambar-l:#f3c34a;
+    --raio:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--preto);color:var(--branco);font-family:'Archivo',system-ui,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;padding:0 0 70px;
+    background-image:radial-gradient(circle at 18% -8%,rgba(212,17,30,.10),transparent 42%),radial-gradient(circle at 100% 0,rgba(212,17,30,.05),transparent 35%);}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .wrap{max-width:1320px;margin:0 auto;padding:0 22px}
+  ::selection{background:var(--vermelho);color:#fff}
+
+  header{border-bottom:1px solid var(--linha);background:rgba(8,8,10,.82);position:sticky;top:0;z-index:50;backdrop-filter:blur(10px)}
+  .hbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .mark{width:44px;height:44px;border-radius:10px;flex:none;background:var(--vermelho);position:relative;box-shadow:0 0 0 1px var(--vermelho-l) inset,0 10px 30px rgba(212,17,30,.4)}
+  .mark::after{content:"";position:absolute;inset:12px;border:3px solid #fff;border-right-color:transparent;border-radius:50%;transform:rotate(-45deg)}
+  .brand h1{font-family:'Archivo Narrow';font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;line-height:1}
+  .brand .sub{font-size:11px;color:var(--cinza);letter-spacing:.22em;text-transform:uppercase;margin-top:3px}
+  .brand .sub b{color:var(--vermelho-l)}
+  .hmeta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .clock{font-family:'JetBrains Mono';font-size:12px;color:var(--cinza);text-align:right}
+  .clock b{color:var(--branco);display:block;font-size:14px;text-transform:capitalize}
+  .mesbox{display:flex;align-items:center;gap:7px;background:var(--carvao);border:1px solid var(--linha);border-radius:10px;padding:7px 11px}
+  .mesbox label{font-size:10px;color:var(--cinza);text-transform:uppercase;letter-spacing:.12em}
+  .mesbox input{background:none;border:none;color:var(--branco);font-family:'JetBrains Mono';font-size:14px;width:120px}
+  .mesbox input::-webkit-calendar-picker-indicator{filter:invert(.6)}
+
+  .tabs{display:flex;gap:2px;border-bottom:1px solid var(--linha);margin-top:4px;overflow-x:auto}
+  .tab{background:none;border:none;color:var(--cinza);font-weight:700;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;padding:13px 17px;cursor:pointer;border-bottom:2px solid transparent;transition:.15s;white-space:nowrap}
+  .tab:hover{color:var(--branco)}
+  .tab.on{color:var(--branco);border-bottom-color:var(--vermelho)}
+  .tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--vermelho);margin-left:6px;vertical-align:middle;box-shadow:0 0 8px var(--vermelho)}
+
+  .kpis{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 1fr;gap:14px;margin:24px 0 6px}
+  .kpi{background:var(--carvao);border:1px solid var(--linha);border-radius:var(--raio);padding:16px 18px;position:relative;overflow:hidden}
+  .kpi .lab{font-size:10.5px;color:var(--cinza);text-transform:uppercase;letter-spacing:.13em;font-weight:600}
+  .kpi .val{font-family:'JetBrains Mono';font-weight:800;font-size:27px;margin-top:9px;letter-spacing:-.02em}
+  .kpi .foot{font-size:11.5px;color:var(--cinza2);margin-top:6px;min-height:16px}
+  .kpi.alert{border-color:var(--vermelho)}
+  .kpi.alert::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--vermelho);box-shadow:0 0 16px var(--vermelho)}
+  .v-red{color:var(--vermelho-l)!important}.v-green{color:var(--verde-l)!important}.v-amber{color:var(--ambar-l)!important}
+  .barmini{height:5px;border-radius:3px;background:var(--carvao2);overflow:hidden;margin-top:11px}
+  .barmini i{display:block;height:100%;transition:width .5s}
+  /* health gauge */
+  .gauge{display:flex;align-items:center;gap:16px}
+  .ring{--p:0;--c:var(--verde);width:74px;height:74px;border-radius:50%;flex:none;
+    background:radial-gradient(closest-side,var(--carvao) 70%,transparent 71% 100%),conic-gradient(var(--c) calc(var(--p)*1%),var(--carvao2) 0);
+    display:flex;align-items:center;justify-content:center;position:relative}
+  .ring b{font-family:'JetBrains Mono';font-weight:800;font-size:20px}
+  .gauge .gtxt .lab{margin-bottom:2px}
+  .gauge .gtxt .st{font-weight:800;font-size:16px;margin-top:2px}
+
+  .sec-head{display:flex;align-items:center;justify-content:space-between;margin:28px 0 14px;gap:12px}
+  .sec-head h2{font-family:'Archivo Narrow';font-weight:700;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--cinza);display:flex;align-items:center;gap:10px}
+  .sec-head h2::before{content:"";width:18px;height:2px;background:var(--vermelho)}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{background:var(--carvao);border:1px solid var(--linha);border-radius:var(--raio);padding:16px;position:relative;transition:.15s}
+  .card:hover{border-color:var(--linha2)}
+  .card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:14px}
+  .card .nome{font-weight:800;font-size:16px;letter-spacing:-.01em}
+  .card .tag{font-size:9.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--cinza);margin-top:2px}
+  .pill{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding:4px 8px;border-radius:20px;white-space:nowrap}
+  .pill.ok{background:rgba(31,170,89,.14);color:var(--verde-l);border:1px solid rgba(31,170,89,.3)}
+  .pill.warn{background:rgba(227,160,8,.14);color:var(--ambar-l);border:1px solid rgba(227,160,8,.3)}
+  .pill.over{background:rgba(212,17,30,.16);color:var(--vermelho-l);border:1px solid rgba(212,17,30,.35)}
+  .rows{display:flex;flex-direction:column;gap:9px}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .row .k{font-size:11.5px;color:var(--cinza)}
+  .row .v{font-family:'JetBrains Mono';font-size:14px;font-weight:700}
+  .row input{background:var(--carvao2);border:1px solid var(--linha);border-radius:7px;color:var(--branco);font-family:'JetBrains Mono';font-size:13px;font-weight:700;text-align:right;width:112px;padding:5px 8px}
+  .row input:focus{outline:none;border-color:var(--vermelho)}
+  .bar{height:7px;border-radius:4px;background:var(--carvao2);overflow:hidden;margin-top:13px}
+  .bar i{display:block;height:100%;transition:width .5s}
+  .barfoot{display:flex;justify-content:space-between;font-size:10.5px;color:var(--cinza2);margin-top:6px;font-family:'JetBrains Mono'}
+  .card .del{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--cinza2);cursor:pointer;font-size:15px;display:none}
+  .card.editmode .del{display:block}
+  .addcard{display:flex;align-items:center;justify-content:center;border:1.5px dashed var(--linha);background:none;color:var(--cinza);border-radius:var(--raio);min-height:120px;cursor:pointer;font-weight:700;font-size:14px;transition:.15s}
+  .addcard:hover{border-color:var(--vermelho);color:var(--branco)}
+
+  .btn{font-weight:700;font-size:12.5px;letter-spacing:.02em;border-radius:9px;padding:9px 15px;cursor:pointer;border:1px solid var(--linha);background:var(--carvao);color:var(--branco);transition:.15s;display:inline-flex;align-items:center;gap:7px;font-family:inherit}
+  .btn:hover{border-color:var(--linha2);background:var(--carvao2)}
+  .btn.red{background:var(--vermelho);border-color:var(--vermelho)}
+  .btn.red:hover{background:var(--vermelho-d)}
+  .btn.ghost{background:none}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+
+  /* FUNIL */
+  .funwrap{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:start}
+  .panel{background:var(--carvao);border:1px solid var(--linha);border-radius:var(--raio);padding:20px}
+  .funstage{margin-bottom:8px}
+  .funbar{display:flex;align-items:center;height:46px;border-radius:9px;background:linear-gradient(90deg,var(--vermelho),var(--vermelho-d));padding:0 16px;color:#fff;font-weight:800;justify-content:space-between;transition:width .6s;box-shadow:0 4px 18px rgba(212,17,30,.25)}
+  .funbar .fn{font-size:13px;letter-spacing:.02em}
+  .funbar .fv{font-family:'JetBrains Mono';font-size:18px}
+  .funconv{font-size:11px;color:var(--cinza);text-align:right;padding:4px 4px 0;font-family:'JetBrains Mono'}
+  .perfgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .perf{background:var(--carvao2);border-radius:10px;padding:13px 15px}
+  .perf .pl{font-size:10px;color:var(--cinza);text-transform:uppercase;letter-spacing:.09em}
+  .perf .pv{font-family:'JetBrains Mono';font-weight:800;font-size:22px;margin-top:5px}
+  .perf .ps{font-size:10.5px;color:var(--cinza2);margin-top:2px}
+
+  /* TREND */
+  .trend{display:flex;align-items:flex-end;gap:4px;height:90px;margin-top:6px}
+  .tcol{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;min-width:0}
+  .tcol .tb{width:60%;background:var(--vermelho);border-radius:3px 3px 0 0;min-height:2px;transition:height .5s}
+  .tcol .tb.lead{background:var(--cinza2)}
+  .tbars{display:flex;gap:2px;align-items:flex-end;width:100%;justify-content:center;height:64px}
+  .tcol .td{font-size:9px;color:var(--cinza2);font-family:'JetBrains Mono'}
+  .legend{display:flex;gap:16px;font-size:11px;color:var(--cinza);margin-top:10px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+
+  /* RELATÓRIO */
+  .relwrap{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
+  .relform{background:var(--carvao);border:1px solid var(--linha);border-radius:var(--raio);padding:18px;position:sticky;top:118px}
+  .relform h3{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--cinza);margin-bottom:14px}
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}
+  .field.full{grid-column:1/-1}
+  .field label{font-size:10.5px;color:var(--cinza);text-transform:uppercase;letter-spacing:.08em}
+  .field input,.field textarea{background:var(--carvao2);border:1px solid var(--linha);border-radius:8px;color:var(--branco);font-family:'JetBrains Mono';font-size:13px;padding:8px 10px;width:100%;resize:vertical}
+  .field textarea{font-family:'Archivo';font-size:13.5px;line-height:1.5;min-height:60px}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--vermelho)}
+  .feed{display:flex;flex-direction:column;gap:12px}
+  .rep{background:var(--carvao);border:1px solid var(--linha);border-radius:var(--raio);padding:16px 18px}
+  .rep .rhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px}
+  .rep .rdate{font-family:'JetBrains Mono';font-weight:700;font-size:15px}
+  .rep .rdate small{color:var(--cinza);font-weight:400;margin-left:8px;font-size:11px;text-transform:capitalize}
+  .repmetrics{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+  .met{background:var(--carvao2);border-radius:9px;padding:9px 11px}
+  .met .ml{font-size:9.5px;color:var(--cinza);text-transform:uppercase;letter-spacing:.07em}
+  .met .mv{font-family:'JetBrains Mono';font-weight:700;font-size:16px;margin-top:3px}
+  .met .mv.red{color:var(--vermelho-l)}
+  .rep .resumo{font-size:13.5px;color:#d4d4d8;line-height:1.55;white-space:pre-wrap}
+  .rep .pend{margin-top:10px;padding-top:10px;border-top:1px solid var(--linha);font-size:13px;white-space:pre-wrap}
+  .rep .pend b{color:var(--vermelho-l);text-transform:uppercase;font-size:10px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .rep .ract{display:flex;gap:7px;margin-top:12px}
+  .rep .ract button{font-size:11px;padding:5px 10px;background:none;border:1px solid var(--linha);color:var(--cinza);border-radius:7px;cursor:pointer}
+  .rep .ract button:hover{color:var(--branco);border-color:var(--linha2)}
+  .empty{border:1.5px dashed var(--linha);border-radius:var(--raio);padding:40px 20px;text-align:center;color:var(--cinza)}
+  .empty b{color:var(--branco);display:block;margin-bottom:6px;font-size:15px}
+
+  /* COPILOTO */
+  .copbar{background:linear-gradient(135deg,rgba(212,17,30,.12),rgba(212,17,30,.02));border:1px solid rgba(212,17,30,.3);border-radius:var(--raio);padding:22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .copbar .ct h2{font-family:'Archivo Narrow';font-size:22px;letter-spacing:.02em;text-transform:uppercase}
+  .copbar .ct p{color:var(--cinza);font-size:13px;margin-top:5px;max-width:560px}
+  .copbtns{display:flex;gap:9px;flex-wrap:wrap}
+  .copout{margin-top:18px;background:var(--carvao);border:1px solid var(--linha);border-radius:var(--raio);padding:24px;min-height:140px;font-size:14.5px;line-height:1.62}
+  .copout h3{font-family:'Archivo Narrow';text-transform:uppercase;letter-spacing:.08em;font-size:16px;color:var(--vermelho-l);margin:18px 0 8px}
+  .copout h3:first-child{margin-top:0}
+  .copout strong{color:#fff}
+  .copout ul{margin:6px 0 6px 4px;list-style:none}
+  .copout li{padding:5px 0 5px 20px;position:relative;color:#dcdce0}
+  .copout li::before{content:"▸";position:absolute;left:0;color:var(--vermelho)}
+  .copout .ph{color:var(--cinza);text-align:center;padding:30px 0}
+  .spin{width:30px;height:30px;border:3px solid var(--linha);border-top-color:var(--vermelho);border-radius:50%;animation:sp 1s linear infinite;margin:8px auto 12px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .thinking{text-align:center;color:var(--cinza)}
+
+  .hide{display:none!important}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--vermelho);color:#fff;font-weight:700;font-size:13px;padding:11px 20px;border-radius:10px;opacity:0;transition:.25s;z-index:100;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr 1fr}.funwrap{grid-template-columns:1fr}.relwrap{grid-template-columns:1fr}.relform{position:static}.repmetrics{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:600px){.kpis{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.repmetrics{grid-template-columns:repeat(2,1fr)}.fgrid{grid-template-columns:1fr}.perfgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="hbar">
+      <div class="brand">
+        <div class="mark"></div>
+        <div>
+          <h1>Painel de Comando</h1>
+          <div class="sub">Grupo Prospere <b>by Âncora</b> · Centro de Operação</div>
+        </div>
+      </div>
+      <div class="hmeta">
+        <div class="mesbox"><label>Mês ref.</label><input type="month" id="mesRef"></div>
+        <div class="clock"><b id="clkData">—</b><span id="clkHora" class="mono">—</span></div>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab on" data-tab="visao">Visão Geral</button>
+      <button class="tab" data-tab="funil">Funil &amp; Performance</button>
+      <button class="tab" data-tab="rel">Relatório de Execução</button>
+      <button class="tab" data-tab="cop">Copiloto IA<span class="dot"></span></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- VISÃO GERAL -->
+  <section id="tab-visao">
+    <div class="kpis" id="kpis"></div>
+    <div class="sec-head"><h2>Ferramentas &amp; Operação</h2></div>
+    <div class="grid" id="gridFerr"></div>
+    <div class="sec-head"><h2>Mídia Paga · Ads</h2></div>
+    <div class="grid" id="gridAds"></div>
+    <div class="toolbar" style="margin-top:22px">
+      <button class="btn ghost" id="btnEdit">✎ Editar plataformas</button>
+      <button class="btn ghost" id="btnExport">⬇ Exportar backup</button>
+      <button class="btn ghost" id="btnImport">⬆ Importar backup</button>
+      <input type="file" id="fileImport" accept="application/json" class="hide">
+      <button class="btn ghost" id="btnReset" style="margin-left:auto;color:var(--cinza2)">↺ Zerar dados</button>
+    </div>
+  </section>
+
+  <!-- FUNIL -->
+  <section id="tab-funil" class="hide">
+    <div class="funwrap" style="margin-top:26px">
+      <div class="panel">
+        <div class="sec-head" style="margin:0 0 16px"><h2>Funil do Mês</h2></div>
+        <div id="funil"></div>
+      </div>
+      <div class="panel">
+        <div class="sec-head" style="margin:0 0 16px"><h2>Performance</h2></div>
+        <div class="perfgrid" id="perf"></div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:16px">
+      <div class="sec-head" style="margin:0 0 6px"><h2>Tendência · Gasto x Leads (por dia lançado)</h2></div>
+      <div class="trend" id="trend"></div>
+      <div class="legend"><span><i style="background:var(--vermelho)"></i>Gasto Ads</span><span><i style="background:var(--cinza2)"></i>Leads</span></div>
+    </div>
+  </section>
+
+  <!-- RELATÓRIO -->
+  <section id="tab-rel" class="hide">
+    <div class="relwrap" style="margin-top:26px">
+      <div class="relform">
+        <h3>Lançar relatório do dia</h3>
+        <div class="field"><label>Data</label><input type="date" id="rData"></div>
+        <div class="fgrid">
+          <div class="field"><label>Gasto Ads (R$)</label><input type="number" id="rGasto" placeholder="0"></div>
+          <div class="field"><label>Leads</label><input type="number" id="rLeads" placeholder="0"></div>
+          <div class="field"><label>Conversas WhatsApp</label><input type="number" id="rConversas" placeholder="0"></div>
+          <div class="field"><label>Agendamentos</label><input type="number" id="rAgenda" placeholder="0"></div>
+          <div class="field"><label>Vendas / Cotas</label><input type="number" id="rVendas" placeholder="0"></div>
+          <div class="field"><label>Faturamento (R$)</label><input type="number" id="rFat" placeholder="0"></div>
+        </div>
+        <div class="field full"><label>Resumo da execução</label><textarea id="rResumo" placeholder="O que rodou hoje: Zaia, ManyChat (777), WhatsApp, Ads..."></textarea></div>
+        <div class="field full"><label>Pendências / ação amanhã</label><textarea id="rPend" placeholder="Decisões suas, ajustes de campanha, follow-ups..."></textarea></div>
+        <button class="btn red" id="btnSalvarRel" style="width:100%;justify-content:center;margin-top:4px">Salvar relatório</button>
+      </div>
+      <div>
+        <div class="sec-head" style="margin-top:0"><h2>Histórico de Execução</h2><button class="btn ghost" id="btnCopiarUlt">⧉ Copiar último</button></div>
+        <div class="feed" id="feed"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COPILOTO -->
+  <section id="tab-cop" class="hide">
+    <div style="margin-top:26px">
+      <div class="copbar">
+        <div class="ct">
+          <h2>Copiloto Prospere</h2>
+          <p>O Claude lê o estado do painel — orçamentos, previsão de estouro e o funil — e devolve diagnóstico, ideias por canal e o plano do dia. Respeita o compliance de consórcio.</p>
+        </div>
+        <div class="copbtns">
+          <button class="btn red" id="copAnalise">⚡ Analisar operação</button>
+          <button class="btn ghost" id="copPlano">🗒 Plano de amanhã</button>
+          <button class="btn ghost" id="copCopiar">⧉ Copiar</button>
+        </div>
+      </div>
+      <div class="copout" id="copout"><div class="ph">Clique em <b>Analisar operação</b> — o Copiloto cruza os números e te entrega ações priorizadas por canal.</div></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY='prospere_painel_v2';
+const BRL=n=>'R$ '+(Number(n)||0).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});
+const NUM=n=>(Number(n)||0).toLocaleString('pt-BR');
+const PCT=n=>(isFinite(n)?Math.round(n):0)+'%';
+const uid=()=>Math.random().toString(36).slice(2,9);
+const hoje=()=>new Date().toISOString().slice(0,10);
+
+const SEED={
+  config:{mesRef:new Date().toISOString().slice(0,7)},
+  plataformas:[
+    {id:uid(),nome:'WhatsApp Oficial',grupo:'ferr',tag:'Meta Cloud API · conversas',orc:600,gasto:180},
+    {id:uid(),nome:'Zaia',grupo:'ferr',tag:'Vendedor-IA · assinatura+uso',orc:900,gasto:840},
+    {id:uid(),nome:'ManyChat',grupo:'ferr',tag:'Automação · gatilho 777',orc:250,gasto:120},
+    {id:uid(),nome:'Instagram Ads',grupo:'ads',tag:'Meta · tráfego pago',orc:3000,gasto:1450},
+    {id:uid(),nome:'TikTok Ads',grupo:'ads',tag:'Tráfego pago',orc:2000,gasto:680},
+    {id:uid(),nome:'Outros Ads',grupo:'ads',tag:'Google / remarketing',orc:1500,gasto:300},
+  ],
+  relatorios:[]
+};
+let DB=load(),editMode=false;
+
+function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r);}catch(e){}return JSON.parse(JSON.stringify(SEED));}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB));}catch(e){toast('Sem armazenamento — use Exportar');}}
+
+function infoMes(){
+  const [y,m]=DB.config.mesRef.split('-').map(Number);
+  const dias=new Date(y,m,0).getDate();const ag=new Date();
+  let dec;
+  if(ag.getFullYear()===y&&ag.getMonth()+1===m)dec=ag.getDate();
+  else if(ag>new Date(y,m,0))dec=dias;else dec=0;
+  return {dias,decorrido:Math.max(dec,0)};
+}
+function prever(g){const {dias,decorrido}=infoMes();if(decorrido<=0)return g;return Math.round(g/decorrido*dias);}
+function statusDe(p,o){if(o<=0)return'ok';if(p>o)return'over';if(p>o*0.9)return'warn';return'ok';}
+const STT={ok:{c:'ok',t:'No alvo',cor:'var(--verde-l)'},warn:{c:'warn',t:'Atenção',cor:'var(--ambar-l)'},over:{c:'over',t:'Estourando',cor:'var(--vermelho-l)'}};
+
+function totals(){
+  const orc=DB.plataformas.reduce((s,p)=>s+(+p.orc||0),0);
+  const gasto=DB.plataformas.reduce((s,p)=>s+(+p.gasto||0),0);
+  const prev=DB.plataformas.reduce((s,p)=>s+prever(+p.gasto||0),0);
+  return {orc,gasto,prev};
+}
+function relsMes(){return DB.relatorios.filter(r=>r.data.startsWith(DB.config.mesRef)).sort((a,b)=>a.data.localeCompare(b.data));}
+function funil(){
+  const r=relsMes();const a=(k)=>r.reduce((s,x)=>s+(+x[k]||0),0);
+  return {gasto:a('gasto'),leads:a('leads'),conversas:a('conversas'),agenda:a('agenda'),vendas:a('vendas'),fat:a('fat')};
+}
+
+function renderKpis(){
+  const {orc,gasto,prev}=totals();const {dias,decorrido}=infoMes();
+  const pctMes=dias?Math.round(decorrido/dias*100):0;const saldo=orc-prev;const st=statusDe(prev,orc);
+  const score=orc?Math.max(0,Math.min(100,Math.round((1-Math.max(prev-orc,0)/orc)*100))):100;
+  const gc=score>=85?'var(--verde)':score>=60?'var(--ambar)':'var(--vermelho)';
+  const gtxt=score>=85?'Saudável':score>=60?'Vigiar':'Crítico';
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi">
+      <div class="lab">Saúde do orçamento</div>
+      <div class="gauge" style="margin-top:10px">
+        <div class="ring" style="--p:${score};--c:${gc}"><b>${score}</b></div>
+        <div class="gtxt"><div class="foot" style="margin:0">previsão vs orçado</div><div class="st" style="color:${gc}">${gtxt}</div></div>
+      </div>
+    </div>
+    <div class="kpi"><div class="lab">Orçamento do mês</div><div class="val mono">${BRL(orc)}</div><div class="foot">${DB.plataformas.length} plataformas</div></div>
+    <div class="kpi"><div class="lab">Gasto até hoje</div><div class="val mono">${BRL(gasto)}</div><div class="foot">${orc?Math.round(gasto/orc*100):0}% do orçado</div><div class="barmini"><i style="width:${Math.min(orc?gasto/orc*100:0,100)}%;background:var(--branco)"></i></div></div>
+    <div class="kpi ${st==='over'?'alert':''}"><div class="lab">Previsão de fechamento</div><div class="val mono ${st==='over'?'v-red':st==='warn'?'v-amber':'v-green'}">${BRL(prev)}</div><div class="foot" style="color:${STT[st].cor}">${STT[st].t} · ${saldo<0?BRL(Math.abs(saldo))+' acima':BRL(saldo)+' de folga'}</div></div>
+    <div class="kpi"><div class="lab">Mês decorrido</div><div class="val mono">${pctMes}%</div><div class="foot">dia ${decorrido} de ${dias}</div><div class="barmini"><i style="width:${pctMes}%;background:var(--vermelho)"></i></div></div>`;
+}
+
+function cardHTML(p){
+  const prev=prever(+p.gasto||0),orc=+p.orc||0,st=statusDe(prev,orc),pct=orc?Math.min(prev/orc*100,100):0,cor=STT[st].cor;
+  return `<div class="card ${editMode?'editmode':''}">
+    <button class="del" data-del="${p.id}">✕</button>
+    <div class="top"><div><div class="nome">${esc(p.nome)}</div><div class="tag">${esc(p.tag||'')}</div></div><span class="pill ${STT[st].c}">${STT[st].t}</span></div>
+    <div class="rows">
+      <div class="row"><span class="k">Orçamento</span><input type="number" data-f="orc" data-id="${p.id}" value="${orc}"></div>
+      <div class="row"><span class="k">Gasto até hoje</span><input type="number" data-f="gasto" data-id="${p.id}" value="${+p.gasto||0}"></div>
+      <div class="row"><span class="k">Previsão fechamento</span><span class="v mono" style="color:${cor}">${BRL(prev)}</span></div>
+    </div>
+    <div class="bar"><i style="width:${pct}%;background:${cor}"></i></div>
+    <div class="barfoot"><span>${BRL(p.gasto)} gastos</span><span>${Math.round(pct)}% do orçado (prev.)</span></div>
+  </div>`;
+}
+const addBtn=g=>`<button class="addcard" data-add="${g}">＋ Adicionar plataforma</button>`;
+function renderCards(){
+  document.getElementById('gridFerr').innerHTML=DB.plataformas.filter(p=>p.grupo==='ferr').map(cardHTML).join('')+addBtn('ferr');
+  document.getElementById('gridAds').innerHTML=DB.plataformas.filter(p=>p.grupo==='ads').map(cardHTML).join('')+addBtn('ads');
+  document.querySelectorAll('input[data-f]').forEach(inp=>inp.addEventListener('change',e=>{const p=DB.plataformas.find(x=>x.id===e.target.dataset.id);if(p){p[e.target.dataset.f]=+e.target.value||0;save();renderKpis();renderCards();}}));
+  document.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',e=>{DB.plataformas=DB.plataformas.filter(x=>x.id!==e.target.dataset.del);save();renderKpis();renderCards();}));
+  document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',e=>{const n=prompt('Nome da plataforma:');if(!n)return;DB.plataformas.push({id:uid(),nome:n,grupo:e.target.dataset.add,tag:'',orc:0,gasto:0});save();renderKpis();renderCards();}));
+}
+
+function renderFunil(){
+  const f=funil();
+  const stages=[['Leads',f.leads],['Conversas',f.conversas],['Agendados',f.agenda],['Vendas',f.vendas]];
+  const max=Math.max(...stages.map(s=>s[1]),1);
+  let html='';
+  stages.forEach((s,i)=>{
+    const w=Math.max(s[1]/max*100,14);
+    const conv=i>0&&stages[i-1][1]>0?(s[1]/stages[i-1][1]*100):null;
+    html+=`<div class="funstage"><div class="funbar" style="width:${w}%"><span class="fn">${s[0]}</span><span class="fv">${NUM(s[1])}</span></div>${conv!==null?`<div class="funconv">↳ ${PCT(conv)} de conversão</div>`:''}</div>`;
+  });
+  document.getElementById('funil').innerHTML=html;
+  const cpl=f.leads>0?f.gasto/f.leads:0,cac=f.vendas>0?f.gasto/f.vendas:0,ticket=f.vendas>0?f.fat/f.vendas:0,roas=f.gasto>0?f.fat/f.gasto:0;
+  document.getElementById('perf').innerHTML=`
+    <div class="perf"><div class="pl">Gasto Ads (mês)</div><div class="pv mono" style="color:var(--vermelho-l)">${BRL(f.gasto)}</div><div class="ps">${relsMes().length} dias lançados</div></div>
+    <div class="perf"><div class="pl">CPL · custo por lead</div><div class="pv mono">${cpl?BRL(cpl):'—'}</div><div class="ps">${NUM(f.leads)} leads</div></div>
+    <div class="perf"><div class="pl">CAC · custo por venda</div><div class="pv mono">${cac?BRL(cac):'—'}</div><div class="ps">${NUM(f.vendas)} vendas/cotas</div></div>
+    <div class="perf"><div class="pl">Ticket médio</div><div class="pv mono">${ticket?BRL(ticket):'—'}</div><div class="ps">faturamento ${BRL(f.fat)}</div></div>
+    <div class="perf"><div class="pl">Retorno s/ Ads</div><div class="pv mono" style="color:${roas>=1?'var(--verde-l)':'var(--ambar-l)'}">${roas?roas.toFixed(2)+'x':'—'}</div><div class="ps">faturamento ÷ gasto</div></div>
+    <div class="perf"><div class="pl">Lead → Venda</div><div class="pv mono">${f.leads>0?PCT(f.vendas/f.leads*100):'—'}</div><div class="ps">taxa global do funil</div></div>`;
+}
+function renderTrend(){
+  const r=relsMes().slice(-14);const el=document.getElementById('trend');
+  if(!r.length){el.innerHTML='<div style="color:var(--cinza);padding:20px 0">Lance relatórios pra ver a tendência.</div>';return;}
+  const mg=Math.max(...r.map(x=>+x.gasto||0),1),ml=Math.max(...r.map(x=>+x.leads||0),1);
+  el.innerHTML=r.map(x=>{
+    const d=x.data.slice(8,10)+'/'+x.data.slice(5,7);
+    return `<div class="tcol"><div class="tbars"><div class="tb" style="height:${(+x.gasto||0)/mg*100}%" title="${BRL(x.gasto)}"></div><div class="tb lead" style="height:${(+x.leads||0)/ml*100}%" title="${x.leads} leads"></div></div><div class="td">${d}</div></div>`;
+  }).join('');
+}
+
+/* RELATÓRIO */
+const esc=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function renderFeed(){
+  const f=document.getElementById('feed');
+  if(!DB.relatorios.length){f.innerHTML=`<div class="empty"><b>Nenhum relatório ainda</b>Lance a execução do dia — ou deixe o Cowork preencher pela rotina diária.</div>`;return;}
+  const ord=[...DB.relatorios].sort((a,b)=>b.data.localeCompare(a.data));
+  f.innerHTML=ord.map(r=>{
+    const cpl=r.leads>0?Math.round(r.gasto/r.leads):0;
+    const ds=new Date(r.data+'T12:00').toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'});
+    return `<div class="rep">
+      <div class="rhead"><div class="rdate mono">${r.data.split('-').reverse().join('/')}<small>${ds}</small></div></div>
+      <div class="repmetrics">
+        <div class="met"><div class="ml">Gasto Ads</div><div class="mv mono red">${BRL(r.gasto)}</div></div>
+        <div class="met"><div class="ml">Leads</div><div class="mv mono">${NUM(r.leads)}</div></div>
+        <div class="met"><div class="ml">CPL</div><div class="mv mono">${cpl?BRL(cpl):'—'}</div></div>
+        <div class="met"><div class="ml">Agendados</div><div class="mv mono">${NUM(r.agenda)}</div></div>
+        <div class="met"><div class="ml">Vendas</div><div class="mv mono">${NUM(r.vendas)}</div></div>
+      </div>
+      ${r.resumo?`<div class="resumo">${esc(r.resumo)}</div>`:''}
+      ${r.pend?`<div class="pend"><b>Pendências</b>${esc(r.pend)}</div>`:''}
+      <div class="ract"><button data-copy="${r.id}">⧉ Copiar</button><button data-rdel="${r.id}">✕ Excluir</button></div>
+    </div>`;
+  }).join('');
+  f.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',e=>copiarRel(e.target.dataset.copy)));
+  f.querySelectorAll('[data-rdel]').forEach(b=>b.addEventListener('click',e=>{DB.relatorios=DB.relatorios.filter(x=>x.id!==e.target.dataset.rdel);save();renderAll();}));
+}
+function salvarRel(){
+  const data=document.getElementById('rData').value||hoje();
+  const g=id=>document.getElementById(id);
+  const r={id:uid(),data,gasto:+g('rGasto').value||0,leads:+g('rLeads').value||0,conversas:+g('rConversas').value||0,agenda:+g('rAgenda').value||0,vendas:+g('rVendas').value||0,fat:+g('rFat').value||0,resumo:g('rResumo').value.trim(),pend:g('rPend').value.trim()};
+  const ix=DB.relatorios.findIndex(x=>x.data===data);
+  if(ix>=0){if(!confirm('Já existe relatório nesse dia. Substituir?'))return;DB.relatorios[ix]=r;}else DB.relatorios.push(r);
+  save();renderAll();['rGasto','rLeads','rConversas','rAgenda','rVendas','rFat','rResumo','rPend'].forEach(i=>g(i).value='');
+  toast('Relatório salvo');
+}
+function relTexto(r){
+  const cpl=r.leads>0?'R$ '+Math.round(r.gasto/r.leads):'—';
+  return `RELATÓRIO DE EXECUÇÃO — GRUPO PROSPERE\n${r.data.split('-').reverse().join('/')}\n\nGasto Ads: ${BRL(r.gasto)}\nLeads: ${r.leads} | CPL: ${cpl}\nConversas WhatsApp: ${r.conversas}\nAgendamentos: ${r.agenda}\nVendas/Cotas: ${r.vendas} | Faturamento: ${BRL(r.fat)}\n\n`+(r.resumo?`RESUMO:\n${r.resumo}\n\n`:'')+(r.pend?`PENDÊNCIAS:\n${r.pend}`:'');
+}
+function copiarRel(id){const r=DB.relatorios.find(x=>x.id===id);if(!r)return;navigator.clipboard.writeText(relTexto(r)).then(()=>toast('Relatório copiado'));}
+
+/* ====== COPILOTO IA (Claude embutido) ====== */
+function snapshot(){
+  const {orc,gasto,prev}=totals();const f=funil();const {dias,decorrido}=infoMes();
+  const plat=DB.plataformas.map(p=>({nome:p.nome,grupo:p.grupo,orcamento:+p.orc||0,gasto:+p.gasto||0,previsao:prever(+p.gasto||0),status:STT[statusDe(prever(+p.gasto||0),+p.orc||0)].t}));
+  return {mes:DB.config.mesRef,diaDoMes:`${decorrido}/${dias}`,orcamentoTotal:orc,gastoTotal:gasto,previsaoFechamento:prev,plataformas:plat,
+    funil:{gastoAds:f.gasto,leads:f.leads,conversas:f.conversas,agendamentos:f.agenda,vendas:f.vendas,faturamento:f.fat,cpl:f.leads?Math.round(f.gasto/f.leads):null,cac:f.vendas?Math.round(f.gasto/f.vendas):null}};
+}
+const SYS_COP=`Você é o Copiloto de Operação do Grupo Prospere (consórcios, by Âncora), um estrategista de growth/mídia e gestão de orçamento. Fale português do Brasil, direto e prático, tom de centro de comando.
+COMPLIANCE OBRIGATÓRIO: nunca use "investimento", "investidor" ou "rendimento garantido". Use "planejamento", "compra programada", "planejamento patrimonial", "patrimônio". Nunca prometa data de contemplação (ocorre por sorteio ou lance). Consórcio é ferramenta de aquisição planejada de bens. Assinatura: Grupo Prospere by Âncora.
+Canais da operação: WhatsApp Oficial (Zaia atende), ManyChat (gatilho "777" no Instagram), Instagram/TikTok/Google Ads, e handoff humano pro Emerson fechar. Metodologia de vendas: método Porto Vale adaptado.
+Responda SEMPRE neste formato com estes cabeçalhos exatos, conciso e acionável:
+## Diagnóstico
+(2-4 linhas lendo os números: o que está estourando orçamento, qual canal está caro/eficiente, onde está o gargalo do funil)
+## Ações por canal
+(bullets curtos, priorizados, por canal que importa hoje — o que cortar, o que escalar, o que ajustar)
+## Plano do dia
+(3 a 5 bullets do que executar hoje, em ordem)`;
+
+async function callClaude(userMsg){
+  // usa o backend próprio (/api/brain), que mantém a chave da Anthropic no servidor — a chave nunca vai pro navegador
+  const body={model:"claude-sonnet-4-6",max_tokens:1000,system:SYS_COP,messages:[{role:"user",content:userMsg}]};
+  const rb=await fetch('/api/brain',{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  const db=await rb.json().catch(()=>({}));
+  if(!rb.ok)throw new Error(db.error||('HTTP '+rb.status));
+  return (db.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
+}
+function mdToHtml(md){
+  const lines=md.split('\n');let out='',inUl=false;
+  const close=()=>{if(inUl){out+='</ul>';inUl=false;}};
+  lines.forEach(l=>{
+    l=l.trim();
+    if(/^##\s+/.test(l)){close();out+='<h3>'+esc(l.replace(/^##\s+/,''))+'</h3>';}
+    else if(/^[-*•]\s+/.test(l)){if(!inUl){out+='<ul>';inUl=true;}out+='<li>'+inline(l.replace(/^[-*•]\s+/,''))+'</li>';}
+    else if(l){close();out+='<p style="margin:6px 0">'+inline(l)+'</p>';}
+  });
+  close();return out;
+}
+const inline=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+let lastCop='';
+async function runCop(modo){
+  const out=document.getElementById('copout');
+  out.innerHTML='<div class="thinking"><div class="spin"></div>Copiloto analisando a operação…</div>';
+  const snap=JSON.stringify(snapshot(),null,2);
+  const ask=modo==='plano'
+    ? `Estado atual do painel:\n${snap}\n\nFoque no PLANO DO DIA: o que o Emerson e a equipe devem executar hoje, em ordem de prioridade, considerando orçamento e funil.`
+    : `Estado atual do painel:\n${snap}\n\nAnalise a operação e devolve diagnóstico + ações por canal + plano do dia.`;
+  try{
+    const txt=await callClaude(ask);lastCop=txt;
+    out.innerHTML=mdToHtml(txt);
+  }catch(e){
+    out.innerHTML=`<div class="ph" style="color:var(--ambar-l)">Não consegui falar com o Copiloto.<br><br>Confira se a <code>ANTHROPIC_API_KEY</code> está configurada no Vercel (a chamada passa por <code>/api/brain</code>). <br><span style="color:var(--cinza)">(${esc(e.message)})</span></div>`;
+  }
+}
+
+/* TOOLBAR / EXPORT */
+function exportar(){const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`painel-prospere-${DB.config.mesRef}.json`;a.click();}
+function importar(file){const rd=new FileReader();rd.onload=()=>{try{DB=JSON.parse(rd.result);save();initAll();toast('Backup importado');}catch(e){toast('Arquivo inválido');}};rd.readAsText(file);}
+
+function clock(){const d=new Date();document.getElementById('clkData').textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});document.getElementById('clkHora').textContent=d.toLocaleTimeString('pt-BR');}
+let tt;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2200);}
+
+function renderAll(){renderKpis();renderCards();renderFunil();renderTrend();renderFeed();}
+function initAll(){document.getElementById('mesRef').value=DB.config.mesRef;document.getElementById('rData').value=hoje();renderAll();}
+
+function bind(){
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+    ['visao','funil','rel','cop'].forEach(id=>document.getElementById('tab-'+id).classList.toggle('hide',id!==t.dataset.tab));
+  }));
+  document.getElementById('mesRef').addEventListener('change',e=>{DB.config.mesRef=e.target.value;save();renderAll();});
+  document.getElementById('btnEdit').addEventListener('click',e=>{editMode=!editMode;e.target.textContent=editMode?'✓ Concluir edição':'✎ Editar plataformas';renderCards();});
+  document.getElementById('btnExport').addEventListener('click',exportar);
+  document.getElementById('btnImport').addEventListener('click',()=>document.getElementById('fileImport').click());
+  document.getElementById('fileImport').addEventListener('change',e=>{if(e.target.files[0])importar(e.target.files[0]);});
+  document.getElementById('btnReset').addEventListener('click',()=>{if(confirm('Zerar TODOS os dados?')){DB=JSON.parse(JSON.stringify(SEED));DB.relatorios=[];save();initAll();}});
+  document.getElementById('btnSalvarRel').addEventListener('click',salvarRel);
+  document.getElementById('btnCopiarUlt').addEventListener('click',()=>{if(!DB.relatorios.length)return toast('Sem relatórios');const u=[...DB.relatorios].sort((a,b)=>b.data.localeCompare(a.data))[0];copiarRel(u.id);});
+  document.getElementById('copAnalise').addEventListener('click',()=>runCop('analise'));
+  document.getElementById('copPlano').addEventListener('click',()=>runCop('plano'));
+  document.getElementById('copCopiar').addEventListener('click',()=>{if(!lastCop)return toast('Rode a análise primeiro');navigator.clipboard.writeText(lastCop).then(()=>toast('Análise copiada'));});
+}
+clock();setInterval(clock,1000);bind();initAll();
+</script>
+</body>
+</html>

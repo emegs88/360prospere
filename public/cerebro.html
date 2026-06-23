@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prospere 360 — Cérebro de Negócio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Archivo+Narrow:wght@600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#070709;--carvao:#121216;--carvao2:#1a1a20;--linha:#28282f;--linha2:#37373f;
+    --branco:#f5f5f7;--cinza:#8c8c95;--cinza2:#54545c;
+    --vermelho:#D4111E;--vermelho-l:#ff4651;--vermelho-d:#9c0c16;
+    --verde:#1faa59;--verde-l:#3ad17e;--ambar:#e3a008;--ambar-l:#f3c34a;--raio:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--preto);color:var(--branco);font-family:'Archivo',system-ui,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;padding:0 0 70px;
+    background-image:radial-gradient(900px 400px at 80% -10%,rgba(212,17,30,.13),transparent 60%),radial-gradient(700px 350px at 0% 0%,rgba(212,17,30,.06),transparent 55%);}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .wrap{max-width:1320px;margin:0 auto;padding:0 22px}
+  ::selection{background:var(--vermelho);color:#fff}
+
+  header{border-bottom:1px solid var(--linha);background:rgba(7,7,9,.85);position:sticky;top:0;z-index:50;backdrop-filter:blur(10px)}
+  .hbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:15px}
+  .orb{width:48px;height:48px;flex:none;position:relative}
+  .orb .core{position:absolute;inset:17px;border-radius:50%;background:var(--vermelho);box-shadow:0 0 22px var(--vermelho)}
+  .orb .r1,.orb .r2{position:absolute;inset:0;border:1.5px solid rgba(212,17,30,.5);border-radius:50%}
+  .orb .r1{animation:spin 7s linear infinite;border-top-color:transparent;border-bottom-color:transparent}
+  .orb .r2{inset:8px;border-color:rgba(255,70,81,.35);border-left-color:transparent;border-right-color:transparent;animation:spin 4s linear infinite reverse}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .brand h1{font-family:'Archivo Narrow';font-weight:700;font-size:23px;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+  .brand h1 b{color:var(--vermelho-l)}
+  .brand .sub{font-size:10.5px;color:var(--cinza);letter-spacing:.2em;text-transform:uppercase;margin-top:3px}
+  .live{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--cinza);font-family:'JetBrains Mono'}
+  .live .pulse{width:8px;height:8px;border-radius:50%;background:var(--verde);box-shadow:0 0 10px var(--verde);animation:bl 1.6s infinite}
+  @keyframes bl{50%{opacity:.3}}
+
+  .tabs{display:flex;gap:2px;border-bottom:1px solid var(--linha);margin-top:4px;overflow-x:auto}
+  .tab{background:none;border:none;color:var(--cinza);font-weight:700;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;padding:13px 17px;cursor:pointer;border-bottom:2px solid transparent;transition:.15s;white-space:nowrap}
+  .tab:hover{color:var(--branco)}
+  .tab.on{color:var(--branco);border-bottom-color:var(--vermelho)}
+
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin:24px 0 6px}
+  .heroL{background:linear-gradient(135deg,rgba(212,17,30,.14),rgba(212,17,30,.02));border:1px solid rgba(212,17,30,.28);border-radius:var(--raio);padding:24px}
+  .heroL .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--vermelho-l);font-weight:700}
+  .heroL .big{font-family:'JetBrains Mono';font-weight:800;font-size:48px;letter-spacing:-.02em;margin:8px 0 2px;line-height:1}
+  .heroL .cap{color:var(--cinza);font-size:13px}
+  .heroL .src{color:var(--cinza2);font-size:10.5px;margin-top:12px}
+  .heroR{background:var(--carvao);border:1px solid var(--linha);border-radius:var(--raio);padding:20px;display:flex;flex-direction:column;justify-content:center;gap:12px}
+  .calc{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .calc label{font-size:12px;color:var(--cinza)}
+  .calc .ctl{display:flex;align-items:center;gap:8px}
+  .calc input{background:var(--carvao2);border:1px solid var(--linha);border-radius:8px;color:#fff;font-family:'JetBrains Mono';font-weight:700;text-align:right;width:120px;padding:7px 9px}
+  .calc input:focus{outline:none;border-color:var(--vermelho)}
+  .tam{border-top:1px solid var(--linha);padding-top:12px;margin-top:4px}
+  .tam .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--cinza)}
+  .tam .v{font-family:'JetBrains Mono';font-weight:800;font-size:30px;color:var(--verde-l);margin-top:4px}
+  .tam .s{font-size:11px;color:var(--cinza2);margin-top:3px}
+
+  .sec-head{display:flex;align-items:center;justify-content:space-between;margin:26px 0 14px;gap:12px}
+  .sec-head h2{font-family:'Archivo Narrow';font-weight:700;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--cinza);display:flex;align-items:center;gap:10px}
+  .sec-head h2::before{content:"";width:18px;height:2px;background:var(--vermelho)}
+  .sortbtns{display:flex;gap:6px}
+  .sortbtns button{font-size:11px;font-weight:700;color:var(--cinza);background:var(--carvao);border:1px solid var(--linha);border-radius:7px;padding:6px 11px;cursor:pointer}
+  .sortbtns button.on{color:#fff;border-color:var(--vermelho)}
+
+  .map{background:var(--carvao);border:1px solid var(--linha);border-radius:var(--raio);padding:8px 6px}
+  .crow{display:grid;grid-template-columns:30px 150px 1fr 130px 130px;gap:12px;align-items:center;padding:11px 14px;border-radius:9px;transition:.12s}
+  .crow:hover{background:var(--carvao2)}
+  .crow .flag{font-size:22px;text-align:center}
+  .crow .cn{font-weight:700}
+  .crow .cn small{display:block;color:var(--cinza2);font-size:10px;font-weight:400;text-transform:uppercase;letter-spacing:.06em}
+  .crow .track{height:9px;background:var(--carvao2);border-radius:5px;overflow:hidden}
+  .crow .track i{display:block;height:100%;background:linear-gradient(90deg,var(--vermelho-d),var(--vermelho-l));border-radius:5px;transition:width .6s}
+  .crow .num{font-family:'JetBrains Mono';font-weight:700;text-align:right}
+  .crow .opp{font-family:'JetBrains Mono';font-weight:700;text-align:right;color:var(--verde-l)}
+  .chead{display:grid;grid-template-columns:30px 150px 1fr 130px 130px;gap:12px;padding:6px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--cinza2)}
+  .chead .r{text-align:right}
+
+  /* CÉREBRO IA */
+  .brain{display:grid;grid-template-columns:230px 1fr;gap:16px;margin-top:26px;align-items:start}
+  .modes{display:flex;flex-direction:column;gap:8px;position:sticky;top:118px}
+  .mode{text-align:left;background:var(--carvao);border:1px solid var(--linha);border-radius:11px;padding:13px 14px;cursor:pointer;transition:.15s}
+  .mode:hover{border-color:var(--linha2)}
+  .mode.on{border-color:var(--vermelho);background:linear-gradient(135deg,rgba(212,17,30,.12),transparent)}
+  .mode b{display:block;font-size:13.5px}
+  .mode span{font-size:11px;color:var(--cinza);display:block;margin-top:2px}
+  .console{background:var(--carvao);border:1px solid var(--linha);border-radius:var(--raio);padding:20px;min-height:380px;display:flex;flex-direction:column}
+  .console .ctitle{display:flex;align-items:center;gap:9px;font-family:'Archivo Narrow';text-transform:uppercase;letter-spacing:.06em;font-size:17px;margin-bottom:4px}
+  .console .cdesc{font-size:12.5px;color:var(--cinza);margin-bottom:14px}
+  .cinput{display:flex;gap:9px;margin-bottom:14px}
+  .cinput input{flex:1;background:var(--carvao2);border:1px solid var(--linha);border-radius:10px;color:#fff;font-size:14px;padding:11px 13px}
+  .cinput input:focus{outline:none;border-color:var(--vermelho)}
+  .btn{font-weight:700;font-size:13px;border-radius:10px;padding:11px 16px;cursor:pointer;border:1px solid var(--linha);background:var(--carvao);color:#fff;transition:.15s;display:inline-flex;align-items:center;gap:7px;font-family:inherit;white-space:nowrap}
+  .btn:hover{border-color:var(--linha2);background:var(--carvao2)}
+  .btn.red{background:var(--vermelho);border-color:var(--vermelho)}
+  .btn.red:hover{background:var(--vermelho-d)}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{font-size:11.5px;color:var(--cinza);background:var(--carvao2);border:1px solid var(--linha);border-radius:20px;padding:6px 12px;cursor:pointer;transition:.12s}
+  .chip:hover{color:#fff;border-color:var(--vermelho)}
+  .out{flex:1;background:var(--carvao2);border:1px solid var(--linha);border-radius:12px;padding:20px;font-size:14.5px;line-height:1.62;overflow:auto}
+  .out h3{font-family:'Archivo Narrow';text-transform:uppercase;letter-spacing:.07em;font-size:16px;color:var(--vermelho-l);margin:16px 0 7px}
+  .out h3:first-child{margin-top:0}
+  .out strong{color:#fff}
+  .out ul{margin:6px 0 6px 2px;list-style:none}
+  .out li{padding:5px 0 5px 20px;position:relative;color:#dcdce0}
+  .out li::before{content:"▸";position:absolute;left:0;color:var(--vermelho)}
+  .out a{color:var(--vermelho-l)}
+  .out .ph{color:var(--cinza);text-align:center;padding:40px 10px}
+  .spin{width:30px;height:30px;border:3px solid var(--linha);border-top-color:var(--vermelho);border-radius:50%;animation:sp 1s linear infinite;margin:10px auto 14px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .think{text-align:center;color:var(--cinza)}
+  .actbar{display:flex;gap:8px;margin-top:12px}
+
+  .note{background:var(--carvao);border:1px solid var(--linha);border-left:3px solid var(--ambar);border-radius:11px;padding:16px 18px;margin-top:24px;font-size:13px;color:#cfcfd4;line-height:1.6}
+  .note b{color:var(--ambar-l)}
+  .foot{margin-top:26px;text-align:center;color:var(--cinza2);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  .foot b{color:var(--vermelho-l)}
+  .hide{display:none!important}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--vermelho);color:#fff;font-weight:700;font-size:13px;padding:11px 20px;border-radius:10px;opacity:0;transition:.25s;z-index:100}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:980px){.hero{grid-template-columns:1fr}.brain{grid-template-columns:1fr}.modes{position:static;flex-direction:row;overflow-x:auto}.mode{min-width:200px}.crow,.chead{grid-template-columns:26px 110px 1fr 96px;}.crow .opp,.chead .o{display:none}}
+  @media(max-width:600px){.heroL .big{font-size:38px}.crow,.chead{grid-template-columns:24px 1fr 84px}.crow .track,.chead .t{display:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="hbar">
+      <div class="brand">
+        <div class="orb"><div class="r1"></div><div class="r2"></div><div class="core"></div></div>
+        <div>
+          <h1>Prospere <b>360</b></h1>
+          <div class="sub">Cérebro de Negócio · Consórcio &amp; Capital · by Âncora</div>
+        </div>
+      </div>
+      <div class="live"><span class="pulse"></span>CÉREBRO ATIVO · <span id="clk">--:--:--</span></div>
+    </div>
+    <div class="tabs">
+      <button class="tab on" data-tab="mapa">Mapa de Oportunidade</button>
+      <button class="tab" data-tab="cerebro">Cérebro IA</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- MAPA -->
+  <section id="tab-mapa">
+    <div class="hero">
+      <div class="heroL">
+        <div class="eyebrow">Brasileiros no mundo · mercado-alvo</div>
+        <div class="big mono" id="bigTotal">4.996.951</div>
+        <div class="cap">brasileiros residentes no exterior — um mercado do tamanho do 13º maior estado do Brasil.</div>
+        <div class="src">Fonte: MRE / Itamaraty — "Comunidades Brasileiras no Exterior", ano-base 2023 (estimativa).</div>
+      </div>
+      <div class="heroR">
+        <div class="calc"><label>Penetração-alvo (% da comunidade)</label><div class="ctl"><input type="number" id="pen" value="0.5" step="0.1"> <span class="mono" style="color:var(--cinza)">%</span></div></div>
+        <div class="calc"><label>Ticket médio do crédito (R$)</label><div class="ctl"><input type="number" id="ticket" value="100000" step="10000"></div></div>
+        <div class="tam">
+          <div class="l">Potencial de crédito programado (alvo)</div>
+          <div class="v mono" id="tamVal">—</div>
+          <div class="s" id="tamSub">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head">
+      <h2>Onde estão · prioridade por país</h2>
+      <div class="sortbtns"><button id="sortPop" class="on">Por população</button><button id="sortOpp">Por oportunidade</button></div>
+    </div>
+    <div class="map">
+      <div class="chead"><span></span><span>País</span><span class="t">Comunidade</span><span class="r">Brasileiros</span><span class="r o">Crédito-alvo</span></div>
+      <div id="mapRows"></div>
+    </div>
+
+    <div class="note">
+      <b>Nota de sócio (importante).</b> Vender consórcio para brasileiros no exterior é oportunidade real — mas marketing e contrato cruzam câmbio, remessa (IOF), tributação e regras de consórcio. Lembre o compliance: nada de "investimento", "investidor" ou "rendimento garantido" — é <b>planejamento patrimonial / compra programada</b>. Antes de escalar pra fora, valide com seu jurídico e com a Âncora o enquadramento (inclusive risco regulatório / CVM ao posicionar como aplicação financeira).
+    </div>
+  </section>
+
+  <!-- CÉREBRO IA -->
+  <section id="tab-cerebro" class="hide">
+    <div class="brain">
+      <div class="modes" id="modes"></div>
+      <div class="console">
+        <div class="ctitle" id="cTitle"></div>
+        <div class="cdesc" id="cDesc"></div>
+        <div class="cinput"><input id="cQ" placeholder="Pergunte ao cérebro..."><button class="btn red" id="cRun">⚡ Rodar</button></div>
+        <div class="chips" id="cChips"></div>
+        <div class="out" id="cOut"><div class="ph">Escolha um modo, digite (ou clique num atalho) e rode. O cérebro pesquisa e responde com o compliance Prospere travado.</div></div>
+        <div class="actbar"><button class="btn" id="cCopy">⧉ Copiar</button></div>
+      </div>
+    </div>
+    <div class="foot">Prospere 360 · Grupo Prospere <b>by Âncora</b> · cérebro de decisão sobre dados reais</div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== DADOS REAIS — Itamaraty/MRE ano-base 2023 ===== */
+const DIASPORA=[
+  {pais:'Estados Unidos',flag:'🇺🇸',n:2085000,reg:'América do Norte'},
+  {pais:'Portugal',flag:'🇵🇹',n:513000,reg:'Europa'},
+  {pais:'Paraguai',flag:'🇵🇾',n:263200,reg:'América do Sul'},
+  {pais:'Reino Unido',flag:'🇬🇧',n:230000,reg:'Europa'},
+  {pais:'Japão',flag:'🇯🇵',n:210471,reg:'Ásia'},
+  {pais:'Alemanha',flag:'🇩🇪',n:170400,reg:'Europa'},
+  {pais:'Espanha',flag:'🇪🇸',n:165000,reg:'Europa'},
+  {pais:'Itália',flag:'🇮🇹',n:159000,reg:'Europa'},
+  {pais:'Canadá',flag:'🇨🇦',n:143500,reg:'América do Norte'},
+  {pais:'Argentina',flag:'🇦🇷',n:101502,reg:'América do Sul'},
+  {pais:'Guiana Francesa',flag:'🇬🇫',n:92493,reg:'América do Sul'},
+  {pais:'Austrália',flag:'🇦🇺',n:48180,reg:'Oceania'},
+];
+const TOTAL=4996951;
+const BRL=n=>'R$ '+(Number(n)||0).toLocaleString('pt-BR',{maximumFractionDigits:0});
+const BRLc=n=>{n=Number(n)||0;if(n>=1e9)return'R$ '+(n/1e9).toFixed(2).replace('.',',')+' bi';if(n>=1e6)return'R$ '+(n/1e6).toFixed(1).replace('.',',')+' mi';return BRL(n);};
+const NUM=n=>(Number(n)||0).toLocaleString('pt-BR');
+let sortMode='pop';
+
+function pen(){return (parseFloat(document.getElementById('pen').value)||0)/100;}
+function ticket(){return parseFloat(document.getElementById('ticket').value)||0;}
+function oppOf(c){return Math.round(c.n*pen()*ticket());}
+
+function renderMap(){
+  const rows=[...DIASPORA].sort((a,b)=>sortMode==='pop'?b.n-a.n:oppOf(b)-oppOf(a));
+  const max=Math.max(...DIASPORA.map(c=>c.n));
+  document.getElementById('mapRows').innerHTML=rows.map(c=>`
+    <div class="crow">
+      <span class="flag">${c.flag}</span>
+      <span class="cn">${c.pais}<small>${c.reg}</small></span>
+      <span class="track"><i style="width:${c.n/max*100}%"></i></span>
+      <span class="num">${NUM(c.n)}</span>
+      <span class="opp">${BRLc(oppOf(c))}</span>
+    </div>`).join('');
+  const totAlvo=Math.round(TOTAL*pen());
+  const totCred=Math.round(TOTAL*pen()*ticket());
+  document.getElementById('tamVal').textContent=BRLc(totCred);
+  document.getElementById('tamSub').textContent=`${NUM(totAlvo)} clientes-alvo · ${(pen()*100).toLocaleString('pt-BR')}% de ${NUM(TOTAL)} · ticket ${BRL(ticket())}`;
+}
+
+/* ===== CÉREBRO IA ===== */
+const COMPLIANCE=`COMPLIANCE OBRIGATÓRIO: nunca use "investimento", "investidor" ou "rendimento garantido". Use "planejamento", "compra programada", "planejamento patrimonial", "patrimônio". Nunca prometa data de contemplação (ocorre por sorteio ou lance). Consórcio é ferramenta de aquisição planejada de bens. Assinatura: Grupo Prospere by Âncora.`;
+const MODES={
+  pesquisa:{nome:'Pesquisa Mundial',desc:'Vasculha a internet sobre consórcio no mundo — modelos, players, regulação, tendências, conteúdos.',icon:'🌐',web:true,
+    chips:['Como funciona consórcio fora do Brasil?','Modelos de consórcio para brasileiros no exterior','Tendências de consórcio 2026','Players e cases de consórcio digital'],
+    sys:`Você é o núcleo de inteligência de mercado do Prospere 360 (consórcios, by Âncora). Pesquise na web e responda em português do BR, direto, com fontes/links quando houver. Estruture em: ## Resumo, ## Pontos-chave (bullets), ## Aplicação na Prospere. ${COMPLIANCE}`},
+  negociacao:{nome:'Negociação · Porto Vale',desc:'Gera abordagem, quebra de objeção e fechamento no método Porto Vale adaptado a consórcio.',icon:'🤝',web:false,
+    chips:['Quebra a objeção "é caro / é parcela alta"','Abordagem pra brasileiro no exterior','Fechamento método Porto Vale','Roteiro de qualificação em 5 perguntas'],
+    sys:`Você é o cérebro de negociação do Prospere 360, especialista no método Porto Vale adaptado a consórcio. Responda em português do BR, prático e pronto pra usar (scripts, frases, sequência). Estruture em: ## Estratégia, ## Script pronto, ## Quebra de objeção. ${COMPLIANCE}`},
+  captacao:{nome:'Captação & Bens',desc:'Formatos de capital de giro com consórcio e aquisição planejada de veículos, embarcações, imóveis e máquinas.',icon:'⚙️',web:true,
+    chips:['Capital de giro com consórcio para empresa','Consórcio de embarcações: como estruturar','Consórcio de frota de veículos','Carta contemplada para capital de giro'],
+    sys:`Você é o cérebro de estruturação financeira do Prospere 360. Trate consórcio como ferramenta de aquisição planejada e de organização de capital (capital de giro via carta/lance), para veículos, embarcações, imóveis, máquinas e frota. Responda em português do BR, com formatos concretos e passos. Estruture em: ## Formato, ## Como estruturar, ## Cuidados. ${COMPLIANCE}`},
+  conteudo:{nome:'Conteúdo 24h',desc:'Ideias de conteúdo vasculhando tendências da internet — reels, carrossel, stories, hooks.',icon:'🎬',web:true,
+    chips:['10 ideias de Reels sobre consórcio essa semana','Hooks que seguram brasileiro no exterior','Roteiro de carrossel: consórcio vs financiamento','Calendário de 7 dias de conteúdo'],
+    sys:`Você é o cérebro de conteúdo do Prospere 360. Pesquise tendências atuais e gere ideias de conteúdo PRONTAS pra Instagram/TikTok: formato, hook, roteiro curto e CTA. Português do BR, direto. Estruture em ## Ideias (cada uma com formato + hook + CTA). ${COMPLIANCE}`},
+};
+let curMode='pesquisa',lastOut='';
+
+function renderModes(){
+  document.getElementById('modes').innerHTML=Object.entries(MODES).map(([k,m])=>`
+    <button class="mode ${k===curMode?'on':''}" data-m="${k}"><b>${m.icon} ${m.nome}</b><span>${m.desc}</span></button>`).join('');
+  document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>{curMode=b.dataset.m;renderModes();renderConsole();}));
+}
+function renderConsole(){
+  const m=MODES[curMode];
+  document.getElementById('cTitle').innerHTML=`${m.icon} ${m.nome}`;
+  document.getElementById('cDesc').textContent=m.desc;
+  document.getElementById('cChips').innerHTML=m.chips.map(c=>`<span class="chip">${c}</span>`).join('');
+  document.querySelectorAll('.chip').forEach(ch=>ch.addEventListener('click',()=>{document.getElementById('cQ').value=ch.textContent;run();}));
+}
+
+async function callBrain(system,user,web){
+  // usa o backend próprio (/api/brain), que mantém a chave da Anthropic no servidor — a chave nunca vai pro navegador
+  const body={model:"claude-sonnet-4-6",max_tokens:1000,system,messages:[{role:"user",content:user}]};
+  if(web)body.tools=[{type:"web_search_20250305",name:"web_search"}];
+  const r=await fetch('/api/brain',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.error||('HTTP '+r.status));
+  return extract(d);
+}
+const extract=d=>(d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
+
+async function run(){
+  const m=MODES[curMode];const q=document.getElementById('cQ').value.trim();
+  if(!q)return toast('Escreve uma pergunta ou clica num atalho');
+  const out=document.getElementById('cOut');
+  out.innerHTML='<div class="think"><div class="spin"></div>Cérebro pesquisando e raciocinando…</div>';
+  const ctx=`Contexto do mercado (dados reais Itamaraty 2023): ${NUM(TOTAL)} brasileiros no exterior. Maiores: EUA 2.085.000, Portugal 513.000, Paraguai 263.200, Reino Unido 230.000, Japão 210.471.`;
+  try{
+    const txt=await callBrain(m.sys, `${ctx}\n\nTarefa: ${q}`, m.web);
+    lastOut=txt;out.innerHTML=md(txt);
+  }catch(e){
+    out.innerHTML=`<div class="ph" style="color:var(--ambar-l)">Não consegui falar com o cérebro.<br><br>Confira se a <code>ANTHROPIC_API_KEY</code> está configurada no Vercel (a chamada passa por <code>/api/brain</code>). <br><span style="color:var(--cinza)">(${esc(e.message)})</span></div>`;
+  }
+}
+const esc=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function md(t){
+  const lines=t.split('\n');let o='',ul=false;const cl=()=>{if(ul){o+='</ul>';ul=false;}};
+  lines.forEach(l=>{l=l.trim();
+    if(/^##\s+/.test(l)){cl();o+='<h3>'+esc(l.replace(/^##\s+/,''))+'</h3>';}
+    else if(/^[-*•]\s+/.test(l)){if(!ul){o+='<ul>';ul=true;}o+='<li>'+inl(l.replace(/^[-*•]\s+/,''))+'</li>';}
+    else if(l){cl();o+='<p style="margin:6px 0">'+inl(l)+'</p>';}});
+  cl();return o;
+}
+const inl=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/(https?:\/\/[^\s)]+)/g,'<a href="$1" target="_blank">link</a>');
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
+function clock(){document.getElementById('clk').textContent=new Date().toLocaleTimeString('pt-BR');}
+
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+  document.getElementById('tab-mapa').classList.toggle('hide',t.dataset.tab!=='mapa');
+  document.getElementById('tab-cerebro').classList.toggle('hide',t.dataset.tab!=='cerebro');
+}));
+['pen','ticket'].forEach(id=>document.getElementById(id).addEventListener('input',renderMap));
+document.getElementById('sortPop').addEventListener('click',()=>{sortMode='pop';document.getElementById('sortPop').classList.add('on');document.getElementById('sortOpp').classList.remove('on');renderMap();});
+document.getElementById('sortOpp').addEventListener('click',()=>{sortMode='opp';document.getElementById('sortOpp').classList.add('on');document.getElementById('sortPop').classList.remove('on');renderMap();});
+document.getElementById('cRun').addEventListener('click',run);
+document.getElementById('cQ').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+document.getElementById('cCopy').addEventListener('click',()=>{if(!lastOut)return toast('Rode o cérebro primeiro');navigator.clipboard.writeText(lastOut).then(()=>toast('Copiado'));});
+
+clock();setInterval(clock,1000);renderMap();renderModes();renderConsole();
+</script>
+</body>
+</html>
