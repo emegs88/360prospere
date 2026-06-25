@@ -141,6 +141,34 @@
   .sec-head h2{font-family:'Archivo Narrow';font-weight:700;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
   .sec-head h2 b{color:var(--ambar-l)}
   .sec-head p{font-size:13px;color:var(--cinza);margin-top:3px}
+
+  /* BARRA: LOJA DO LOJISTA (cola o link do estoque) */
+  .lojabar{background:linear-gradient(135deg,rgba(227,160,8,.10),rgba(227,160,8,.02));border:1px solid rgba(227,160,8,.28);border-radius:12px;padding:15px 16px;margin-bottom:16px}
+  .lojabar .lh{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ambar-l);font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .lojabar .lrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .lojabar input{flex:1;min-width:220px;background:var(--carvao);border:1px solid var(--linha2);color:#fff;border-radius:9px;padding:11px 13px;font-family:'Archivo';font-size:13.5px;outline:none;transition:.12s}
+  .lojabar input:focus{border-color:var(--ambar)}
+  .lojabtn{background:var(--ambar);color:#1a1200;font-family:'Archivo';font-weight:700;font-size:13px;border:0;border-radius:9px;padding:11px 20px;cursor:pointer;transition:.12s}
+  .lojabtn:hover{background:var(--ambar-l)}
+  .lojabtn.ghost{background:var(--carvao);color:var(--cinza);border:1px solid var(--linha2)}
+  .lojabtn.ghost:hover{color:#fff;border-color:var(--ambar)}
+  .lojabar .lhint{font-size:11.5px;color:var(--cinza);margin-top:9px;line-height:1.5}
+  .lojabar .lhint b{color:#cfcfd4}
+  .lojabar .lstatus{font-size:12px;font-family:'JetBrains Mono';margin-top:8px}
+  .lojabar .lstatus.ok{color:var(--verde-l)}
+  .lojabar .lstatus.err{color:var(--vermelho-l)}
+
+  /* JUNÇÃO DE CARTAS (combo inteligente) */
+  .vcombo{background:var(--carvao);border:1px dashed rgba(58,209,126,.45);border-radius:10px;padding:11px 12px}
+  .vcombo .mh{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--verde-l);font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+  .vcombo .cline{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;font-family:'JetBrains Mono';padding:5px 0;border-top:1px dashed var(--linha);color:#cfcfd4}
+  .vcombo .cline:first-of-type{border-top:0}
+  .vcombo .cline .mn{color:var(--verde-l);font-weight:700}
+  .vcombo .ctot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--linha2);color:var(--cinza)}
+  .vcombo .ctot b{color:#fff;font-family:'JetBrains Mono'}
+  .vzap.combo{background:var(--verde);color:#04210f}
+  .vzap.combo:hover{background:var(--verde-l)}
+  .iatag{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono';font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(58,209,126,.16);color:var(--verde-l);border:1px solid rgba(58,209,126,.4);border-radius:6px;padding:2px 7px}
 </style>
 </head>
 <body>
@@ -163,7 +191,7 @@
   <section class="hero">
     <div class="eyebrow">Para lojistas de veículos</div>
     <h1>Seu estoque <b>cruzado</b> com crédito já contemplado</h1>
-    <p>Veja em tempo real quais carros do estoque parceiro já dá pra fechar com uma carta de consórcio contemplada — crédito, entrada e custo na hora. Ou use o consultor FIPE pra qualquer veículo.</p>
+    <p>Cole o link da <b>sua loja</b> e veja em tempo real quais carros já dá pra fechar com uma carta de consórcio contemplada — crédito, entrada e custo na hora. Quando uma carta sozinha não cobre, a <b>junção inteligente de cartas</b> monta a melhor combinação. Tem ainda o consultor FIPE pra qualquer veículo.</p>
   </section>
 
   <div class="stats" id="stats"></div>
@@ -179,6 +207,16 @@
     <div class="sec-head">
       <h2>Estoque <b>parceiro</b> × cartas contempladas</h2>
       <p id="estoqueSub">Carregando estoque do parceiro…</p>
+    </div>
+    <div class="lojabar">
+      <div class="lh">🏪 É sua loja? Cole o link do seu estoque</div>
+      <div class="lrow">
+        <input id="lojaUrl" type="url" placeholder="ex: https://sualoja.com.br" autocomplete="off" spellcheck="false">
+        <button class="lojabtn" id="lojaGo">Cruzar meu estoque</button>
+        <button class="lojabtn ghost" id="lojaReset" style="display:none">Voltar ao parceiro</button>
+      </div>
+      <div class="lstatus" id="lojaStatus"></div>
+      <div class="lhint">Funciona com lojas <b>WooCommerce</b> (link do site). O sistema busca seus veículos e cruza na hora com as <b>cartas já contempladas</b>. O link fica salvo só neste navegador.</div>
     </div>
     <div class="cf">
       <div class="cf-grp">
@@ -247,7 +285,7 @@
   </section>
 
   <div class="disc">
-    <b>Importante.</b> A bidcon / Prospere Consórcios intermedia cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. O estoque exibido é do parceiro <b id="discParceiro">Unimais Veículos</b>; preços e disponibilidade dos veículos são responsabilidade da loja e podem mudar. Valores FIPE são referência de tabela. A transferência da carta está sujeita à análise da administradora. Consórcio é <b>compra programada</b>, não investimento.
+    <b>Importante.</b> A bidcon / Prospere Consórcios intermedia cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. O estoque exibido é de <b id="discParceiro">Unimais Veículos</b>; preços e disponibilidade dos veículos são responsabilidade da loja e podem mudar. A <b>junção de cartas</b> é uma simulação de combinação de créditos contemplados — a viabilidade e a transferência ficam sujeitas à análise da administradora. Valores FIPE são referência de tabela. Consórcio é <b>compra programada</b>, não investimento.
   </div>
 
   <div class="foot">
@@ -297,25 +335,92 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   if(t.dataset.tab==='fipe')fipeInit();
 }));
 
+// ===== JUNÇÃO DE CARTAS (combo inteligente) =====
+// Quando NENHUMA carta sozinha cobre o veículo, monta a melhor combinação de
+// cartas (somando créditos) que cobre o preço — minimizando a sobra total e,
+// em empate, a entrada total. Heurística gulosa + busca local enxuta.
+const MAX_COMBO=3; // no máx 3 cartas por combo (transferência prática)
+function comboPara(preco){
+  if(!CARTAS.length||preco<=0)return null;
+  if(CARTAS.some(c=>c.c>=preco))return null; // já existe carta única -> sem combo
+  const pool=CARTAS.slice().sort((a,b)=>b.c-a.c); // maiores créditos primeiro
+  let melhor=null;
+  const avalia=(combo)=>{
+    const cred=combo.reduce((s,c)=>s+c.c,0);
+    if(cred<preco)return;
+    const ent=combo.reduce((s,c)=>s+c.e,0);
+    const sobra=cred-preco;
+    if(!melhor||sobra<melhor.sobra||(sobra===melhor.sobra&&ent<melhor.ent)||(sobra===melhor.sobra&&ent===melhor.ent&&combo.length<melhor.combo.length)){
+      melhor={combo:combo.slice(),cred,ent,sobra};
+    }
+  };
+  // combinações de tamanho 2..MAX_COMBO (pool já cabe nesse teto com folga)
+  const top=pool.slice(0,Math.min(pool.length,40)); // limita custo
+  for(let i=0;i<top.length;i++){
+    for(let j=i+1;j<top.length;j++){
+      avalia([top[i],top[j]]);
+      if(MAX_COMBO>=3)for(let k=j+1;k<top.length;k++)avalia([top[i],top[j],top[k]]);
+    }
+  }
+  return melhor;
+}
+function zapCombo(combo,veic){
+  const lst=combo.map(c=>`nº ${c.n} (crédito ${BRL(c.c)}, entrada ${BRL(c.e)})`).join(' + ');
+  const cred=combo.reduce((s,c)=>s+c.c,0),ent=combo.reduce((s,c)=>s+c.e,0);
+  const txt=`Olá! Sou lojista. Quero juntar as cartas contempladas ${lst} `+
+    (veic?`pra fechar o ${veic.nome} (${BRL(veic.preco)}). `:`. `)+
+    `Crédito somado ${BRL(cred)}, entrada somada ${BRL(ent)}. Como funciona a junção?`;
+  return `https://wa.me/${CWA}?text=${encodeURIComponent(txt)}`;
+}
+
 // ===== ABA 1: ESTOQUE PARCEIRO =====
 let ESTOQUE=[],vLimite=18;
+const LOJA_KEY='bidcon_loja_url';
+function setLojaStatus(msg,cls){const el=$('lojaStatus');el.textContent=msg||'';el.className='lstatus'+(cls?' '+cls:'');}
 async function carregarEstoque(){
+  const lojaUrl=(localStorage.getItem(LOJA_KEY)||'').trim();
+  const api=lojaUrl?`/api/estoque?url=${encodeURIComponent(lojaUrl)}`:'/api/estoque';
+  $('vgrid').innerHTML='<div class="loading"><span class="spin"></span>Buscando estoque…</div>';
   try{
-    const r=await fetch('/api/estoque');
+    const r=await fetch(api);
     const j=await r.json();
-    ESTOQUE=(j.veiculos||[]).map(v=>({...v,cartas:cartasPara(v.preco)}));
+    if(!j.ok){
+      if(lojaUrl){setLojaStatus('✕ '+(j.error||'Não consegui ler essa loja.'),'err');}
+      $('vgrid').innerHTML=`<div class="cempty">${lojaUrl?(j.error||'Não consegui ler o estoque dessa loja.'):'Não consegui carregar o estoque agora. Recarregue em instantes.'}</div>`;
+      $('estoqueSub').textContent='Estoque indisponível.';
+      return;
+    }
+    ESTOQUE=(j.veiculos||[]).map(v=>({...v,cartas:cartasPara(v.preco),combo:comboPara(v.preco)}));
     if(j.parceiro){$('estoqueSub').textContent=`Estoque de ${j.parceiro} cruzado com ${CARTAS.length} cartas de veículo · em tempo real`;$('discParceiro').textContent=j.parceiro;}
-    if(j.fonte)$('footFonte').href=j.fonte;
+    if(j.fonte){$('footFonte').href=j.fonte;$('footFonte').textContent=j.custom?j.parceiro:'parceiro';}
+    if(lojaUrl)setLojaStatus(`✓ ${NUM(j.total)} veículo(s) da sua loja cruzados com ${CARTAS.length} cartas.`,'ok');
     renderEstoque();
   }catch(e){
-    $('vgrid').innerHTML='<div class="cempty">Não consegui carregar o estoque do parceiro agora. Tente recarregar a página em instantes.</div>';
+    if(lojaUrl)setLojaStatus('✕ Erro ao consultar essa loja.','err');
+    $('vgrid').innerHTML='<div class="cempty">Não consegui carregar o estoque agora. Tente recarregar a página em instantes.</div>';
     $('estoqueSub').textContent='Estoque temporariamente indisponível.';
   }
 }
+// controles da loja do lojista
+(function(){
+  const saved=(localStorage.getItem(LOJA_KEY)||'').trim();
+  if(saved){$('lojaUrl').value=saved;$('lojaReset').style.display='';}
+  $('lojaGo').addEventListener('click',()=>{
+    const u=($('lojaUrl').value||'').trim();
+    if(!u){setLojaStatus('Cole o link da sua loja primeiro.','err');return;}
+    localStorage.setItem(LOJA_KEY,u);$('lojaReset').style.display='';
+    setLojaStatus('Buscando seu estoque…','');vLimite=18;carregarEstoque();
+  });
+  $('lojaUrl').addEventListener('keydown',e=>{if(e.key==='Enter')$('lojaGo').click();});
+  $('lojaReset').addEventListener('click',()=>{
+    localStorage.removeItem(LOJA_KEY);$('lojaUrl').value='';$('lojaReset').style.display='none';
+    setLojaStatus('',null);vLimite=18;carregarEstoque();
+  });
+})();
 function estoqueFiltrado(){
   const match=$('fMatch').value, teto=Number($('fPreco').value)||0, q=($('fBusca').value||'').toLowerCase().trim();
   let arr=ESTOQUE.slice();
-  if(match==='ok')arr=arr.filter(v=>v.cartas.length);
+  if(match==='ok')arr=arr.filter(v=>v.cartas.length||v.combo);
   if(teto>0)arr=arr.filter(v=>v.preco<=teto);
   if(q)arr=arr.filter(v=>v.nome.toLowerCase().includes(q));
   return arr.sort((a,b)=>a.preco-b.preco);
@@ -328,24 +433,32 @@ function renderEstoque(){
   const vis=arr.slice(0,vLimite);
   grid.innerHTML=vis.map(v=>{
     const top=v.cartas.slice(0,2);
-    const matchHtml=v.cartas.length?
-      `<div class="vmatch has"><div class="mh">🔨 ${v.cartas.length} carta(s) cobrem este veículo</div>`+
+    let matchHtml,best=v.cartas[0],comboHtml='';
+    if(v.cartas.length){
+      matchHtml=`<div class="vmatch has"><div class="mh">🔨 ${v.cartas.length} carta(s) cobrem este veículo</div>`+
         top.map(c=>`<div class="mcarta"><span class="mn">nº ${c.n}</span><span class="md">crédito <b>${BRL(c.c)}</b> · entrada <b>${BRL(c.e)}</b> · ${pctAm(c)}</span></div>`).join('')+
-      `</div>`:
-      `<div class="vmatch"><div class="mh none">Nenhuma carta cobre este valor hoje</div><div class="mcarta"><span class="md">Fale com a gente — buscamos uma carta sob medida.</span></div></div>`;
-    const best=v.cartas[0];
+      `</div>`;
+    }else if(v.combo){
+      matchHtml='';
+      comboHtml=`<div class="vcombo"><div class="mh">🤖 <span class="iatag">junção IA</span> ${v.combo.combo.length} cartas juntas cobrem este veículo</div>`+
+        v.combo.combo.map(c=>`<div class="cline"><span class="mn">nº ${c.n}</span><span>crédito ${BRL(c.c)} · entrada ${BRL(c.e)}</span></div>`).join('')+
+        `<div class="ctot"><span>Crédito somado <b>${BRL(v.combo.cred)}</b></span><span>Entrada <b>${BRL(v.combo.ent)}</b> · sobra <b>${BRL(v.combo.sobra)}</b></span></div></div>`;
+    }else{
+      matchHtml=`<div class="vmatch"><div class="mh none">Nenhuma carta cobre este valor hoje</div><div class="mcarta"><span class="md">Fale com a gente — buscamos uma carta sob medida.</span></div></div>`;
+    }
     return `
     <div class="vcard">
       <div class="vimg">
         ${v.img?`<img src="${v.img}" alt="${v.nome}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=&quot;noimg&quot;>🚗</div>'">`:'<div class="noimg">🚗</div>'}
-        <span class="vbadge ${v.cartas.length?'ok':'no'}">${v.cartas.length?'✓ dá pra fechar':'sem carta'}</span>
+        <span class="vbadge ${v.cartas.length?'ok':(v.combo?'ok':'no')}">${v.cartas.length?'✓ dá pra fechar':(v.combo?'🤖 dá com junção':'sem carta')}</span>
       </div>
       <div class="vbody">
         <div class="vnome">${v.nome}</div>
         <div class="vpreco"><span class="l">Preço na loja</span>${BRL(v.preco)}</div>
         ${matchHtml}
+        ${comboHtml}
         ${v.link?`<a class="vlink" href="${v.link}" target="_blank" rel="noopener">Ver anúncio na loja ↗</a>`:''}
-        ${best?`<a class="vzap" href="${zapVeiculo(best,v)}" target="_blank" rel="noopener">🔨 Fechar com a carta nº ${best.n}</a>`:`<span class="vzap off">Sem carta disponível</span>`}
+        ${best?`<a class="vzap" href="${zapVeiculo(best,v)}" target="_blank" rel="noopener">🔨 Fechar com a carta nº ${best.n}</a>`:(v.combo?`<a class="vzap combo" href="${zapCombo(v.combo.combo,v)}" target="_blank" rel="noopener">🤖 Fechar juntando ${v.combo.combo.length} cartas</a>`:`<span class="vzap off">Sem carta disponível</span>`)}
       </div>
     </div>`;}).join('');
   $('vMore').style.display=arr.length>vLimite?'block':'none';
@@ -390,10 +503,18 @@ $('fpAno').addEventListener('change',async e=>{
     $('fpValor').textContent=j.valorTexto||BRL(j.valor);
     $('fpMeta').textContent=`${j.marca} ${j.modelo} · ${j.anoModelo} · ${j.combustivel} · ref. ${j.referencia}`;
     const cs=cartasPara(j.valor);
-    $('fpCartas').innerHTML=cs.length?
-      `<div class="vmatch has" style="grid-column:1/-1"><div class="mh">🔨 ${cs.length} carta(s) cobrem ${j.valorTexto||BRL(j.valor)}</div></div>`+
-      cs.slice(0,6).map(renderCartaMini).join(''):
-      `<div class="cempty" style="padding:24px">Nenhuma carta cobre esse valor hoje — fale com a gente pra buscar uma carta sob medida.</div>`;
+    if(cs.length){
+      $('fpCartas').innerHTML=`<div class="vmatch has" style="grid-column:1/-1"><div class="mh">🔨 ${cs.length} carta(s) cobrem ${j.valorTexto||BRL(j.valor)}</div></div>`+
+        cs.slice(0,6).map(renderCartaMini).join('');
+    }else{
+      const cb=comboPara(j.valor);
+      $('fpCartas').innerHTML=cb?
+        `<div class="vcombo" style="grid-column:1/-1"><div class="mh">🤖 <span class="iatag">junção IA</span> ${cb.combo.length} cartas juntas cobrem ${j.valorTexto||BRL(j.valor)}</div>`+
+          cb.combo.map(c=>`<div class="cline"><span class="mn">nº ${c.n}</span><span>crédito ${BRL(c.c)} · entrada ${BRL(c.e)}</span></div>`).join('')+
+          `<div class="ctot"><span>Crédito somado <b>${BRL(cb.cred)}</b></span><span>Entrada <b>${BRL(cb.ent)}</b> · sobra <b>${BRL(cb.sobra)}</b></span></div>`+
+          `<a class="vzap combo" style="margin-top:11px" href="${zapCombo(cb.combo,{nome:j.modelo,preco:j.valor})}" target="_blank" rel="noopener">🤖 Fechar juntando ${cb.combo.length} cartas</a></div>`:
+        `<div class="cempty" style="padding:24px">Nenhuma carta (nem junção) cobre esse valor hoje — fale com a gente pra buscar uma carta sob medida.</div>`;
+    }
   }catch(e){$('fpValor').textContent='—';$('fpMeta').textContent='Erro ao consultar a FIPE.';}
 });
 function renderCartaMini(co){
