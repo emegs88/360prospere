@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bidcon Imobiliária · Imóveis × Cartas contempladas | Prospere Consórcios</title>
+<meta name="description" content="Encontre o imóvel e veja na hora qual carta de consórcio já contemplada cobre o valor — crédito, entrada e custo. Imóveis da Prospere Hortolândia cruzados com cartas. Prospere Consórcios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Archivo+Narrow:wght@600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#070709;--carvao:#121216;--carvao2:#1a1a20;--linha:#28282f;--linha2:#37373f;
+    --branco:#f5f5f7;--cinza:#8c8c95;--cinza2:#54545c;
+    --vermelho:#D4111E;--vermelho-l:#ff4651;--vermelho-d:#9c0c16;
+    --verde:#1faa59;--verde-l:#3ad17e;--ambar:#e3a008;--ambar-l:#f3c34a;
+    --azul:#2f6df0;--azul-l:#5b93ff;--raio:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--preto);color:var(--branco);font-family:'Archivo',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 26px}
+  ::selection{background:var(--azul);color:#fff}
+  a{color:inherit}
+
+  header{border-bottom:1px solid var(--linha);background:rgba(7,7,9,.72);position:sticky;top:0;z-index:50;backdrop-filter:blur(16px) saturate(1.2)}
+  .hbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:13px}
+  .blogo{font-family:'Archivo Narrow';font-weight:700;font-size:28px;letter-spacing:-.02em;line-height:1;color:#fff}
+  .blogo b{color:var(--vermelho-l);font-weight:700}
+  .blogo .seg{color:var(--azul-l);font-weight:700}
+  .bsel{font-size:10.5px;color:var(--cinza);letter-spacing:.08em;text-transform:uppercase;border-left:1px solid var(--linha);padding-left:13px}
+  .bsel b{color:#cfcfd4;font-weight:600}
+  .hzap{display:inline-flex;align-items:center;gap:8px;background:var(--verde);color:#04210f;font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:10px 16px;transition:.12s}
+  .hzap:hover{background:var(--verde-l)}
+
+  .hero{margin:36px 0 8px;background:linear-gradient(150deg,rgba(47,109,240,.12),rgba(47,109,240,.02));border:1px solid rgba(47,109,240,.25);border-radius:var(--raio);padding:34px 34px 30px}
+  .hero .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--azul-l);font-weight:700}
+  .hero h1{font-family:'Archivo Narrow';font-weight:700;font-size:40px;line-height:1.06;text-transform:uppercase;letter-spacing:.01em;margin:12px 0 10px;max-width:24ch}
+  .hero h1 b{color:var(--azul-l)}
+  .hero p{color:#cfcfd4;font-size:15px;max-width:62ch}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:18px 0 4px}
+  .stat{background:var(--carvao2);border:1px solid var(--linha);border-radius:12px;padding:15px 16px}
+  .stat .sv{font-family:'JetBrains Mono';font-weight:800;font-size:22px;color:#fff;line-height:1}
+  .stat .sl{font-size:11px;color:var(--cinza);margin-top:5px;letter-spacing:.04em}
+  @media(max-width:780px){.stats{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:30px}}
+
+  .tabs{display:flex;gap:8px;margin:30px 0 16px;flex-wrap:wrap}
+  .tab{background:var(--carvao2);border:1px solid var(--linha);color:var(--cinza);font-family:'Archivo Narrow';font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.04em;padding:11px 20px;border-radius:10px;cursor:pointer;transition:.12s}
+  .tab:hover{color:#fff}
+  .tab.on{background:var(--azul);border-color:var(--azul);color:#fff}
+  .panel{display:none}
+  .panel.on{display:block}
+
+  .cf{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;background:var(--carvao2);border:1px solid var(--linha);border-radius:12px;padding:15px 16px;margin-bottom:16px}
+  .cf-grp{display:flex;flex-direction:column;gap:5px}
+  .cf-grp label{font-size:10px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .cf-grp select,.cf-grp input{background:var(--carvao);border:1px solid var(--linha2);color:#fff;border-radius:9px;padding:9px 12px;font-family:'Archivo';font-size:13px;outline:none;transition:.12s}
+  .cf-grp select:focus,.cf-grp input:focus{border-color:var(--azul)}
+  .cf-grp input{min-width:150px}
+  .cf-spacer{flex:1}
+  .ccount{font-size:12px;color:var(--cinza);font-family:'JetBrains Mono'}
+  .ccount b{color:#fff}
+
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+  .vcard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:.14s}
+  .vcard:hover{border-color:var(--azul);transform:translateY(-2px)}
+  .vimg{position:relative;aspect-ratio:16/10;background:var(--carvao);overflow:hidden}
+  .vimg img{width:100%;height:100%;object-fit:cover;display:block}
+  .vimg .noimg{display:flex;align-items:center;justify-content:center;height:100%;color:var(--cinza2);font-size:40px}
+  .vbadge{position:absolute;top:10px;left:10px;font-family:'JetBrains Mono';font-weight:700;font-size:11px;padding:5px 9px;border-radius:8px;backdrop-filter:blur(6px)}
+  .vbadge.ok{background:rgba(31,170,89,.92);color:#04210f}
+  .vbadge.no{background:rgba(140,140,149,.85);color:#fff}
+  .vtipo{position:absolute;top:10px;right:10px;font-family:'JetBrains Mono';font-weight:700;font-size:10px;padding:4px 8px;border-radius:8px;background:rgba(47,109,240,.9);color:#fff;backdrop-filter:blur(6px)}
+  .vbody{padding:15px 16px;display:flex;flex-direction:column;gap:11px;flex:1}
+  .vnome{font-family:'Archivo Narrow';font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;line-height:1.18}
+  .vloc{font-size:11.5px;color:var(--cinza);margin-top:-6px}
+  .vpreco{font-family:'JetBrains Mono';font-weight:800;font-size:21px;color:#fff}
+  .vpreco .l{display:block;font-family:'Archivo';font-size:9.5px;font-weight:600;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+  .vmatch{background:var(--carvao);border:1px solid var(--linha);border-radius:10px;padding:11px 12px}
+  .vmatch.has{border-color:rgba(91,147,255,.4);background:linear-gradient(135deg,rgba(47,109,240,.10),rgba(47,109,240,.02))}
+  .vmatch .mh{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-l);font-weight:700;margin-bottom:7px}
+  .vmatch .mh.none{color:var(--cinza)}
+  .mcarta{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;padding:6px 0;border-top:1px dashed var(--linha)}
+  .mcarta:first-of-type{border-top:0}
+  .mcarta .mn{font-family:'JetBrains Mono';color:var(--azul-l);font-weight:700}
+  .mcarta .md{font-family:'JetBrains Mono';color:#cfcfd4}
+  .mcarta .md b{color:#fff}
+  .vlink{font-size:11px;color:var(--cinza);text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+  .vlink:hover{color:#fff}
+  .vzap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--azul);color:#fff;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s;margin-top:auto}
+  .vzap:hover{background:var(--azul-l)}
+  .vzap.off{background:var(--carvao);color:var(--cinza);border:1px solid var(--linha);pointer-events:none}
+
+  .vcombo{background:var(--carvao);border:1px dashed rgba(91,147,255,.5);border-radius:10px;padding:11px 12px}
+  .vcombo .mh{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-l);font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+  .vcombo .cline{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;font-family:'JetBrains Mono';padding:5px 0;border-top:1px dashed var(--linha);color:#cfcfd4}
+  .vcombo .cline:first-of-type{border-top:0}
+  .vcombo .cline .mn{color:var(--azul-l);font-weight:700}
+  .vcombo .ctot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--linha2);color:var(--cinza)}
+  .vcombo .ctot b{color:#fff;font-family:'JetBrains Mono'}
+  .vzap.combo{background:var(--azul)}
+  .iatag{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono';font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(91,147,255,.16);color:var(--azul-l);border:1px solid rgba(91,147,255,.4);border-radius:6px;padding:2px 7px}
+
+  .cempty{grid-column:1/-1;text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
+  .cmore{display:block;margin:18px auto 0;background:var(--carvao2);border:1px solid var(--linha);color:#fff;font-family:'Archivo';font-weight:600;font-size:13px;padding:12px 26px;border-radius:10px;cursor:pointer;transition:.12s}
+  .cmore:hover{border-color:var(--azul)}
+  .loading{text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
+  .spin{display:inline-block;width:16px;height:16px;border:2px solid var(--linha2);border-top-color:var(--azul);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px;margin-right:8px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+
+  .ccard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:16px 17px;display:flex;flex-direction:column;gap:12px;transition:.14s}
+  .ccard:hover{border-color:var(--azul);transform:translateY(-2px)}
+  .ccard .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .ccat{display:flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:14px;color:var(--azul-l)}
+  .ccard .cnum{font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2)}
+  .ccredito .l{font-size:10px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .ccredito .v{font-family:'JetBrains Mono';font-size:26px;font-weight:700;color:#fff;line-height:1.05;margin-top:3px}
+  .crows{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .crow2{background:var(--carvao);border:1px solid var(--linha);border-radius:10px;padding:9px 11px}
+  .crow2 .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .crow2 .v{font-family:'JetBrains Mono';font-size:14px;font-weight:700;margin-top:4px}
+  .ccusto{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:var(--cinza);padding:1px 2px 0}
+  .ccusto .v{font-family:'JetBrains Mono';font-weight:700;color:var(--verde-l)}
+  .czap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--verde);color:#04210f;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s}
+  .czap:hover{background:var(--verde-l)}
+
+  .links{display:flex;gap:10px;flex-wrap:wrap;margin:2px 0 4px}
+  .lnk{display:inline-flex;align-items:center;gap:8px;background:var(--carvao2);border:1px solid var(--linha);color:#cfcfd4;font-size:13px;font-weight:600;text-decoration:none;border-radius:10px;padding:10px 16px;transition:.12s}
+  .lnk:hover{border-color:var(--azul);color:#fff}
+  .lnk b{color:var(--azul-l)}
+
+  .disc{background:var(--carvao);border:1px solid var(--linha);border-left:3px solid var(--azul);border-radius:12px;padding:16px 18px;margin-top:30px;font-size:12.5px;color:#cfcfd4;line-height:1.6}
+  .disc b{color:var(--azul-l)}
+  .foot{margin-top:26px;text-align:center;color:var(--cinza2);font-size:11px;letter-spacing:.1em;text-transform:uppercase;line-height:1.8}
+  .foot b{color:var(--cinza)}
+  .foot a{color:var(--cinza);text-decoration:underline}
+
+  .sec-head{margin:6px 0 14px}
+  .sec-head h2{font-family:'Archivo Narrow';font-weight:700;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+  .sec-head h2 b{color:var(--azul-l)}
+  .sec-head p{font-size:13px;color:var(--cinza);margin-top:3px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hbar">
+    <div class="brand">
+      <div class="blogo">bid<b>con</b> <span class="seg">Imobiliária</span></div>
+      <div class="bsel">by <b>Prospere Consórcios</b></div>
+    </div>
+    <a class="hzap" id="hzap" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.739-.981z"/></svg>
+      Falar no WhatsApp
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Imóveis × cartas contempladas</div>
+    <h1>Ache o imóvel e veja a <b>carta</b> que cobre na hora</h1>
+    <p>Pesquise os imóveis da <b>Prospere Hortolândia</b> e descubra na hora qual carta de consórcio já contemplada fecha o negócio — crédito, entrada e custo. Quando uma carta sozinha não cobre, a <b>junção inteligente de cartas</b> monta a melhor combinação.</p>
+  </section>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="links">
+    <a class="lnk" id="lnkImoveis" href="https://www.prosperehortolandia.com.br/imoveis/a-venda" target="_blank" rel="noopener">🏠 Imóveis <b>Prospere Hortolândia</b> ↗</a>
+    <a class="lnk" id="lnkQuinto" href="https://www.quintoandar.com.br/comprar/imovel/hortolandia-sp-brasil" target="_blank" rel="noopener">🔑 Buscar no <b>QuintoAndar</b> ↗</a>
+    <a class="lnk" href="/bidcon.html#docs" target="_blank" rel="noopener">📋 Check list de <b>documentos</b> ↗</a>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" data-tab="imoveis">🏡 Imóveis × cartas</button>
+    <button class="tab" data-tab="cartas">🏦 Cartas de imóvel</button>
+  </div>
+
+  <!-- ABA 1: IMÓVEIS -->
+  <section class="panel on" id="panel-imoveis">
+    <div class="sec-head">
+      <h2>Imóveis <b>cruzados</b> com cartas contempladas</h2>
+      <p id="imovSub">Carregando imóveis da imobiliária…</p>
+    </div>
+    <div class="cf">
+      <div class="cf-grp">
+        <label>Mostrar</label>
+        <select id="fMatch">
+          <option value="todos">Todos os imóveis</option>
+          <option value="ok" selected>Só os que dá pra fechar</option>
+        </select>
+      </div>
+      <div class="cf-grp">
+        <label>Tipo</label>
+        <select id="fTipo"><option value="">Todos</option></select>
+      </div>
+      <div class="cf-grp">
+        <label>Preço até</label>
+        <input id="fPreco" type="number" placeholder="ex: 600000" min="0" step="10000">
+      </div>
+      <div class="cf-grp">
+        <label>Buscar</label>
+        <input id="fBusca" type="text" placeholder="bairro, cidade ou código">
+      </div>
+      <div class="cf-spacer"></div>
+      <div class="ccount" id="vCount"></div>
+    </div>
+    <div class="vgrid" id="vgrid"><div class="loading"><span class="spin"></span>Buscando imóveis da imobiliária…</div></div>
+    <button class="cmore" id="vMore" style="display:none">Ver mais imóveis</button>
+  </section>
+
+  <!-- ABA 2: CARTAS DE IMÓVEL -->
+  <section class="panel" id="panel-cartas">
+    <div class="sec-head">
+      <h2>Cartas de <b>imóvel</b> disponíveis</h2>
+      <p id="cartasSub">Crédito já contemplado pra imóvel, ordenado por menor entrada.</p>
+    </div>
+    <div class="cf">
+      <div class="cf-grp">
+        <label>Ordenar</label>
+        <select id="cOrd">
+          <option value="entrada-asc">Menor entrada</option>
+          <option value="credito-desc">Maior crédito</option>
+          <option value="credito-asc">Menor crédito</option>
+        </select>
+      </div>
+      <div class="cf-grp">
+        <label>Buscar</label>
+        <input id="cBusca" type="text" placeholder="nº da cota ou valor">
+      </div>
+      <div class="cf-spacer"></div>
+      <div class="ccount" id="cCount"></div>
+    </div>
+    <div class="vgrid" id="cgrid" style="grid-template-columns:repeat(auto-fill,minmax(270px,1fr))"></div>
+    <button class="cmore" id="cMore" style="display:none">Ver mais cartas</button>
+  </section>
+
+  <div class="disc">
+    <b>Importante.</b> A bidcon / Prospere Consórcios intermedia cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. Os imóveis exibidos são da imobiliária parceira <b id="discParceiro">Prospere Hortolândia</b>; preços e disponibilidade são responsabilidade da imobiliária e podem mudar. A <b>junção de cartas</b> é uma simulação de combinação de créditos contemplados — viabilidade e transferência ficam sujeitas à análise da administradora. Consórcio é <b>compra programada</b>, não investimento.
+  </div>
+
+  <div class="foot">
+    bidcon Imobiliária · Imóveis × cartas contempladas<br>
+    by <b>Prospere Consórcios</b> · Grupo Âncora · imóveis via <a id="footFonte" href="https://www.prosperehortolandia.com.br" target="_blank" rel="noopener">Prospere Hortolândia</a>
+  </div>
+
+</main>
+
+<script src="/cotas.js"></script>
+<script>
+const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
+const CWA=DADOS.whatsapp||'5519997561909';
+const CARTAS=(DADOS.cotas||[]).filter(c=>c.t==='imovel'&&c.c>0);
+const $=id=>document.getElementById(id);
+const BRL=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
+const NUM=v=>Number(v).toLocaleString('pt-BR');
+
+function taxaEfetiva(pv,pmt,n){if(pv<=0||pmt<=0||n<=0)return 0;if(pmt*n<=pv)return 0;const vp=i=>i===0?pmt*n:pmt*(1-Math.pow(1+i,-n))/i;let lo=1e-9,hi=1.0;if(vp(hi)>pv)return hi*100;for(let k=0;k<200;k++){const mid=(lo+hi)/2,v=vp(mid);if(Math.abs(v-pv)<1e-6)return mid*100;if(v>pv)lo=mid;else hi=mid;}return((lo+hi)/2)*100;}
+function amCota(co){const pv=Math.max(0,co.c-co.e);return co.x?taxaEfetiva(pv,co.p,co.x):0;}
+const pctAm=co=>co.x?amCota(co).toFixed(2).replace('.',',')+'% a.m.':'à vista';
+
+function cartasPara(preco){
+  return CARTAS.filter(c=>c.c>=preco)
+    .map(c=>({...c,sobra:c.c-preco}))
+    .sort((a,b)=>a.sobra-b.sobra||a.e-b.e);
+}
+
+// junção de cartas: melhor combinação (até 3) quando nenhuma sozinha cobre
+const MAX_COMBO=3;
+function comboPara(preco){
+  if(!CARTAS.length||preco<=0)return null;
+  if(CARTAS.some(c=>c.c>=preco))return null;
+  const pool=CARTAS.slice().sort((a,b)=>b.c-a.c);
+  let melhor=null;
+  const avalia=(combo)=>{
+    const cred=combo.reduce((s,c)=>s+c.c,0);
+    if(cred<preco)return;
+    const ent=combo.reduce((s,c)=>s+c.e,0);
+    const sobra=cred-preco;
+    if(!melhor||sobra<melhor.sobra||(sobra===melhor.sobra&&ent<melhor.ent)||(sobra===melhor.sobra&&ent===melhor.ent&&combo.length<melhor.combo.length)){
+      melhor={combo:combo.slice(),cred,ent,sobra};
+    }
+  };
+  const top=pool.slice(0,Math.min(pool.length,40));
+  for(let i=0;i<top.length;i++){
+    for(let j=i+1;j<top.length;j++){
+      avalia([top[i],top[j]]);
+      if(MAX_COMBO>=3)for(let k=j+1;k<top.length;k++)avalia([top[i],top[j],top[k]]);
+    }
+  }
+  return melhor;
+}
+function zapImovel(co,im){
+  const txt=`Olá! Tenho interesse no imóvel ${im?im.nome+(im.codigo?` (cód. ${im.codigo})`:'')+(im.preco?` — ${BRL(im.preco)}`:'') : ''}. Quero usar a carta contemplada nº ${co.n} (crédito ${BRL(co.c)}, entrada ${BRL(co.e)}). Como funciona?`;
+  return `https://wa.me/${CWA}?text=${encodeURIComponent(txt)}`;
+}
+function zapCombo(combo,im){
+  const lst=combo.map(c=>`nº ${c.n} (crédito ${BRL(c.c)}, entrada ${BRL(c.e)})`).join(' + ');
+  const cred=combo.reduce((s,c)=>s+c.c,0),ent=combo.reduce((s,c)=>s+c.e,0);
+  const txt=`Olá! Quero juntar as cartas contempladas ${lst} `+
+    (im?`pra fechar o imóvel ${im.nome}${im.codigo?` (cód. ${im.codigo})`:''} (${BRL(im.preco)}). `:`. `)+
+    `Crédito somado ${BRL(cred)}, entrada somada ${BRL(ent)}. Como funciona a junção?`;
+  return `https://wa.me/${CWA}?text=${encodeURIComponent(txt)}`;
+}
+function zapCarta(co){
+  const txt=`Olá! Tenho interesse na carta contemplada de imóvel nº ${co.n} — crédito ${BRL(co.c)}, entrada ${BRL(co.e)}.`;
+  return `https://wa.me/${CWA}?text=${encodeURIComponent(txt)}`;
+}
+
+// ===== TABS =====
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  $('panel-'+t.dataset.tab).classList.add('on');
+}));
+
+// ===== ABA 1: IMÓVEIS =====
+let IMOVEIS=[],vLimite=18;
+async function carregarImoveis(){
+  try{
+    const r=await fetch('/api/imoveis');
+    const j=await r.json();
+    if(!j.ok){throw new Error(j.error||'falha');}
+    IMOVEIS=(j.imoveis||[]).map(v=>({...v,cartas:cartasPara(v.preco),combo:comboPara(v.preco)}));
+    if(j.parceiro){$('imovSub').textContent=`Imóveis de ${j.parceiro} cruzados com ${CARTAS.length} cartas de imóvel · atualizado em tempo real`;$('discParceiro').textContent=j.parceiro;}
+    if(j.fonte)$('footFonte').href=j.fonte;
+    // popula tipos
+    const tipos=[...new Set(IMOVEIS.map(v=>v.tipo).filter(Boolean))].sort();
+    $('fTipo').innerHTML='<option value="">Todos</option>'+tipos.map(t=>`<option value="${t}">${t}</option>`).join('');
+    renderImoveis();
+  }catch(e){
+    $('vgrid').innerHTML='<div class="cempty">Não consegui carregar os imóveis da imobiliária agora. Recarregue em instantes ou fale com a gente no WhatsApp.</div>';
+    $('imovSub').textContent='Imóveis temporariamente indisponíveis.';
+  }
+}
+function imoveisFiltrado(){
+  const match=$('fMatch').value, tipo=$('fTipo').value, teto=Number($('fPreco').value)||0, q=($('fBusca').value||'').toLowerCase().trim();
+  let arr=IMOVEIS.slice();
+  if(match==='ok')arr=arr.filter(v=>v.cartas.length||v.combo);
+  if(tipo)arr=arr.filter(v=>v.tipo===tipo);
+  if(teto>0)arr=arr.filter(v=>v.preco<=teto);
+  if(q)arr=arr.filter(v=>(v.nome+' '+v.bairro+' '+v.cidade+' '+v.codigo).toLowerCase().includes(q));
+  return arr.sort((a,b)=>a.preco-b.preco);
+}
+function renderImoveis(){
+  const arr=imoveisFiltrado();
+  $('vCount').innerHTML=`<b>${NUM(arr.length)}</b> imóvel(is)`;
+  const grid=$('vgrid');
+  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhum imóvel com esse filtro. Ajuste o preço, o tipo, a busca ou mostre todos.</div>';$('vMore').style.display='none';return;}
+  const vis=arr.slice(0,vLimite);
+  grid.innerHTML=vis.map(v=>{
+    const top=v.cartas.slice(0,2);
+    let matchHtml,best=v.cartas[0],comboHtml='';
+    if(v.cartas.length){
+      matchHtml=`<div class="vmatch has"><div class="mh">🏦 ${v.cartas.length} carta(s) cobrem este imóvel</div>`+
+        top.map(c=>`<div class="mcarta"><span class="mn">nº ${c.n}</span><span class="md">crédito <b>${BRL(c.c)}</b> · entrada <b>${BRL(c.e)}</b> · ${pctAm(c)}</span></div>`).join('')+
+      `</div>`;
+    }else if(v.combo){
+      matchHtml='';
+      comboHtml=`<div class="vcombo"><div class="mh">🤖 <span class="iatag">junção IA</span> ${v.combo.combo.length} cartas juntas cobrem este imóvel</div>`+
+        v.combo.combo.map(c=>`<div class="cline"><span class="mn">nº ${c.n}</span><span>crédito ${BRL(c.c)} · entrada ${BRL(c.e)}</span></div>`).join('')+
+        `<div class="ctot"><span>Crédito somado <b>${BRL(v.combo.cred)}</b></span><span>Entrada <b>${BRL(v.combo.ent)}</b> · sobra <b>${BRL(v.combo.sobra)}</b></span></div></div>`;
+    }else{
+      matchHtml=`<div class="vmatch"><div class="mh none">Nenhuma carta cobre este valor hoje</div><div class="mcarta"><span class="md">Fale com a gente — buscamos uma carta sob medida.</span></div></div>`;
+    }
+    const loc=[v.bairro,v.cidade].filter(Boolean).join(' · ');
+    return `
+    <div class="vcard">
+      <div class="vimg">
+        ${v.img?`<img src="${v.img}" alt="${v.nome}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=&quot;noimg&quot;>🏡</div>'">`:'<div class="noimg">🏡</div>'}
+        <span class="vbadge ${v.cartas.length?'ok':(v.combo?'ok':'no')}">${v.cartas.length?'✓ dá pra fechar':(v.combo?'🤖 dá com junção':'sem carta')}</span>
+        ${v.tipo?`<span class="vtipo">${v.tipo}</span>`:''}
+      </div>
+      <div class="vbody">
+        <div class="vnome">${v.nome}</div>
+        ${loc?`<div class="vloc">📍 ${loc}${v.area?` · ${v.area} m²`:''}${v.codigo?` · ${v.codigo}`:''}</div>`:''}
+        <div class="vpreco"><span class="l">Preço anunciado</span>${BRL(v.preco)}</div>
+        ${matchHtml}
+        ${comboHtml}
+        ${v.link?`<a class="vlink" href="${v.link}" target="_blank" rel="noopener">Ver anúncio na imobiliária ↗</a>`:''}
+        ${best?`<a class="vzap" href="${zapImovel(best,v)}" target="_blank" rel="noopener">🏦 Fechar com a carta nº ${best.n}</a>`:(v.combo?`<a class="vzap combo" href="${zapCombo(v.combo.combo,v)}" target="_blank" rel="noopener">🤖 Fechar juntando ${v.combo.combo.length} cartas</a>`:`<span class="vzap off">Sem carta disponível</span>`)}
+      </div>
+    </div>`;}).join('');
+  $('vMore').style.display=arr.length>vLimite?'block':'none';
+}
+['fMatch','fTipo','fPreco','fBusca'].forEach(id=>$(id).addEventListener('input',()=>{vLimite=18;renderImoveis();}));
+$('vMore').addEventListener('click',()=>{vLimite+=18;renderImoveis();});
+
+// ===== ABA 2: CARTAS DE IMÓVEL =====
+let cLimite=18;
+function renderCartas(){
+  const ord=$('cOrd').value, q=($('cBusca').value||'').toLowerCase().trim();
+  let arr=CARTAS.slice();
+  if(q)arr=arr.filter(c=>String(c.n).includes(q)||String(c.c).includes(q)||BRL(c.c).toLowerCase().includes(q));
+  arr.sort((a,b)=>ord==='credito-asc'?a.c-b.c:ord==='credito-desc'?b.c-a.c:a.e-b.e);
+  $('cCount').innerHTML=`<b>${NUM(arr.length)}</b> carta(s)`;
+  const grid=$('cgrid');
+  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma carta de imóvel com esse filtro.</div>';$('cMore').style.display='none';return;}
+  const vis=arr.slice(0,cLimite);
+  grid.innerHTML=vis.map(co=>`
+    <div class="ccard">
+      <div class="ctop"><span class="ccat">🏡 Imóvel</span><span class="cnum">nº ${co.n}</span></div>
+      <div class="ccredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
+      <div class="crows"><div class="crow2"><div class="l">Entrada</div><div class="v">${BRL(co.e)}</div></div><div class="crow2"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">×${co.x}</span>`:''}</div></div></div>
+      <div class="ccusto"><span>Custo efetivo</span><span class="v">${pctAm(co)}</span></div>
+      <a class="czap" href="${zapCarta(co)}" target="_blank" rel="noopener">Tenho interesse</a>
+    </div>`).join('');
+  $('cMore').style.display=arr.length>cLimite?'block':'none';
+}
+$('cOrd').addEventListener('change',()=>{cLimite=18;renderCartas();});
+$('cBusca').addEventListener('input',()=>{cLimite=18;renderCartas();});
+$('cMore').addEventListener('click',()=>{cLimite+=18;renderCartas();});
+
+// ===== STATS =====
+(function(){
+  const totalCartas=CARTAS.length;
+  const credito=CARTAS.reduce((s,c)=>s+c.c,0);
+  const maxCred=CARTAS.reduce((m,c)=>Math.max(m,c.c),0);
+  const minEnt=CARTAS.length?CARTAS.reduce((m,c)=>Math.min(m,c.e),Infinity):0;
+  const mi=v=>v>=1e6?(v/1e6).toFixed(1).replace('.',',')+' mi':BRL(v);
+  $('stats').innerHTML=`
+    <div class="stat"><div class="sv">${NUM(totalCartas)}</div><div class="sl">Cartas de imóvel 🏡</div></div>
+    <div class="stat"><div class="sv">R$ ${mi(credito)}</div><div class="sl">Em crédito disponível</div></div>
+    <div class="stat"><div class="sv">R$ ${mi(maxCred)}</div><div class="sl">Maior crédito</div></div>
+    <div class="stat"><div class="sv">${BRL(minEnt)}</div><div class="sl">Menor entrada</div></div>`;
+})();
+
+$('hzap').href=`https://wa.me/${CWA}?text=${encodeURIComponent('Olá! Quero usar uma carta de consórcio contemplada para comprar um imóvel. Como funciona?')}`;
+
+carregarImoveis();
+renderCartas();
+</script>
+</body>
+</html>

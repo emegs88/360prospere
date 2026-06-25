@@ -1,0 +1,142 @@
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic'; // cache fica no CDN via header
+
+// Proxy do estoque de imóveis da imobiliária parceira (Prospere Hortolândia,
+// plataforma Kenlo/ingaia). Não há API pública de produtos, então a fonte de
+// verdade é o sitemap de imóveis + as meta tags Open Graph de cada anúncio
+// (título, preço, descrição, imagem, localização). Roda no servidor pra
+// contornar CORS e normalizar igual ao /api/estoque.
+const SITE = 'https://www.prosperehortolandia.com.br';
+const SITEMAP = `${SITE}/sitemap.xml`;
+const UA = 'Mozilla/5.0 (compatible; bidconBot/1.0; +https://360prospere.vercel.app)';
+const MAX_SITEMAPS = 60; // teto de sub-sitemaps de imóveis a varrer
+const MAX_IMOVEIS = 90; // teto de anúncios buscados por request
+const FETCH_CONC = 8; // requisições paralelas
+
+async function txt(url, timeout = 12000) {
+  const ctl = new AbortController();
+  const id = setTimeout(() => ctl.abort(), timeout);
+  try {
+    const r = await fetch(url, { headers: { 'User-Agent': UA, Accept: '*/*' }, signal: ctl.signal });
+    if (!r.ok) return '';
+    return await r.text();
+  } catch {
+    return '';
+  } finally {
+    clearTimeout(id);
+  }
+}
+
+const locs = (xml) => [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1].trim());
+
+function og(html, prop) {
+  const m = html.match(new RegExp(`<meta property="og:${prop}" content="([\\s\\S]*?)"`, 'i'));
+  return m ? m[1].trim() : '';
+}
+
+const num = (s) =>
+  Number(String(s || '').replace(/[^\d,]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
+
+function precoDe(html, titulo) {
+  const j = html.match(/"price"\s*:\s*"?([\d.]+)/);
+  if (j) return Math.round(Number(j[1])) || 0;
+  const m = (titulo || '').match(/R\$\s?([\d.]+,\d{2})/);
+  return m ? num(m[1]) : 0;
+}
+
+// "Casa à venda, 148 m² por R$ 1.170.000,00 - Parque Ortolândia - Hortolândia/SP"
+function parseTitulo(t) {
+  const partes = (t || '').split(' - ').map((s) => s.trim());
+  const tipo = (partes[0] || '').split(',')[0].replace(/\s+à venda.*/i, '').trim();
+  const bairro = partes.length >= 2 ? partes[1] : '';
+  const cidade = partes.length >= 3 ? partes[2] : '';
+  const area = (() => {
+    const m = (t || '').match(/([\d.,]+)\s*m²/);
+    return m ? m[1] : '';
+  })();
+  return { tipo, bairro, cidade, area };
+}
+
+function normaliza(url, html) {
+  const titulo = og(html, 'title');
+  if (!titulo) return null;
+  const preco = precoDe(html, titulo);
+  if (!preco) return null;
+  const img = og(html, 'image');
+  const desc = og(html, 'description');
+  const { tipo, bairro, cidade, area } = parseTitulo(titulo);
+  const codigo = (url.match(/\/([A-Z]{2}\d+-[A-Z]+)$/) || [])[1] || '';
+  const venda = /\/a-venda\//.test(url) || /à venda/i.test(titulo);
+  return {
+    id: codigo || url,
+    codigo,
+    nome: titulo.replace(/\s*-\s*Hortolândia\/SP.*$/i, '').trim() || tipo,
+    tipo,
+    bairro,
+    cidade,
+    area,
+    preco,
+    desc: (desc || '').slice(0, 220),
+    img,
+    link: og(html, 'url') || url,
+    venda,
+  };
+}
+
+async function pool(items, worker, conc) {
+  const out = [];
+  let i = 0;
+  const run = async () => {
+    while (i < items.length) {
+      const idx = i++;
+      out[idx] = await worker(items[idx]);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(conc, items.length) }, run));
+  return out;
+}
+
+export async function GET() {
+  try {
+    const idx = await txt(SITEMAP);
+    const children = locs(idx).filter((u) => /\/sitemap\/imoveis\//.test(u)).slice(0, MAX_SITEMAPS);
+
+    // coleta URLs de anúncios individuais (contêm /imovel/.../CODIGO)
+    const setUrls = new Set();
+    await pool(
+      children,
+      async (sm) => {
+        const xml = await txt(sm);
+        for (const u of locs(xml)) {
+          if (/\/imovel\//.test(u)) setUrls.add(u);
+          if (setUrls.size >= MAX_IMOVEIS) break;
+        }
+      },
+      FETCH_CONC
+    );
+
+    const urls = [...setUrls].slice(0, MAX_IMOVEIS);
+    const pages = await pool(urls, async (u) => normaliza(u, await txt(u)), FETCH_CONC);
+    const imoveis = pages.filter(Boolean).sort((a, b) => a.preco - b.preco);
+
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        parceiro: 'Prospere Hortolândia',
+        fonte: SITE,
+        atualizado: new Date().toISOString(),
+        total: imoveis.length,
+        imoveis,
+      }),
+      {
+        status: 200,
+        headers: {
+          'content-type': 'application/json; charset=utf-8',
+          'cache-control': 's-maxage=3600, stale-while-revalidate=21600',
+        },
+      }
+    );
+  } catch (e) {
+    return Response.json({ ok: false, error: String(e), imoveis: [] }, { status: 502 });
+  }
+}
