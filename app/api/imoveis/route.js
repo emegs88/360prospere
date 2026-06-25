@@ -37,19 +37,47 @@ function og(html, prop) {
 const num = (s) =>
   Number(String(s || '').replace(/[^\d,]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
 
+// Atenção: anúncios com venda E aluguel trazem 2 valores. No título, o preço de
+// venda vem depois de "à venda por"; no JSON aparecem vários "price" (o de
+// aluguel costuma ser o menor). Priorizamos o título; no JSON, pegamos o MAIOR.
 function precoDe(html, titulo) {
-  const j = html.match(/"price"\s*:\s*"?([\d.]+)/);
-  if (j) return Math.round(Number(j[1])) || 0;
+  const tv = (titulo || '').match(/à\s*venda\s*por\s*R\$\s?([\d.]+(?:,\d{2})?)/i);
+  if (tv) {
+    const v = num(tv[1]);
+    if (v) return v;
+  }
+  const precos = [...html.matchAll(/"price"\s*:\s*"?([\d.]+)/g)]
+    .map((m) => Math.round(Number(m[1])) || 0)
+    .filter(Boolean);
+  if (precos.length) return Math.max(...precos);
   const m = (titulo || '').match(/R\$\s?([\d.]+,\d{2})/);
   return m ? num(m[1]) : 0;
 }
 
-// "Casa à venda, 148 m² por R$ 1.170.000,00 - Parque Ortolândia - Hortolândia/SP"
+// Aceita os dois formatos do parceiro:
+//  "Casa à venda, 148 m² por R$ 1.170.000,00 - Parque Ortolândia - Hortolândia/SP"
+//  "Sala de 14 m² Centro - Campinas, à venda por R$ 198.532 ou aluguel por R$ 900/mês"
 function parseTitulo(t) {
   const partes = (t || '').split(' - ').map((s) => s.trim());
-  const tipo = (partes[0] || '').split(',')[0].replace(/\s+à venda.*/i, '').trim();
-  const bairro = partes.length >= 2 ? partes[1] : '';
-  const cidade = partes.length >= 3 ? partes[2] : '';
+  let head = partes[0] || '';
+  // tipo = primeira palavra significativa (Casa, Apartamento, Sala, Terreno...)
+  const mt = head.match(/^([A-Za-zÀ-ÿ]+)/);
+  const tipo = mt ? mt[1] : head.split(',')[0].trim();
+  // bairro: no formato 1 vem em partes[1]; no formato 2 vem grudado depois do "m² "
+  let bairro = '';
+  const mb = head.match(/m²\s+(.+)$/);
+  if (mb) bairro = mb[1].trim();
+  else if (partes.length >= 2) bairro = partes[1];
+  // cidade: parte que tem "à venda"/UF, limpando o trecho de venda/aluguel
+  let cidade = '';
+  for (const p of partes.slice(1)) {
+    const c = p.split(',')[0].replace(/\/[A-Z]{2}.*$/, '').trim();
+    if (/à\s*venda|aluguel|R\$/i.test(p) || /\/[A-Z]{2}/.test(p)) {
+      cidade = c;
+      break;
+    }
+  }
+  if (!cidade && partes.length >= 3) cidade = partes[2].split(',')[0].trim();
   const area = (() => {
     const m = (t || '').match(/([\d.,]+)\s*m²/);
     return m ? m[1] : '';
@@ -70,7 +98,11 @@ function normaliza(url, html) {
   return {
     id: codigo || url,
     codigo,
-    nome: titulo.replace(/\s*-\s*Hortolândia\/SP.*$/i, '').trim() || tipo,
+    nome:
+      titulo
+        .replace(/,?\s*(à\s*venda|aluguel)\s*por[\s\S]*$/i, '')
+        .replace(/\s*-\s*[^-]*\/SP.*$/i, '')
+        .trim() || tipo,
     tipo,
     bairro,
     cidade,
