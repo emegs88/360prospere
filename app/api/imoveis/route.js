@@ -66,7 +66,33 @@ const ehRuido = (s) =>
   !s ||
   /R\$|aluguel|à\s*venda|\bvenda\b|\bpor\b|\bm²\b|dormit|quart|^\d+$/i.test(s) ||
   /^(são\s+paulo|minas\s+gerais|paraná|rio\s+de\s+janeiro|santa\s+catarina|sp|mg|pr|rj|sc)$/i.test(s);
-function parseTitulo(t) {
+// limpa preço/estado/logradouro de um pedaço de texto até sobrar só o nome do local.
+const limpaLocal = (s) =>
+  s
+    .replace(/,?\s*(à\s*venda|venda)\s*por[\s\S]*$/i, '')
+    .replace(/[,/]\s*[A-Z]{2}\b[\s\S]*$/, '') // "/SP", ", SP", e estado por extenso
+    .replace(/,\s*(são\s+paulo|minas|paraná|rio|santa\s+catarina)[\s\S]*$/i, '')
+    .replace(/^na\s+(rua|av\.?|avenida|alameda|travessa|estrada)\b[^,]*,?\s*/i, '')
+    .replace(/,\s*\d+\s*$/, '')
+    .split(',')[0]
+    .trim();
+
+// A og:description do parceiro vem COMPLETA (o título é truncado em ~95 chars com
+// "..."). A 1ª linha segue sempre o padrão "...por R$ X - Bairro - Cidade/SP", então
+// ela é a fonte de verdade pra bairro/cidade. O título só serve de fallback.
+function localDaDescricao(desc) {
+  const linha = String(desc || '').split(/[\r\n]/)[0];
+  if (!linha) return null;
+  const partes = linha.split(/\s+-\s+/).map((s) => s.trim()).filter(Boolean);
+  const uteis = partes.map(limpaLocal).filter((s) => s && !ehRuido(s));
+  if (!uteis.length) return null;
+  const cidade = uteis[uteis.length - 1];
+  let bairro = uteis.length >= 2 ? uteis[uteis.length - 2] : '';
+  if (bairro && bairro === cidade) bairro = '';
+  return { bairro, cidade };
+}
+
+function parseTitulo(t, desc) {
   // og:title às vezes vem truncado com reticências (… ou ...): corta tudo a partir
   // delas e remove hífen/separador solto que sobra antes da reticência.
   const tt = (t || '')
@@ -79,33 +105,27 @@ function parseTitulo(t) {
   const mt = head.match(/^([A-Za-zÀ-ÿ]+)/);
   const tipo = mt ? mt[1] : head.split(',')[0].trim();
 
-  // candidatos a bairro/cidade = partes que não são ruído (preço/área/endereço)
-  // e que não começam com "na Rua/Avenida" (isso é logradouro, não bairro).
-  const limpa = (s) =>
-    s
-      .replace(/,?\s*(à\s*venda|venda)\s*por[\s\S]*$/i, '')
-      .replace(/[,/]\s*[A-Z]{2}\b[\s\S]*$/, '') // "/SP", ", SP", e estado por extenso
-      .replace(/,\s*(são\s+paulo|minas|paraná|rio|santa\s+catarina)[\s\S]*$/i, '')
-      .replace(/^na\s+(rua|av\.?|avenida|alameda|travessa|estrada)\b[^,]*,?\s*/i, '')
-      .replace(/,\s*\d+\s*$/, '')
-      .split(',')[0]
-      .trim();
+  // bairro/cidade: prioriza a descrição (completa); cai no título quando a descrição
+  // não traz o padrão "- Bairro - Cidade".
+  const doDesc = localDaDescricao(desc);
+  let cidade = doDesc ? doDesc.cidade : '';
+  let bairro = doDesc ? doDesc.bairro : '';
 
-  const uteis = partes
-    .slice(1)
-    .map(limpa)
-    .filter((s) => s && !ehRuido(s));
-
-  // o último útil costuma ser a cidade; o anterior, o bairro.
-  let cidade = uteis.length ? uteis[uteis.length - 1] : '';
-  let bairro = uteis.length >= 2 ? uteis[uteis.length - 2] : '';
-
-  // formato "Tipo de N m² BAIRRO - Cidade...": bairro grudado depois do "m²"
-  if (!bairro) {
-    const mb = head.match(/m²\s+(.+)$/);
-    if (mb) bairro = limpa(mb[1]);
+  if (!cidade && !bairro) {
+    // partes que não são ruído (preço/área/endereço) e não começam com logradouro.
+    const uteis = partes.slice(1).map(limpaLocal).filter((s) => s && !ehRuido(s));
+    cidade = uteis.length ? uteis[uteis.length - 1] : '';
+    bairro = uteis.length >= 2 ? uteis[uteis.length - 2] : '';
+    // formato "Tipo de N m² BAIRRO - Cidade...": bairro grudado depois do "m²"
+    if (!bairro) {
+      const mb = head.match(/m²\s+(.+)$/);
+      if (mb) {
+        const b = limpaLocal(mb[1]);
+        if (b && !ehRuido(b)) bairro = b;
+      }
+    }
+    if (bairro && bairro === cidade) bairro = '';
   }
-  if (bairro && bairro === cidade) bairro = '';
 
   const area = (() => {
     const m = (t || '').match(/([\d.,]+)\s*m²/);
@@ -121,7 +141,7 @@ function normaliza(url, html) {
   if (!preco) return null;
   const img = og(html, 'image');
   const desc = og(html, 'description');
-  const { tipo, bairro, cidade, area } = parseTitulo(titulo);
+  const { tipo, bairro, cidade, area } = parseTitulo(titulo, desc);
   const codigo = (url.match(/\/([A-Z]{2}\d+-[A-Z]+)$/) || [])[1] || '';
   const venda = /\/a-venda\//.test(url) || /à venda/i.test(titulo);
   return {
