@@ -379,5 +379,8 @@ window.PROSPERE_COTAS = {
 {n:4247,t:"veiculo",c:24531,e:12266,p:322,x:86},
 {n:3865,t:"veiculo",c:24341,e:12171,p:313,x:89},
 {n:3903,t:"veiculo",c:24140,e:12070,p:330,x:88}
-  ]
+  ],
+  /* ===== LEILÃO — cartas selecionadas pela equipe (números das cotas) =====
+     A equipe marca no cérebro e cola a lista aqui. Só estas aparecem no Leilão da bidcon. */
+  leilao: []
 };

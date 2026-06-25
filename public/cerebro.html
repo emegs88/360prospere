@@ -178,9 +178,44 @@
   .cverif b{color:#cfcfd4;font-weight:600}
   .czap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--verde);color:#04210f;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s;margin-top:2px}
   .czap:hover{background:var(--verde-l)}
+  /* toggle leilão (interno) */
+  .cbtns{display:flex;gap:8px;margin-top:2px}
+  .cbtns .czap{flex:1;margin-top:0}
+  .lbtn{flex:none;display:flex;align-items:center;justify-content:center;gap:6px;background:transparent;border:1px solid var(--linha2);color:var(--cinza);font-family:'Archivo';font-weight:700;font-size:13px;border-radius:10px;padding:11px 13px;cursor:pointer;transition:.12s}
+  .lbtn:hover{border-color:var(--ambar);color:var(--ambar-l)}
+  .lbtn.on{background:var(--ambar);border-color:var(--ambar);color:#1a1200}
+  .ccard.naleilao{outline:1px solid rgba(227,160,8,.5);outline-offset:-1px}
+  /* barra de ações do leilão */
+  .leilaobar{display:none;align-items:center;gap:12px;flex-wrap:wrap;background:rgba(227,160,8,.07);border:1px solid rgba(243,195,74,.35);border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:13px}
+  .leilaobar.on{display:flex}
+  .leilaobar .lb-count{font-weight:700;color:var(--ambar-l)}
+  .leilaobar .lb-sp{flex:1}
+  .leilaobar button{background:var(--carvao2);border:1px solid var(--linha2);color:#fff;font-family:'Archivo';font-weight:700;font-size:12.5px;padding:8px 14px;border-radius:9px;cursor:pointer;transition:.12s}
+  .leilaobar button.prim{background:var(--ambar);border-color:var(--ambar);color:#1a1200}
+  .leilaobar button:hover{border-color:var(--ambar)}
   .cempty{grid-column:1/-1;text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
   .cmore{display:block;margin:18px auto 0;background:var(--carvao2);border:1px solid var(--linha);color:#fff;font-family:'Archivo';font-weight:600;font-size:13px;padding:12px 26px;border-radius:10px;cursor:pointer;transition:.12s}
   .cmore:hover{border-color:var(--vermelho)}
+  /* CHECKLIST OPERACIONAL */
+  .chk{background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:18px 20px;margin-top:24px}
+  .chk-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+  .chk-title{font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:16px;color:#fff}
+  .chk-sub{font-size:12.5px;color:var(--cinza);margin-top:4px}
+  .chk-prog{font-family:'JetBrains Mono';font-weight:700;color:var(--verde-l);margin-left:6px}
+  .chk-reset{background:var(--carvao2);border:1px solid var(--linha2);color:var(--cinza);font-family:'Archivo';font-weight:600;font-size:12px;padding:7px 14px;border-radius:9px;cursor:pointer;transition:.12s}
+  .chk-reset:hover{border-color:var(--vermelho);color:#fff}
+  .chk-list{display:grid;gap:8px}
+  .chk-item{display:grid;grid-template-columns:28px 1fr;gap:13px;align-items:start;background:var(--carvao2);border:1px solid var(--linha);border-radius:11px;padding:12px 14px;cursor:pointer;transition:.12s}
+  .chk-item:hover{border-color:var(--linha2)}
+  .chk-item.done{border-color:rgba(58,209,126,.35);background:rgba(58,209,126,.05)}
+  .chk-box{width:24px;height:24px;border:2px solid var(--linha2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;transition:.12s;margin-top:1px}
+  .chk-item.done .chk-box{background:var(--verde);border-color:var(--verde);color:#04210f}
+  .chk-item .ct{font-weight:700;font-size:14px}
+  .chk-item.done .ct{color:var(--cinza);text-decoration:line-through}
+  .chk-item .cd{font-size:12.5px;color:var(--cinza);line-height:1.5;margin-top:3px}
+  .chk-item.imp{border-left:3px solid var(--ambar)}
+  .chk-item.imp .chk-box{border-color:rgba(243,195,74,.6)}
+  .chk-item.imp .ct{color:var(--ambar-l)}
   @media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:600px){.cgrid{grid-template-columns:1fr}}
   /* ===== MONTADOR DE CRÉDITO IA ===== */
@@ -442,12 +477,33 @@
       <div class="ccount" id="cotasCount">—</div>
     </div>
 
+    <div class="leilaobar" id="leilaobar">
+      <span class="lb-count" id="lbCount">0 cartas no leilão</span>
+      <span style="color:var(--cinza)">— marque as cartas com 🔨 e publique na bidcon</span>
+      <span class="lb-sp"></span>
+      <button class="prim" id="lbCopiar">📋 Copiar lista p/ cotas.js</button>
+      <button id="lbLimpar">Limpar</button>
+    </div>
+
     <div class="cgrid" id="cotasGrid"></div>
     <button class="cmore hide" id="cotasMore">Ver mais cotas</button>
 
     <div class="note">
-      <b>Como funciona.</b> Cota contemplada = crédito já liberado pra usar agora (imóvel ou veículo), sem sorteio e sem lance. Você paga a <b>entrada</b> e assume as parcelas restantes. Os valores são da carteira atual da Prospere Corretora e mudam conforme disponibilidade — confirme a cota no atendimento antes de fechar. Nada de "investimento" ou "rendimento garantido": é <b>compra programada / crédito de consórcio</b>.
+      <b>Como funciona.</b> Cota contemplada = crédito já liberado pra usar agora (imóvel ou veículo), sem sorteio e sem lance. Você paga a <b>entrada</b> e assume as parcelas restantes. Os valores são da carteira atual da Prospere Consórcios e mudam conforme disponibilidade — confirme a cota no atendimento antes de fechar. Nada de "investimento" ou "rendimento garantido": é <b>compra programada / crédito de consórcio</b>.
     </div>
+
+    <!-- CHECKLIST OPERACIONAL -->
+    <div class="chk" id="chkBox">
+      <div class="chk-head">
+        <div>
+          <div class="chk-title">Processo de aquisição · checklist operacional</div>
+          <div class="chk-sub">Da reserva ao faturamento — acompanhe cada etapa por negócio. <span id="chkProg" class="chk-prog">0/10</span></div>
+        </div>
+        <button id="chkReset" class="chk-reset">Reiniciar</button>
+      </div>
+      <div class="chk-list" id="chkList"></div>
+    </div>
+
     <div class="foot">Prospere 360 · Grupo Prospere <b>by Âncora</b> · carteira de contempladas</div>
   </section>
 
@@ -588,6 +644,20 @@ const CWA=(window.PROSPERE_COTAS&&window.PROSPERE_COTAS.whatsapp)||'551999756190
 let cFiltroTipo='todos',cLimite=24,cKpisFeitos=false,cModo='market';
 const tipoLabel=t=>t==='imovel'?'Imóvel':'Veículo';
 
+/* ===== SELEÇÃO DO LEILÃO (localStorage) — equipe marca cartas com 🔨 e cola no cotas.js ===== */
+const LK='bidcon_leilao';
+let LEILAO=new Set();
+try{LEILAO=new Set((JSON.parse(localStorage.getItem(LK))||[]).map(Number));}catch(e){}
+function leilaoSalvar(){try{localStorage.setItem(LK,JSON.stringify([...LEILAO].sort((a,b)=>a-b)));}catch(e){}}
+function leilaoTem(n){return LEILAO.has(Number(n));}
+function leilaoToggle(n){n=Number(n);if(LEILAO.has(n))LEILAO.delete(n);else LEILAO.add(n);leilaoSalvar();leilaoBarAtualizar();}
+function leilaoBarAtualizar(){
+  const bar=document.getElementById('leilaobar');if(!bar)return;
+  bar.classList.toggle('on',cModo==='market');
+  const c=document.getElementById('lbCount');
+  if(c)c.textContent=`${LEILAO.size} carta${LEILAO.size===1?'':'s'} no leilão`;
+}
+
 const SELO='<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.8 3 .1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .1L12 22l-2.4-1.8-3-.1-.9-2.9L3.3 15l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.1L12 2z" fill="#3ad17e"/><path d="M8.5 12l2.2 2.2 4.5-4.5" stroke="#04210f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 /* Custo efetivo — taxa de juros REAL ao mês (método Newton-Raphson / IRR, igual HP-12C):
@@ -672,8 +742,8 @@ function renderCotas(){
   const grid=document.getElementById('cotasGrid');
   if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma cota com esses filtros. Ajuste a busca ou a faixa de crédito.</div>';document.getElementById('cotasMore').classList.add('hide');return;}
   const vis=arr.slice(0,cLimite);
-  grid.innerHTML=vis.map(co=>`
-    <div class="ccard ${co.t}">
+  grid.innerHTML=vis.map(co=>{const sel=leilaoTem(co.n);return `
+    <div class="ccard ${co.t} ${sel?'naleilao':''}">
       <div class="ctop">
         <span class="cstatus"><span class="dot"></span>Contemplada</span>
         <span class="ctag ${co.t}">${tipoLabel(co.t)}</span>
@@ -687,8 +757,11 @@ function renderCotas(){
       </div>
       ${custoEfetivoHTML(co)}
       <div class="cverif">${SELO}<b>Atendimento verificado · Prospere Corretora</b></div>
-      <a class="czap" href="${zapLink(co)}" target="_blank" rel="noopener">⬤ Quero esta cota</a>
-    </div>`).join('');
+      <div class="cbtns">
+        <a class="czap" href="${zapLink(co)}" target="_blank" rel="noopener">⬤ Quero esta cota</a>
+        <button class="lbtn ${sel?'on':''}" data-leilao="${co.n}" title="${sel?'Tirar do leilão':'Mandar pro leilão'}">🔨</button>
+      </div>
+    </div>`;}).join('');
   document.getElementById('cotasMore').classList.toggle('hide',arr.length<=cLimite);
 }
 
@@ -697,42 +770,100 @@ document.getElementById('cotasTipo').addEventListener('click',e=>{const b=e.targ
 document.getElementById('cotasBusca').addEventListener('input',()=>{cLimite=24;renderCotas();});
 document.getElementById('cotasMore').addEventListener('click',()=>{cLimite+=24;renderCotas();});
 
+/* toggle 🔨 mandar/tirar do leilão (delegação no grid) */
+document.getElementById('cotasGrid').addEventListener('click',e=>{
+  const b=e.target.closest('.lbtn');if(!b)return;
+  const n=Number(b.dataset.leilao);leilaoToggle(n);
+  const sel=leilaoTem(n);b.classList.toggle('on',sel);b.title=sel?'Tirar do leilão':'Mandar pro leilão';
+  b.closest('.ccard').classList.toggle('naleilao',sel);
+});
+/* barra do leilão: copiar lista p/ cotas.js + limpar */
+(function(){
+  const cp=document.getElementById('lbCopiar'),lp=document.getElementById('lbLimpar');
+  if(cp)cp.addEventListener('click',()=>{
+    const nums=[...LEILAO].sort((a,b)=>a-b);
+    if(!nums.length)return toast('Nenhuma carta marcada');
+    const txt=`leilao: [${nums.join(',')}]`;
+    navigator.clipboard.writeText(txt).then(()=>toast(`Copiado · ${nums.length} carta(s) — cole no cotas.js`)).catch(()=>toast('Falha ao copiar'));
+  });
+  if(lp)lp.addEventListener('click',()=>{
+    if(!LEILAO.size)return;
+    LEILAO.clear();leilaoSalvar();leilaoBarAtualizar();renderCotas();toast('Leilão limpo');
+  });
+  leilaoBarAtualizar();
+})();
+
+/* ===== CHECKLIST OPERACIONAL — processo de aquisição (10 etapas) ===== */
+(function(){
+  const PASSOS=[
+    {h:'Negociação',d:'Levantamento das melhores opções conforme o planejamento e objetivo do cliente.'},
+    {h:'Documentação',d:'Enviar os documentos para a pré-análise, conforme o check list (PF ou PJ).'},
+    {h:'Análise de documentação',d:'Parecer da pré-análise em até 1 dia útil. Se precisar, usar documentação de outro pretendente, renda ou fiador.'},
+    {h:'Reserva das cotas',d:'Sinal de 2% do crédito pra reservar as cotas. A reserva vale por 3 dias úteis.'},
+    {h:'Assinatura do contrato',d:'Contrato com valores negociados + extrato das cotas. Prazo de 1 dia pra retorno assinado.'},
+    {h:'Pagamento da entrada',d:'Residual da entrada (descontado o sinal) até o fim da reserva, conforme data no contrato.'},
+    {h:'Envio do formulário',d:'Ficha cadastral preenchida pra efetuar a transferência das cotas.'},
+    {h:'Link de assinatura',d:'Enviamos o link de transferência pro e-mail do cliente, pra passar as cotas pro nome dele.'},
+    {h:'Análise e efetivação',d:'A administradora analisa, contata o pretendente e efetiva a transferência das cotas.'},
+    {h:'Faturamento',d:'Com a transferência feita, abre-se o grupo de faturamento junto ao setor de contemplação.'},
+    {h:'Bom saber',d:'Dá pra reservar antes da pré-análise, mas só se efetiva com documentação completa. Detalhes claros = faturamento mais rápido e seguro.',imp:true}
+  ];
+  const CK='bidcon_checklist';
+  let done=new Set();try{done=new Set((JSON.parse(localStorage.getItem(CK))||[]).map(Number));}catch(e){}
+  const list=document.getElementById('chkList'),prog=document.getElementById('chkProg'),reset=document.getElementById('chkReset');
+  if(!list)return;
+  const salvar=()=>{try{localStorage.setItem(CK,JSON.stringify([...done]));}catch(e){}};
+  function render(){
+    list.innerHTML=PASSOS.map((p,i)=>{
+      const d=done.has(i),imp=p.imp;
+      return `<div class="chk-item ${d?'done':''} ${imp?'imp':''}" data-i="${i}">
+        <div class="chk-box">✓</div>
+        <div><div class="ct">${imp?'⚑ ':(i+1)+'. '}${p.h}</div><div class="cd">${p.d}</div></div>
+      </div>`;}).join('');
+    const tot=PASSOS.filter(p=>!p.imp).length;
+    const feitos=[...done].filter(i=>!PASSOS[i].imp).length;
+    if(prog)prog.textContent=`${feitos}/${tot}`;
+  }
+  list.addEventListener('click',e=>{const it=e.target.closest('.chk-item');if(!it)return;const i=Number(it.dataset.i);done.has(i)?done.delete(i):done.add(i);salvar();render();});
+  if(reset)reset.addEventListener('click',()=>{done.clear();salvar();render();});
+  render();
+})();
+
 /* ===== MODO LEILÃO ===== */
-// Lance = entrada (valor pago à vista pra assumir a carta). Ranqueia por maior lance: quem dá mais leva.
+// Preview do que o cliente vê na bidcon: SÓ as cartas marcadas (🔨), ordenadas por MENOR entrada (oportunidade).
 function zapLeilao(co){
   const tipo=tipoLabel(co.t).toLowerCase();
-  const lancePct=co.c>0?((co.e/co.c)*100).toFixed(0):0;
-  const msg=`Olá! Quero dar lance na carta contemplada de ${tipo} nº ${co.n} — crédito de ${BRL(co.c)}. Meu lance (entrada) é de ${BRL(co.e)} (${lancePct}% do crédito), assumindo as parcelas de ${BRL(co.p)}${co.x?`×${co.x}`:''}. Ainda está disponível pra leilão?`;
+  const msg=`Olá! Vi a carta de ${tipo} nº ${co.n} no leilão da bidcon — crédito de ${BRL(co.c)}, entrada de ${BRL(co.e)} pra assumir, parcelas de ${BRL(co.p)}${co.x?`×${co.x}`:''}. Essa oportunidade ainda está disponível?`;
   return `https://wa.me/${CWA}?text=${encodeURIComponent(msg)}`;
 }
 function renderLeilao(){
-  let arr=COTAS.slice();
+  // espelha a bidcon: só cartas marcadas pela equipe
+  let arr=COTAS.filter(c=>leilaoTem(c.n));
   if(cFiltroTipo!=='todos')arr=arr.filter(c=>c.t===cFiltroTipo);
   const fx=document.getElementById('cotasFaixa').value;
   if(fx!=='todos'){const[a,b]=fx.split('-').map(Number);arr=arr.filter(c=>c.c>=a&&c.c<b);}
   const q=(document.getElementById('cotasBusca').value||'').replace(/\D/g,'');
   if(q)arr=arr.filter(c=>String(c.n).includes(q)||String(c.c).includes(q));
-  // ranqueia por MAIOR lance (entrada) — quem dá mais leva
-  arr.sort((a,b)=>b.e-a.e);
-  document.getElementById('cotasCount').innerHTML=`<b>${NUM(arr.length)}</b> carta(s) em leilão`;
+  // ordena por MENOR entrada — melhor oportunidade primeiro
+  arr.sort((a,b)=>a.e-b.e);
+  document.getElementById('cotasCount').innerHTML=`<b>${NUM(arr.length)}</b> carta(s) no leilão`;
   const grid=document.getElementById('cotasGrid');
-  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma carta com esses filtros. Ajuste a busca ou a faixa de crédito.</div>';document.getElementById('cotasMore').classList.add('hide');return;}
+  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma carta marcada pro leilão. No modo <b>Vitrine</b>, clique no 🔨 das cartas que você quer publicar.</div>';document.getElementById('cotasMore').classList.add('hide');return;}
   const vis=arr.slice(0,cLimite);
   grid.innerHTML=vis.map((co,i)=>{
     const pos=i+1;
     const lancePct=co.c>0?((co.e/co.c)*100):0;
     const{am}=co.x?custoEfetivo(co):{am:0};
-    const medalha=pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':`#${pos}`;
     return `
     <div class="lcard ${co.t} ${pos===1?'top1':''}">
       <div class="ltop">
-        <span class="lrank"><span class="pos">${medalha}</span>${pos<=3?'Maior lance':'Lance'}</span>
+        <span class="lrank"><span class="pos">${pos===1?'🔥':'⭐'}</span>${pos===1?'Top oportunidade':'Oportunidade'}</span>
         <span class="ltag ${co.t}">${tipoLabel(co.t)}</span>
       </div>
       <div class="lcat"><span>${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'}<span class="num">Carta nº ${co.n}</span></div>
       <div class="lcredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
       <div class="llance">
-        <div class="l">🔨 Lance atual (entrada à vista)</div>
+        <div class="l">🔨 Entrada pra assumir</div>
         <div class="v">${BRL(co.e)}<span class="pc">${lancePct.toFixed(0)}% do crédito</span></div>
       </div>
       <div class="lmeta">
@@ -740,7 +871,7 @@ function renderLeilao(){
         <div class="m"><div class="l">Custo efetivo</div><div class="v">${co.x?am.toFixed(2).replace('.',',')+'% a.m.':'—'}</div></div>
       </div>
       <div class="lverif">${SELO}<span>Carta verificada · Prospere Corretora</span></div>
-      <a class="lzap" href="${zapLeilao(co)}" target="_blank" rel="noopener">🔨 Dar meu lance</a>
+      <a class="lzap" href="${zapLeilao(co)}" target="_blank" rel="noopener">🔨 Quero esta carta</a>
     </div>`;}).join('');
   document.getElementById('cotasMore').classList.toggle('hide',arr.length<=cLimite);
 }
@@ -752,6 +883,7 @@ document.getElementById('cotasModo').addEventListener('click',e=>{
   // no leilão, ordenação é fixa (maior lance) — desabilita o select de ordenar
   document.getElementById('cotasOrd').closest('.cf-grp').style.opacity=cModo==='leilao'?'.4':'1';
   document.getElementById('cotasOrd').disabled=cModo==='leilao';
+  leilaoBarAtualizar();
   renderCotas();
 });
 

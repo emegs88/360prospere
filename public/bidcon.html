@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>bidcon · Marketplace de Cotas Contempladas | Prospere</title>
-<meta name="description" content="Marketplace e leilão de cotas de consórcio já contempladas. Compre crédito imobiliário ou de veículo com segurança e transparência. Prospere Corretora.">
+<meta name="description" content="Marketplace e leilão de cotas de consórcio já contempladas. Compre crédito imobiliário ou de veículo com segurança e transparência. Prospere Consórcios.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Archivo+Narrow:wght@600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
@@ -27,10 +27,10 @@
   header{border-bottom:1px solid var(--linha);background:rgba(7,7,9,.72);position:sticky;top:0;z-index:50;backdrop-filter:blur(16px) saturate(1.2)}
   .hbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 0;flex-wrap:wrap}
   .brand{display:flex;align-items:center;gap:13px}
-  .blogo{font-family:'Archivo Narrow';font-weight:700;font-size:27px;letter-spacing:-.01em;line-height:1;color:#fff}
-  .blogo b{color:var(--vermelho-l)}
-  .bsel{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--cinza);letter-spacing:.08em;text-transform:uppercase;border-left:1px solid var(--linha);padding-left:13px}
-  .bsel svg{width:16px;height:16px;flex:none}
+  .blogo{font-family:'Archivo Narrow';font-weight:700;font-size:28px;letter-spacing:-.02em;line-height:1;color:#fff}
+  .blogo b{color:var(--vermelho-l);font-weight:700}
+  .bsel{font-size:10.5px;color:var(--cinza);letter-spacing:.08em;text-transform:uppercase;border-left:1px solid var(--linha);padding-left:13px}
+  .bsel b{color:#cfcfd4;font-weight:600}
   .hzap{display:inline-flex;align-items:center;gap:8px;background:var(--verde);color:#04210f;font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:10px 16px;transition:.12s}
   .hzap:hover{background:var(--verde-l)}
 
@@ -43,6 +43,14 @@
   .hero .selos{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px}
   .hero .selo{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#cfcfd4;font-weight:600}
   .hero .selo svg{width:18px;height:18px;flex:none}
+
+  /* STATS / prova social */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 6px}
+  .stat{background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:16px 18px}
+  .stat .sv{font-family:'JetBrains Mono';font-weight:700;font-size:24px;color:var(--branco);line-height:1}
+  .stat .sv b{color:var(--vermelho-l)}
+  .stat .sl{color:var(--cinza);font-size:12px;margin-top:6px;letter-spacing:.02em}
+  @media(max-width:600px){.stats{grid-template-columns:1fr 1fr;gap:8px}.stat .sv{font-size:20px}}
 
   /* CONTROLES */
   .cotas-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:34px 0 16px}
@@ -74,65 +82,41 @@
 
   /* CARDS MARKETPLACE */
   .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:13px}
-  .ccard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:16px 17px;display:flex;flex-direction:column;gap:12px;transition:.14s;position:relative;overflow:hidden}
+  .ccard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:17px 18px;display:flex;flex-direction:column;gap:13px;transition:.14s;position:relative}
   .ccard:hover{border-color:var(--vermelho);transform:translateY(-2px)}
-  .ccard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--vermelho)}
-  .ccard.veiculo::before{background:var(--ambar)}
   .ccard .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .cstatus{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--verde-l);background:rgba(58,209,126,.1);border:1px solid rgba(58,209,126,.35);padding:5px 10px;border-radius:20px}
-  .cstatus .dot{width:6px;height:6px;border-radius:50%;background:var(--verde-l);box-shadow:0 0 8px var(--verde-l)}
-  .ccat{display:flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:15px;color:#fff}
-  .ccat .emo{font-size:17px}
-  .ctag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:20px;border:1px solid;white-space:nowrap}
-  .ctag.imovel{color:var(--vermelho-l);border-color:rgba(212,17,30,.4);background:rgba(212,17,30,.08)}
-  .ctag.veiculo{color:var(--ambar-l);border-color:rgba(227,160,8,.4);background:rgba(227,160,8,.08)}
+  .ccat{display:flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:14px;color:#fff}
+  .ccard.veiculo .ccat{color:var(--ambar-l)}
+  .ccard.imovel .ccat{color:var(--vermelho-l)}
+  .ccat .emo{font-size:16px;filter:grayscale(.1)}
   .ccard .cnum{font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2)}
   .ccredito .l{font-size:10px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
-  .ccredito .v{font-family:'JetBrains Mono';font-size:27px;font-weight:700;color:#fff;line-height:1.05;margin-top:2px}
-  .centrada{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(58,209,126,.07);border:1px solid rgba(58,209,126,.3);border-radius:10px;padding:11px 13px}
-  .centrada .l{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--verde-l)}
-  .centrada .v{font-family:'JetBrains Mono';font-size:20px;font-weight:700;color:#fff}
-  .crows{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .crow2{background:var(--carvao);border:1px solid var(--linha);border-radius:9px;padding:9px 11px}
+  .ccredito .v{font-family:'JetBrains Mono';font-size:28px;font-weight:700;color:#fff;line-height:1.05;margin-top:3px}
+  .crows{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .crow2{background:var(--carvao);border:1px solid var(--linha);border-radius:10px;padding:10px 12px}
   .crow2 .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
-  .crow2 .v{font-family:'JetBrains Mono';font-size:14.5px;font-weight:700;margin-top:3px}
-  .cverif{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--cinza);font-weight:600}
-  .cverif svg{width:15px;height:15px;flex:none}
-  .cverif b{color:#cfcfd4;font-weight:600}
-  .czap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--verde);color:#04210f;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s;margin-top:2px}
+  .crow2 .v{font-family:'JetBrains Mono';font-size:15px;font-weight:700;margin-top:4px}
+  .czap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--verde);color:#04210f;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:12px;transition:.12s;margin-top:2px}
   .czap:hover{background:var(--verde-l)}
   .cempty{grid-column:1/-1;text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
   .cmore{display:block;margin:18px auto 0;background:var(--carvao2);border:1px solid var(--linha);color:#fff;font-family:'Archivo';font-weight:600;font-size:13px;padding:12px 26px;border-radius:10px;cursor:pointer;transition:.12s}
   .cmore:hover{border-color:var(--vermelho)}
 
   /* CARDS LEILÃO */
-  .lcard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:16px 17px;display:flex;flex-direction:column;gap:12px;transition:.14s;position:relative;overflow:hidden}
+  .lcard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:17px 18px;display:flex;flex-direction:column;gap:13px;transition:.14s;position:relative}
   .lcard:hover{border-color:var(--ambar);transform:translateY(-2px)}
-  .lcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ambar)}
-  .lcard.top1::before{background:linear-gradient(var(--ambar-l),var(--ambar));width:4px}
+  .lcard.top1{border-color:rgba(243,195,74,.45)}
   .lcard .ltop{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .lrank{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza)}
-  .lrank .pos{font-family:'JetBrains Mono';font-size:18px;font-weight:700;color:var(--ambar-l)}
-  .lcard.top1 .lrank .pos{color:#ffd700}
-  .lcard .ltag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;border:1px solid}
-  .lcard .ltag.imovel{color:var(--vermelho-l);border-color:rgba(255,70,81,.4);background:rgba(212,17,30,.08)}
-  .lcard .ltag.veiculo{color:var(--ambar-l);border-color:rgba(243,195,74,.4);background:rgba(227,160,8,.08)}
-  .lcard .lcat{display:flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;font-size:16px;color:#fff}
-  .lcard .lcat .num{margin-left:auto;font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2);font-weight:400}
-  .lcredito{background:var(--preto);border:1px solid var(--linha);border-radius:10px;padding:11px 13px}
-  .lcredito .l{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza)}
-  .lcredito .v{font-family:'JetBrains Mono';font-weight:700;font-size:21px;color:#fff;margin-top:2px}
+  .lrank{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ambar-l)}
+  .lrank .pos{font-size:15px}
+  .lcard .num{font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2)}
+  .lcard .lcat{display:flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--ambar-l)}
+  .lcredito .l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza)}
+  .lcredito .v{font-family:'JetBrains Mono';font-weight:700;font-size:28px;color:#fff;line-height:1.05;margin-top:3px}
   .llance{background:linear-gradient(135deg,rgba(227,160,8,.12),rgba(227,160,8,.04));border:1px solid rgba(243,195,74,.35);border-radius:10px;padding:11px 13px}
   .llance .l{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ambar-l)}
   .llance .v{font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:var(--ambar-l);margin-top:2px}
-  .llance .pc{font-size:11px;color:var(--cinza);font-weight:400;margin-left:7px}
-  .lmeta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .lmeta .m{background:var(--carvao);border:1px solid var(--linha);border-radius:9px;padding:9px 11px}
-  .lmeta .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
-  .lmeta .v{font-family:'JetBrains Mono';font-size:14px;font-weight:700;margin-top:3px}
-  .lcard .lverif{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--cinza)}
-  .lcard .lverif svg{width:15px;height:15px;flex-shrink:0}
-  .lcard .lzap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ambar);color:#1a1200;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s}
+  .lcard .lzap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ambar);color:#1a1200;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:12px;transition:.12s;margin-top:2px}
   .lcard .lzap:hover{background:var(--ambar-l)}
 
   /* DISCLAIMER */
@@ -141,7 +125,22 @@
   .foot{margin-top:26px;text-align:center;color:var(--cinza2);font-size:11px;letter-spacing:.1em;text-transform:uppercase;line-height:1.8}
   .foot b{color:var(--cinza)}
 
-  @media(max-width:600px){.cgrid{grid-template-columns:1fr}.hero h1{font-size:32px}}
+  /* Como funciona */
+  .como{margin-top:46px}
+  .como .stitle{font-family:'Archivo Narrow';font-weight:700;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--vermelho-l)}
+  .como h2{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:4px 0 6px}
+  .como .csub{color:var(--cinza);font-size:14px;max-width:62ch;line-height:1.55}
+  .steps{margin-top:26px;display:grid;gap:10px}
+  .step{display:grid;grid-template-columns:46px 1fr;gap:16px;align-items:start;background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:16px 18px;transition:.12s}
+  .step:hover{border-color:var(--linha2);transform:translateX(3px)}
+  .step .sn{font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:var(--vermelho-l);line-height:1;padding-top:2px}
+  .step .sh{font-weight:700;font-size:15px;letter-spacing:.01em}
+  .step .sd{color:var(--cinza);font-size:13px;line-height:1.55;margin-top:4px}
+  .step.imp{border-left:3px solid var(--ambar);background:rgba(227,160,8,.05)}
+  .step.imp .sn{color:var(--ambar-l)}
+  .step.imp .sh{color:var(--ambar-l)}
+
+  @media(max-width:600px){.cgrid{grid-template-columns:1fr}.hero h1{font-size:32px}.como h2{font-size:24px}.step{grid-template-columns:36px 1fr;gap:12px;padding:14px}}
 </style>
 </head>
 <body>
@@ -150,10 +149,7 @@
   <div class="wrap hbar">
     <div class="brand">
       <div class="blogo">bid<b>con</b></div>
-      <div class="bsel">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.8 3 .1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .1L12 22l-2.4-1.8-3-.1-.9-2.9L3.3 15l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.1L12 2z" fill="#3ad17e"/><path d="M8.5 12l2.2 2.2 4.5-4.5" stroke="#04210f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Prospere Corretora
-      </div>
+      <div class="bsel">by <b>Prospere Consórcios</b></div>
     </div>
     <a class="hzap" id="hzap" href="#" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.739-.981z"/></svg>
@@ -167,13 +163,10 @@
   <section class="hero">
     <div class="eyebrow">Marketplace de cotas contempladas</div>
     <h1>Crédito <b>já contemplado</b>, pronto pra usar</h1>
-    <p>Cartas de consórcio já contempladas de imóvel e veículo — você assume a carta, paga uma entrada e usa o crédito sem espera de sorteio. Tudo verificado pela Prospere Corretora.</p>
-    <div class="selos">
-      <span class="selo"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.8 3 .1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .1L12 22l-2.4-1.8-3-.1-.9-2.9L3.3 15l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.1L12 2z" fill="#3ad17e"/><path d="M8.5 12l2.2 2.2 4.5-4.5" stroke="#04210f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Cartas verificadas</span>
-      <span class="selo"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke="#3ad17e" stroke-width="1.6" fill="rgba(58,209,126,.08)"/></svg> Negociação segura</span>
-      <span class="selo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#3ad17e" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="#3ad17e" stroke-width="1.6" stroke-linecap="round"/></svg> Crédito sem sorteio</span>
-    </div>
+    <p>Cartas de consórcio já contempladas de imóvel e veículo — você assume a carta, paga uma entrada e usa o crédito sem espera de sorteio. Tudo verificado pela Prospere.</p>
   </section>
+
+  <div class="stats" id="stats"></div>
 
   <div class="cotas-head">
     <div>
@@ -189,7 +182,7 @@
 
   <div class="leilao-aviso" id="leilaoAviso" style="display:none">
     <span class="ico">🔨</span>
-    <div>Modo leilão — cartas ranqueadas por <b>maior lance (entrada)</b>: quem dá mais leva. O lance é o valor pago à vista pra assumir a carta; o restante vira parcela. <b>Confirme a disponibilidade no atendimento</b> antes de fechar.</div>
+    <div>Modo leilão — uma seleção de cartas com <b>as melhores oportunidades</b>, ordenadas pela <b>menor entrada</b> pra assumir. A entrada é paga à vista; o restante vira parcela. <b>Vagas limitadas — confirme a disponibilidade no atendimento.</b></div>
   </div>
 
   <div class="cfilters">
@@ -229,13 +222,32 @@
   <div class="cgrid" id="cotasGrid"></div>
   <button class="cmore hide" id="cotasMore" style="display:none">Ver mais cotas</button>
 
+  <section class="como">
+    <div class="stitle">Passo a passo · 100% acompanhado</div>
+    <h2>Como funciona a aquisição</h2>
+    <p class="csub">Da escolha da carta até a liberação do crédito, você é conduzido em cada etapa pela equipe Prospere. Tudo com contrato, transparência e segurança.</p>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div><div class="sh">Negociação</div><div class="sd">Levantamento das melhores opções conforme o seu planejamento e objetivo.</div></div></div>
+      <div class="step"><div class="sn">2</div><div><div class="sh">Documentação</div><div class="sd">Envio dos documentos para a pré-análise, conforme o check list (pessoa física ou jurídica).</div></div></div>
+      <div class="step"><div class="sn">3</div><div><div class="sh">Análise de documentação</div><div class="sd">Em até 1 dia útil após o envio completo, sai o parecer da pré-análise. Se necessário, é possível usar documentação de outro pretendente, renda ou fiador.</div></div></div>
+      <div class="step"><div class="sn">4</div><div><div class="sh">Reserva das cotas</div><div class="sd">Sinal de 2% do valor do crédito para reservar as cotas selecionadas. A reserva vale por 3 dias úteis.</div></div></div>
+      <div class="step"><div class="sn">5</div><div><div class="sh">Assinatura do contrato</div><div class="sd">Contrato com todos os valores negociados e o extrato das cotas. Prazo de 1 dia para retorno assinado.</div></div></div>
+      <div class="step"><div class="sn">6</div><div><div class="sh">Pagamento da entrada</div><div class="sd">Pagamento do residual da entrada (descontado o sinal), até o fim da reserva (3 dias úteis), conforme a data no contrato.</div></div></div>
+      <div class="step"><div class="sn">7</div><div><div class="sh">Envio do formulário</div><div class="sd">Ficha cadastral preenchida para efetuar a transferência das cotas.</div></div></div>
+      <div class="step"><div class="sn">8</div><div><div class="sh">Link de assinatura da transferência</div><div class="sd">Após o formulário, enviamos o link de transferência para o e-mail informado, para efetivar a passagem das cotas pro seu nome.</div></div></div>
+      <div class="step"><div class="sn">9</div><div><div class="sh">Análise e efetivação da transferência</div><div class="sd">A administradora analisa, faz contato com o pretendente e efetiva a transferência das cotas.</div></div></div>
+      <div class="step"><div class="sn">10</div><div><div class="sh">Processo de faturamento</div><div class="sd">Com a transferência efetivada, abre-se o grupo de faturamento junto ao setor de contemplação da administradora.</div></div></div>
+      <div class="step imp"><div class="sn">!</div><div><div class="sh">Bom saber</div><div class="sd">É possível reservar antes da pré-análise, mas a reserva só se efetiva com a documentação completa. Quanto mais claros os detalhes (finalidade, comprovação de renda, vendedor), mais rápido e seguro o faturamento.</div></div></div>
+    </div>
+  </section>
+
   <div class="disc">
-    <b>Importante.</b> A bidcon / Prospere intermedia a negociação de cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. A transferência da carta está sujeita à análise e aprovação da administradora do consórcio. Consórcio é <b>compra programada / planejamento patrimonial</b>, não investimento. Valores e disponibilidade sujeitos a confirmação no atendimento.
+    <b>Importante.</b> A bidcon / Prospere Consórcios intermedia a negociação de cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. A transferência da carta está sujeita à análise e aprovação da administradora do consórcio. Consórcio é <b>compra programada / planejamento patrimonial</b>, não investimento. Valores e disponibilidade sujeitos a confirmação no atendimento.
   </div>
 
   <div class="foot">
     bidcon · Marketplace de cotas contempladas<br>
-    Intermediação por <b>Prospere Corretora de Seguros LTDA</b> · by Âncora
+    by <b>Prospere Consórcios</b> · Grupo Âncora
   </div>
 
 </main>
@@ -244,6 +256,7 @@
 <script>
 const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
 const COTAS=(DADOS.cotas||[]).filter(c=>c.c>0);
+const LEILAO_SET=new Set((DADOS.leilao||[]).map(Number)); // cartas selecionadas pela equipe
 const CWA=DADOS.whatsapp||'5519997561909';
 const BRL=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
 const NUM=v=>Number(v).toLocaleString('pt-BR');
@@ -259,6 +272,7 @@ const $=id=>document.getElementById(id);
 
 function filtrar(){
   let arr=COTAS.slice();
+  if(modo==='leilao')arr=arr.filter(c=>LEILAO_SET.has(Number(c.n)));
   if(fTipo!=='todos')arr=arr.filter(c=>c.t===fTipo);
   const fx=$('cotasFaixa').value;
   if(fx!=='todos'){const[a,b]=fx.split('-').map(Number);arr=arr.filter(c=>c.c>=a&&c.c<b);}
@@ -275,7 +289,7 @@ function zapMarket(co){
 function zapLeilao(co){
   const tipo=tipoLabel(co.t).toLowerCase();
   const pct=co.c>0?((co.e/co.c)*100).toFixed(0):0;
-  const msg=`Olá! Quero dar lance na carta contemplada de ${tipo} nº ${co.n} — crédito de ${BRL(co.c)}. Meu lance (entrada) é de ${BRL(co.e)} (${pct}% do crédito), assumindo as parcelas de ${BRL(co.p)}${co.x?`×${co.x}`:''}. Ainda está disponível pra leilão?`;
+  const msg=`Olá! Vi a carta de ${tipo} nº ${co.n} no leilão da bidcon — crédito de ${BRL(co.c)}, entrada de ${BRL(co.e)} (${pct}% do crédito) pra assumir, parcelas de ${BRL(co.p)}${co.x?`×${co.x}`:''}. Essa oportunidade ainda está disponível?`;
   return `https://wa.me/${CWA}?text=${encodeURIComponent(msg)}`;
 }
 
@@ -288,22 +302,17 @@ function renderMarket(){
   if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma cota com esses filtros. Ajuste a busca ou a faixa de crédito.</div>';$('cotasMore').style.display='none';return;}
   const vis=arr.slice(0,limite);
   grid.innerHTML=vis.map(co=>{
-    const pctEnt=co.c>0?((co.e/co.c)*100).toFixed(0):0;
-    const am=amCota(co);
     return `
     <div class="ccard ${co.t}">
       <div class="ctop">
-        <span class="cstatus"><span class="dot"></span>Contemplada</span>
-        <span class="ctag ${co.t}">${tipoLabel(co.t)}</span>
+        <span class="ccat"><span class="emo">${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'}</span>
+        <span class="cnum">nº ${co.n}</span>
       </div>
-      <div class="ccat"><span class="emo">${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'}<span class="cnum" style="margin-left:auto">nº ${co.n}</span></div>
       <div class="ccredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
-      <div class="centrada"><span class="l">Entrada</span><span class="v">${BRL(co.e)} <span style="font-size:11px;color:var(--cinza);font-weight:400">${pctEnt}%</span></span></div>
       <div class="crows">
+        <div class="crow2"><div class="l">Entrada</div><div class="v">${BRL(co.e)}</div></div>
         <div class="crow2"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">×${co.x}</span>`:''}</div></div>
-        <div class="crow2"><div class="l">Custo efetivo</div><div class="v">${co.x?am.toFixed(2).replace('.',',')+'% a.m.':'—'}</div></div>
       </div>
-      <div class="cverif">${SELO}<span><b>Carta verificada</b> · Prospere</span></div>
       <a class="czap" href="${zapMarket(co)}" target="_blank" rel="noopener">Tenho interesse</a>
     </div>`;}).join('');
   $('cotasMore').style.display=arr.length>limite?'block':'none';
@@ -311,31 +320,29 @@ function renderMarket(){
 
 function renderLeilao(){
   let arr=filtrar();
-  arr.sort((a,b)=>b.e-a.e); // maior lance primeiro
+  arr.sort((a,b)=>a.e-b.e); // menor entrada primeiro = melhor oportunidade
   $('cotasCount').innerHTML=`<b>${NUM(arr.length)}</b> carta(s) em leilão`;
   const grid=$('cotasGrid');
-  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma carta com esses filtros.</div>';$('cotasMore').style.display='none';return;}
+  if(!LEILAO_SET.size){grid.innerHTML='<div class="cempty">Nenhuma carta em leilão no momento. Volte em breve — ou fale com a gente pra avisarmos a próxima rodada.</div>';$('cotasMore').style.display='none';return;}
+  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma carta de leilão com esses filtros. Ajuste o tipo ou a faixa.</div>';$('cotasMore').style.display='none';return;}
   const vis=arr.slice(0,limite);
   grid.innerHTML=vis.map((co,i)=>{
     const pos=i+1;
-    const pct=co.c>0?((co.e/co.c)*100):0;
-    const am=amCota(co);
-    const medalha=pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':`#${pos}`;
+    const medalha=pos===1?'🔥':'⭐';
     return `
     <div class="lcard ${co.t} ${pos===1?'top1':''}">
       <div class="ltop">
-        <span class="lrank"><span class="pos">${medalha}</span>${pos<=3?'Maior lance':'Lance'}</span>
-        <span class="ltag ${co.t}">${tipoLabel(co.t)}</span>
+        <span class="lrank"><span class="pos">${medalha}</span>${pos===1?'Top oportunidade':'Oportunidade'}</span>
+        <span class="num">Carta nº ${co.n}</span>
       </div>
-      <div class="lcat"><span>${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'}<span class="num">Carta nº ${co.n}</span></div>
+      <div class="lcat"><span>${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'}</div>
       <div class="lcredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
-      <div class="llance"><div class="l">🔨 Lance atual (entrada à vista)</div><div class="v">${BRL(co.e)}<span class="pc">${pct.toFixed(0)}% do crédito</span></div></div>
-      <div class="lmeta">
-        <div class="m"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`×${co.x}`:''}</div></div>
-        <div class="m"><div class="l">Custo efetivo</div><div class="v">${co.x?am.toFixed(2).replace('.',',')+'% a.m.':'—'}</div></div>
+      <div class="llance"><div class="l">🔨 Entrada pra assumir</div><div class="v">${BRL(co.e)}</div></div>
+      <div class="crows">
+        <div class="crow2"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">×${co.x}</span>`:''}</div></div>
+        <div class="crow2"><div class="l">Tipo</div><div class="v">${tipoLabel(co.t)}</div></div>
       </div>
-      <div class="lverif">${SELO}<span>Carta verificada · Prospere</span></div>
-      <a class="lzap" href="${zapLeilao(co)}" target="_blank" rel="noopener">🔨 Dar meu lance</a>
+      <a class="lzap" href="${zapLeilao(co)}" target="_blank" rel="noopener">🔨 Quero esta carta</a>
     </div>`;}).join('');
   $('cotasMore').style.display=arr.length>limite?'block':'none';
 }
@@ -362,7 +369,21 @@ $('cotasModo').addEventListener('click',e=>{
 // header zap
 $('hzap').href=`https://wa.me/${CWA}?text=${encodeURIComponent('Olá! Quero saber mais sobre as cotas contempladas disponíveis.')}`;
 // src line
-$('srcLine').textContent=`${COTAS.length} cartas disponíveis · ${DADOS.fonte||'Prospere Corretora'} · atualizado ${DADOS.atualizado||''}`;
+$('srcLine').textContent=`${COTAS.length} cartas disponíveis · atualizado ${DADOS.atualizado||''}`;
+
+// stats / prova social (dinâmico do cotas.js)
+(function(){
+  const total=COTAS.length;
+  const credito=COTAS.reduce((s,c)=>s+c.c,0);
+  const imov=COTAS.filter(c=>c.t==='imovel').length;
+  const veic=total-imov;
+  const milhoes=credito>=1e6?(credito/1e6).toFixed(1).replace('.',',')+' mi':BRL(credito);
+  $('stats').innerHTML=`
+    <div class="stat"><div class="sv"><b>${NUM(total)}</b></div><div class="sl">Cartas contempladas</div></div>
+    <div class="stat"><div class="sv">R$ ${milhoes}</div><div class="sl">Em crédito disponível</div></div>
+    <div class="stat"><div class="sv">${NUM(imov)}</div><div class="sl">Imóvel 🏠</div></div>
+    <div class="stat"><div class="sv">${NUM(veic)}</div><div class="sl">Veículo 🚗</div></div>`;
+})();
 
 render();
 </script>
