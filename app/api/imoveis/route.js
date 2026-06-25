@@ -67,9 +67,13 @@ const ehRuido = (s) =>
   /R\$|aluguel|à\s*venda|\bvenda\b|\bpor\b|\bm²\b|dormit|quart|^\d+$/i.test(s) ||
   /^(são\s+paulo|minas\s+gerais|paraná|rio\s+de\s+janeiro|santa\s+catarina|sp|mg|pr|rj|sc)$/i.test(s);
 function parseTitulo(t) {
-  // og:title às vezes vem truncado com reticências (… ou ...): corta tudo a partir delas
-  const tt = (t || '').replace(/(\.\.\.|…)[\s\S]*$/, '').trim();
-  const partes = tt.split(' - ').map((s) => s.trim());
+  // og:title às vezes vem truncado com reticências (… ou ...): corta tudo a partir
+  // delas e remove hífen/separador solto que sobra antes da reticência.
+  const tt = (t || '')
+    .replace(/(\.\.\.|…)[\s\S]*$/, '')
+    .replace(/[\s-]+$/, '')
+    .trim();
+  const partes = tt.split(/\s+-\s+/).map((s) => s.trim()).filter(Boolean);
   const head = partes[0] || '';
   // tipo = primeira palavra (Casa, Apartamento, Sala, Sobrado, Terreno, Barracão...)
   const mt = head.match(/^([A-Za-zÀ-ÿ]+)/);
