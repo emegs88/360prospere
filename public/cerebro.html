@@ -233,6 +233,44 @@
   .mont-comissao .txt b{color:var(--vermelho-l);font-family:'JetBrains Mono';font-size:15px}
   .mont-comissao .tag{margin-left:auto;font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--vermelho-l);border:1px solid rgba(255,70,81,.4);border-radius:5px;padding:3px 7px}
   @media(max-width:980px){.mont-tot{grid-template-columns:repeat(2,1fr)}}
+
+  /* ===== MODO LEILÃO ===== */
+  .cmodo{display:flex;gap:2px;background:var(--carvao2);border:1px solid var(--linha);border-radius:9px;padding:3px}
+  .cmodo button{background:none;border:0;color:var(--cinza);font-family:'Archivo';font-size:12px;font-weight:700;padding:7px 15px;border-radius:7px;cursor:pointer;transition:.12s;display:flex;align-items:center;gap:6px}
+  .cmodo button.on{background:var(--vermelho);color:#fff}
+  .leilao-aviso{background:rgba(227,160,8,.07);border:1px solid rgba(243,195,74,.35);border-radius:12px;padding:13px 16px;margin-bottom:16px;font-size:12px;color:var(--cinza);line-height:1.55;display:flex;gap:10px;align-items:flex-start}
+  .leilao-aviso .ico{font-size:17px;flex-shrink:0}
+  .leilao-aviso b{color:var(--ambar-l)}
+  .lcard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:16px 17px 15px;display:flex;flex-direction:column;gap:11px;transition:.14s;position:relative;overflow:hidden}
+  .lcard:hover{border-color:var(--ambar);transform:translateY(-2px)}
+  .lcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ambar)}
+  .lcard.top1::before{background:linear-gradient(var(--ambar-l),var(--ambar));width:4px}
+  .lcard.top1{border-color:rgba(243,195,74,.4)}
+  .lcard .ltop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .lrank{display:inline-flex;align-items:center;gap:6px;font-family:'Archivo Narrow';font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--cinza)}
+  .lrank .pos{font-family:'JetBrains Mono';font-size:18px;font-weight:700;color:var(--ambar-l)}
+  .lcard.top1 .lrank .pos{color:#ffd700}
+  .lcard .ltag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;border:1px solid}
+  .lcard .ltag.imovel{color:var(--vermelho-l);border-color:rgba(255,70,81,.4);background:rgba(212,17,30,.08)}
+  .lcard .ltag.veiculo{color:var(--ambar-l);border-color:rgba(243,195,74,.4);background:rgba(227,160,8,.08)}
+  .lcard .lcat{display:flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;font-size:16px;color:#fff}
+  .lcard .lcat .num{margin-left:auto;font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2);font-weight:400}
+  .lcredito{background:var(--preto);border:1px solid var(--linha);border-radius:10px;padding:11px 13px}
+  .lcredito .l{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza)}
+  .lcredito .v{font-family:'JetBrains Mono';font-weight:700;font-size:21px;color:#fff;margin-top:2px}
+  .llance{background:linear-gradient(135deg,rgba(227,160,8,.12),rgba(227,160,8,.04));border:1px solid rgba(243,195,74,.35);border-radius:10px;padding:12px 13px}
+  .llance .l{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ambar-l);font-weight:700;display:flex;align-items:center;gap:6px}
+  .llance .v{font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:var(--ambar-l);margin-top:3px}
+  .llance .pc{font-size:11px;color:var(--cinza);font-weight:400;margin-left:7px}
+  .lmeta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .lmeta .m{background:var(--carvao);border:1px solid var(--linha);border-radius:9px;padding:9px 11px}
+  .lmeta .m .l{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza)}
+  .lmeta .m .v{font-family:'JetBrains Mono';font-size:13px;font-weight:700;color:#fff;margin-top:2px}
+  .lcard .lzap{display:flex;align-items:center;justify-content:center;gap:7px;background:var(--ambar);color:#1a1200;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:12px;transition:.12s}
+  .lcard .lzap:hover{background:var(--ambar-l)}
+  .lcard .lverif{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--cinza)}
+  .lcard .lverif svg{width:15px;height:15px;flex-shrink:0}
+
   .hide{display:none!important}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--vermelho);color:#fff;font-weight:700;font-size:13px;padding:11px 20px;border-radius:10px;opacity:0;transition:.25s;z-index:100}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -355,6 +393,15 @@
         <h2>Cotas <b>Contempladas</b></h2>
         <div class="csrc" id="cotasSrc">—</div>
       </div>
+      <div class="cmodo" id="cotasModo">
+        <button data-modo="market" class="on">🛒 Marketplace</button>
+        <button data-modo="leilao">🔨 Leilão</button>
+      </div>
+    </div>
+
+    <div class="leilao-aviso hide" id="leilaoAviso">
+      <span class="ico">🔨</span>
+      <div>Modo leilão — só <b>cartas contempladas</b>, ranqueadas por <b>maior lance (entrada)</b>: quem dá mais leva. O lance é o valor pago à vista pra assumir a carta; o restante vira parcela. Lances mais altos liberam o crédito mais rápido. <b>Confirme a disponibilidade no atendimento</b> antes de fechar.</div>
     </div>
 
     <div class="kpis" id="cotasKpis"></div>
@@ -538,7 +585,7 @@ document.getElementById('cCopy').addEventListener('click',()=>{if(!lastOut)retur
 /* ===== COTAS CONTEMPLADAS ===== */
 const COTAS=(window.PROSPERE_COTAS&&window.PROSPERE_COTAS.cotas)||[];
 const CWA=(window.PROSPERE_COTAS&&window.PROSPERE_COTAS.whatsapp)||'5519997561909';
-let cFiltroTipo='todos',cLimite=24,cKpisFeitos=false;
+let cFiltroTipo='todos',cLimite=24,cKpisFeitos=false,cModo='market';
 const tipoLabel=t=>t==='imovel'?'Imóvel':'Veículo';
 
 const SELO='<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.8 3 .1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .1L12 22l-2.4-1.8-3-.1-.9-2.9L3.3 15l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.1L12 2z" fill="#3ad17e"/><path d="M8.5 12l2.2 2.2 4.5-4.5" stroke="#04210f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -619,6 +666,7 @@ function renderKpis(){
 function renderCotas(){
   if(!COTAS.length){document.getElementById('cotasGrid').innerHTML='<div class="cempty">Carteira de cotas indisponível no momento.</div>';return;}
   if(!cKpisFeitos)renderKpis();
+  if(cModo==='leilao')return renderLeilao();
   const arr=cotasFiltradas();
   document.getElementById('cotasCount').innerHTML=`<b>${NUM(arr.length)}</b> cota(s)`;
   const grid=document.getElementById('cotasGrid');
@@ -648,6 +696,64 @@ document.getElementById('cotasTipo').addEventListener('click',e=>{const b=e.targ
 ['cotasFaixa','cotasOrd'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{cLimite=24;renderCotas();}));
 document.getElementById('cotasBusca').addEventListener('input',()=>{cLimite=24;renderCotas();});
 document.getElementById('cotasMore').addEventListener('click',()=>{cLimite+=24;renderCotas();});
+
+/* ===== MODO LEILÃO ===== */
+// Lance = entrada (valor pago à vista pra assumir a carta). Ranqueia por maior lance: quem dá mais leva.
+function zapLeilao(co){
+  const tipo=tipoLabel(co.t).toLowerCase();
+  const lancePct=co.c>0?((co.e/co.c)*100).toFixed(0):0;
+  const msg=`Olá! Quero dar lance na carta contemplada de ${tipo} nº ${co.n} — crédito de ${BRL(co.c)}. Meu lance (entrada) é de ${BRL(co.e)} (${lancePct}% do crédito), assumindo as parcelas de ${BRL(co.p)}${co.x?`×${co.x}`:''}. Ainda está disponível pra leilão?`;
+  return `https://wa.me/${CWA}?text=${encodeURIComponent(msg)}`;
+}
+function renderLeilao(){
+  let arr=COTAS.slice();
+  if(cFiltroTipo!=='todos')arr=arr.filter(c=>c.t===cFiltroTipo);
+  const fx=document.getElementById('cotasFaixa').value;
+  if(fx!=='todos'){const[a,b]=fx.split('-').map(Number);arr=arr.filter(c=>c.c>=a&&c.c<b);}
+  const q=(document.getElementById('cotasBusca').value||'').replace(/\D/g,'');
+  if(q)arr=arr.filter(c=>String(c.n).includes(q)||String(c.c).includes(q));
+  // ranqueia por MAIOR lance (entrada) — quem dá mais leva
+  arr.sort((a,b)=>b.e-a.e);
+  document.getElementById('cotasCount').innerHTML=`<b>${NUM(arr.length)}</b> carta(s) em leilão`;
+  const grid=document.getElementById('cotasGrid');
+  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma carta com esses filtros. Ajuste a busca ou a faixa de crédito.</div>';document.getElementById('cotasMore').classList.add('hide');return;}
+  const vis=arr.slice(0,cLimite);
+  grid.innerHTML=vis.map((co,i)=>{
+    const pos=i+1;
+    const lancePct=co.c>0?((co.e/co.c)*100):0;
+    const{am}=co.x?custoEfetivo(co):{am:0};
+    const medalha=pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':`#${pos}`;
+    return `
+    <div class="lcard ${co.t} ${pos===1?'top1':''}">
+      <div class="ltop">
+        <span class="lrank"><span class="pos">${medalha}</span>${pos<=3?'Maior lance':'Lance'}</span>
+        <span class="ltag ${co.t}">${tipoLabel(co.t)}</span>
+      </div>
+      <div class="lcat"><span>${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'}<span class="num">Carta nº ${co.n}</span></div>
+      <div class="lcredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
+      <div class="llance">
+        <div class="l">🔨 Lance atual (entrada à vista)</div>
+        <div class="v">${BRL(co.e)}<span class="pc">${lancePct.toFixed(0)}% do crédito</span></div>
+      </div>
+      <div class="lmeta">
+        <div class="m"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`×${co.x}`:''}</div></div>
+        <div class="m"><div class="l">Custo efetivo</div><div class="v">${co.x?am.toFixed(2).replace('.',',')+'% a.m.':'—'}</div></div>
+      </div>
+      <div class="lverif">${SELO}<span>Carta verificada · Prospere Corretora</span></div>
+      <a class="lzap" href="${zapLeilao(co)}" target="_blank" rel="noopener">🔨 Dar meu lance</a>
+    </div>`;}).join('');
+  document.getElementById('cotasMore').classList.toggle('hide',arr.length<=cLimite);
+}
+document.getElementById('cotasModo').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#cotasModo button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  cModo=b.dataset.modo;cLimite=24;
+  document.getElementById('leilaoAviso').classList.toggle('hide',cModo!=='leilao');
+  // no leilão, ordenação é fixa (maior lance) — desabilita o select de ordenar
+  document.getElementById('cotasOrd').closest('.cf-grp').style.opacity=cModo==='leilao'?'.4':'1';
+  document.getElementById('cotasOrd').disabled=cModo==='leilao';
+  renderCotas();
+});
 
 /* ===== MONTADOR DE CRÉDITO IA ===== */
 const COMISSAO_PCT=0.07; // 7% do crédito — VISÃO INTERNA, nunca aparece no card do cliente
