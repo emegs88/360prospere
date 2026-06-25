@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bidcon · Marketplace de Cotas Contempladas | Prospere</title>
+<meta name="description" content="Marketplace e leilão de cotas de consórcio já contempladas. Compre crédito imobiliário ou de veículo com segurança e transparência. Prospere Corretora.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Archivo+Narrow:wght@600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#070709;--carvao:#121216;--carvao2:#1a1a20;--linha:#28282f;--linha2:#37373f;
+    --branco:#f5f5f7;--cinza:#8c8c95;--cinza2:#54545c;
+    --vermelho:#D4111E;--vermelho-l:#ff4651;--vermelho-d:#9c0c16;
+    --verde:#1faa59;--verde-l:#3ad17e;--ambar:#e3a008;--ambar-l:#f3c34a;--raio:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--preto);color:var(--branco);font-family:'Archivo',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 0 80px;
+    background-image:radial-gradient(1100px 460px at 88% -16%,rgba(212,17,30,.07),transparent 62%);}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 26px}
+  ::selection{background:var(--vermelho);color:#fff}
+  a{color:inherit}
+
+  /* HEADER */
+  header{border-bottom:1px solid var(--linha);background:rgba(7,7,9,.72);position:sticky;top:0;z-index:50;backdrop-filter:blur(16px) saturate(1.2)}
+  .hbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:13px}
+  .blogo{font-family:'Archivo Narrow';font-weight:700;font-size:27px;letter-spacing:-.01em;line-height:1;color:#fff}
+  .blogo b{color:var(--vermelho-l)}
+  .bsel{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--cinza);letter-spacing:.08em;text-transform:uppercase;border-left:1px solid var(--linha);padding-left:13px}
+  .bsel svg{width:16px;height:16px;flex:none}
+  .hzap{display:inline-flex;align-items:center;gap:8px;background:var(--verde);color:#04210f;font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:10px 16px;transition:.12s}
+  .hzap:hover{background:var(--verde-l)}
+
+  /* HERO */
+  .hero{margin:36px 0 8px;background:linear-gradient(150deg,rgba(212,17,30,.11),rgba(212,17,30,.015));border:1px solid rgba(212,17,30,.22);border-radius:var(--raio);padding:34px 34px 30px}
+  .hero .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--vermelho-l);font-weight:700}
+  .hero h1{font-family:'Archivo Narrow';font-weight:700;font-size:42px;line-height:1.05;text-transform:uppercase;letter-spacing:.01em;margin:12px 0 10px;max-width:18ch}
+  .hero h1 b{color:var(--vermelho-l)}
+  .hero p{color:var(--cinza);font-size:15px;max-width:62ch}
+  .hero .selos{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px}
+  .hero .selo{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#cfcfd4;font-weight:600}
+  .hero .selo svg{width:18px;height:18px;flex:none}
+
+  /* CONTROLES */
+  .cotas-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:34px 0 16px}
+  .cotas-head h2{font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:24px;line-height:1.05}
+  .cotas-head h2 b{color:var(--vermelho-l)}
+  .cotas-head .csrc{font-size:11px;color:var(--cinza);margin-top:6px;letter-spacing:.04em}
+
+  .cmodo{display:flex;gap:2px;background:var(--carvao2);border:1px solid var(--linha);border-radius:9px;padding:3px}
+  .cmodo button{background:none;border:0;color:var(--cinza);font-family:'Archivo';font-size:12.5px;font-weight:700;padding:8px 16px;border-radius:7px;cursor:pointer;transition:.12s;display:flex;align-items:center;gap:6px}
+  .cmodo button.on{background:var(--vermelho);color:#fff}
+  .cmodo button.on[data-modo="leilao"]{background:var(--ambar);color:#1a1200}
+
+  .leilao-aviso{display:flex;align-items:flex-start;gap:11px;background:rgba(227,160,8,.07);border:1px solid rgba(243,195,74,.35);border-radius:12px;padding:13px 16px;margin-bottom:16px;font-size:13px;color:#dcdce0;line-height:1.5}
+  .leilao-aviso .ico{font-size:18px;flex:none}
+  .leilao-aviso b{color:var(--ambar-l)}
+
+  .cfilters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--carvao);border:1px solid var(--linha);border-radius:12px;padding:13px 15px;margin-bottom:16px}
+  .cseg{display:flex;gap:2px;background:var(--carvao2);border:1px solid var(--linha);border-radius:9px;padding:3px}
+  .cseg button{background:none;border:0;color:var(--cinza);font-family:'Archivo';font-size:12px;font-weight:600;padding:7px 13px;border-radius:7px;cursor:pointer;transition:.12s}
+  .cseg button.on{background:var(--vermelho);color:#fff}
+  .cf-grp{display:flex;flex-direction:column;gap:4px}
+  .cf-grp label{font-size:9.5px;color:var(--cinza);letter-spacing:.12em;text-transform:uppercase}
+  .cf-grp select,.cf-grp input{background:var(--carvao2);border:1px solid var(--linha);color:#fff;border-radius:8px;padding:8px 11px;font-family:'Archivo';font-size:13px;outline:none;transition:.12s}
+  .cf-grp select:focus,.cf-grp input:focus{border-color:var(--vermelho)}
+  .cf-grp input{min-width:150px}
+  .cf-spacer{flex:1}
+  .ccount{font-size:12px;color:var(--cinza);font-family:'JetBrains Mono'}
+  .ccount b{color:#fff}
+
+  /* CARDS MARKETPLACE */
+  .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:13px}
+  .ccard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:16px 17px;display:flex;flex-direction:column;gap:12px;transition:.14s;position:relative;overflow:hidden}
+  .ccard:hover{border-color:var(--vermelho);transform:translateY(-2px)}
+  .ccard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--vermelho)}
+  .ccard.veiculo::before{background:var(--ambar)}
+  .ccard .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .cstatus{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--verde-l);background:rgba(58,209,126,.1);border:1px solid rgba(58,209,126,.35);padding:5px 10px;border-radius:20px}
+  .cstatus .dot{width:6px;height:6px;border-radius:50%;background:var(--verde-l);box-shadow:0 0 8px var(--verde-l)}
+  .ccat{display:flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:15px;color:#fff}
+  .ccat .emo{font-size:17px}
+  .ctag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:20px;border:1px solid;white-space:nowrap}
+  .ctag.imovel{color:var(--vermelho-l);border-color:rgba(212,17,30,.4);background:rgba(212,17,30,.08)}
+  .ctag.veiculo{color:var(--ambar-l);border-color:rgba(227,160,8,.4);background:rgba(227,160,8,.08)}
+  .ccard .cnum{font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2)}
+  .ccredito .l{font-size:10px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .ccredito .v{font-family:'JetBrains Mono';font-size:27px;font-weight:700;color:#fff;line-height:1.05;margin-top:2px}
+  .centrada{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(58,209,126,.07);border:1px solid rgba(58,209,126,.3);border-radius:10px;padding:11px 13px}
+  .centrada .l{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--verde-l)}
+  .centrada .v{font-family:'JetBrains Mono';font-size:20px;font-weight:700;color:#fff}
+  .crows{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .crow2{background:var(--carvao);border:1px solid var(--linha);border-radius:9px;padding:9px 11px}
+  .crow2 .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .crow2 .v{font-family:'JetBrains Mono';font-size:14.5px;font-weight:700;margin-top:3px}
+  .cverif{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--cinza);font-weight:600}
+  .cverif svg{width:15px;height:15px;flex:none}
+  .cverif b{color:#cfcfd4;font-weight:600}
+  .czap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--verde);color:#04210f;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s;margin-top:2px}
+  .czap:hover{background:var(--verde-l)}
+  .cempty{grid-column:1/-1;text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
+  .cmore{display:block;margin:18px auto 0;background:var(--carvao2);border:1px solid var(--linha);color:#fff;font-family:'Archivo';font-weight:600;font-size:13px;padding:12px 26px;border-radius:10px;cursor:pointer;transition:.12s}
+  .cmore:hover{border-color:var(--vermelho)}
+
+  /* CARDS LEILÃO */
+  .lcard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:16px 17px;display:flex;flex-direction:column;gap:12px;transition:.14s;position:relative;overflow:hidden}
+  .lcard:hover{border-color:var(--ambar);transform:translateY(-2px)}
+  .lcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ambar)}
+  .lcard.top1::before{background:linear-gradient(var(--ambar-l),var(--ambar));width:4px}
+  .lcard .ltop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .lrank{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza)}
+  .lrank .pos{font-family:'JetBrains Mono';font-size:18px;font-weight:700;color:var(--ambar-l)}
+  .lcard.top1 .lrank .pos{color:#ffd700}
+  .lcard .ltag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;border:1px solid}
+  .lcard .ltag.imovel{color:var(--vermelho-l);border-color:rgba(255,70,81,.4);background:rgba(212,17,30,.08)}
+  .lcard .ltag.veiculo{color:var(--ambar-l);border-color:rgba(243,195,74,.4);background:rgba(227,160,8,.08)}
+  .lcard .lcat{display:flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;font-size:16px;color:#fff}
+  .lcard .lcat .num{margin-left:auto;font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2);font-weight:400}
+  .lcredito{background:var(--preto);border:1px solid var(--linha);border-radius:10px;padding:11px 13px}
+  .lcredito .l{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza)}
+  .lcredito .v{font-family:'JetBrains Mono';font-weight:700;font-size:21px;color:#fff;margin-top:2px}
+  .llance{background:linear-gradient(135deg,rgba(227,160,8,.12),rgba(227,160,8,.04));border:1px solid rgba(243,195,74,.35);border-radius:10px;padding:11px 13px}
+  .llance .l{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ambar-l)}
+  .llance .v{font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:var(--ambar-l);margin-top:2px}
+  .llance .pc{font-size:11px;color:var(--cinza);font-weight:400;margin-left:7px}
+  .lmeta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .lmeta .m{background:var(--carvao);border:1px solid var(--linha);border-radius:9px;padding:9px 11px}
+  .lmeta .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .lmeta .v{font-family:'JetBrains Mono';font-size:14px;font-weight:700;margin-top:3px}
+  .lcard .lverif{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--cinza)}
+  .lcard .lverif svg{width:15px;height:15px;flex-shrink:0}
+  .lcard .lzap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ambar);color:#1a1200;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s}
+  .lcard .lzap:hover{background:var(--ambar-l)}
+
+  /* DISCLAIMER */
+  .disc{background:var(--carvao);border:1px solid var(--linha);border-left:3px solid var(--ambar);border-radius:12px;padding:16px 18px;margin-top:30px;font-size:12.5px;color:#cfcfd4;line-height:1.6}
+  .disc b{color:var(--ambar-l)}
+  .foot{margin-top:26px;text-align:center;color:var(--cinza2);font-size:11px;letter-spacing:.1em;text-transform:uppercase;line-height:1.8}
+  .foot b{color:var(--cinza)}
+
+  @media(max-width:600px){.cgrid{grid-template-columns:1fr}.hero h1{font-size:32px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hbar">
+    <div class="brand">
+      <div class="blogo">bid<b>con</b></div>
+      <div class="bsel">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.8 3 .1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .1L12 22l-2.4-1.8-3-.1-.9-2.9L3.3 15l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.1L12 2z" fill="#3ad17e"/><path d="M8.5 12l2.2 2.2 4.5-4.5" stroke="#04210f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Prospere Corretora
+      </div>
+    </div>
+    <a class="hzap" id="hzap" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.739-.981z"/></svg>
+      Falar no WhatsApp
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Marketplace de cotas contempladas</div>
+    <h1>Crédito <b>já contemplado</b>, pronto pra usar</h1>
+    <p>Cartas de consórcio já contempladas de imóvel e veículo — você assume a carta, paga uma entrada e usa o crédito sem espera de sorteio. Tudo verificado pela Prospere Corretora.</p>
+    <div class="selos">
+      <span class="selo"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.8 3 .1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .1L12 22l-2.4-1.8-3-.1-.9-2.9L3.3 15l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.1L12 2z" fill="#3ad17e"/><path d="M8.5 12l2.2 2.2 4.5-4.5" stroke="#04210f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Cartas verificadas</span>
+      <span class="selo"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke="#3ad17e" stroke-width="1.6" fill="rgba(58,209,126,.08)"/></svg> Negociação segura</span>
+      <span class="selo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#3ad17e" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="#3ad17e" stroke-width="1.6" stroke-linecap="round"/></svg> Crédito sem sorteio</span>
+    </div>
+  </section>
+
+  <div class="cotas-head">
+    <div>
+      <div class="csrc">Carteira de cotas contempladas · pronta pra usar</div>
+      <h2>Cotas <b>Contempladas</b></h2>
+      <div class="csrc" id="srcLine">Carregando...</div>
+    </div>
+    <div class="cmodo" id="cotasModo">
+      <button data-modo="market" class="on">🛒 Marketplace</button>
+      <button data-modo="leilao">🔨 Leilão</button>
+    </div>
+  </div>
+
+  <div class="leilao-aviso" id="leilaoAviso" style="display:none">
+    <span class="ico">🔨</span>
+    <div>Modo leilão — cartas ranqueadas por <b>maior lance (entrada)</b>: quem dá mais leva. O lance é o valor pago à vista pra assumir a carta; o restante vira parcela. <b>Confirme a disponibilidade no atendimento</b> antes de fechar.</div>
+  </div>
+
+  <div class="cfilters">
+    <div class="cseg" id="segTipo">
+      <button data-tipo="todos" class="on">Todas</button>
+      <button data-tipo="imovel">Imóvel</button>
+      <button data-tipo="veiculo">Veículo</button>
+    </div>
+    <div class="cf-grp">
+      <label>Crédito</label>
+      <select id="cotasFaixa">
+        <option value="todos">Qualquer valor</option>
+        <option value="0-100000">Até R$ 100 mil</option>
+        <option value="100000-300000">R$ 100–300 mil</option>
+        <option value="300000-600000">R$ 300–600 mil</option>
+        <option value="600000-1000000">R$ 600 mil–1 mi</option>
+        <option value="1000000-99999999">Acima de R$ 1 mi</option>
+      </select>
+    </div>
+    <div class="cf-grp" id="grpOrd">
+      <label>Ordenar</label>
+      <select id="cotasOrd">
+        <option value="credito-desc">Maior crédito</option>
+        <option value="credito-asc">Menor crédito</option>
+        <option value="entrada-asc">Menor entrada</option>
+        <option value="entrada-desc">Maior entrada</option>
+      </select>
+    </div>
+    <div class="cf-grp">
+      <label>Buscar</label>
+      <input id="cotasBusca" placeholder="nº da cota ou valor...">
+    </div>
+    <div class="cf-spacer"></div>
+    <div class="ccount" id="cotasCount"></div>
+  </div>
+
+  <div class="cgrid" id="cotasGrid"></div>
+  <button class="cmore hide" id="cotasMore" style="display:none">Ver mais cotas</button>
+
+  <div class="disc">
+    <b>Importante.</b> A bidcon / Prospere intermedia a negociação de cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. A transferência da carta está sujeita à análise e aprovação da administradora do consórcio. Consórcio é <b>compra programada / planejamento patrimonial</b>, não investimento. Valores e disponibilidade sujeitos a confirmação no atendimento.
+  </div>
+
+  <div class="foot">
+    bidcon · Marketplace de cotas contempladas<br>
+    Intermediação por <b>Prospere Corretora de Seguros LTDA</b> · by Âncora
+  </div>
+
+</main>
+
+<script src="/cotas.js"></script>
+<script>
+const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
+const COTAS=(DADOS.cotas||[]).filter(c=>c.c>0);
+const CWA=DADOS.whatsapp||'5519997561909';
+const BRL=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
+const NUM=v=>Number(v).toLocaleString('pt-BR');
+const tipoLabel=t=>t==='imovel'?'Imóvel':'Veículo';
+const SELO='<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.8 3 .1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .1L12 22l-2.4-1.8-3-.1-.9-2.9L3.3 15l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.1L12 2z" fill="#3ad17e"/><path d="M8.5 12l2.2 2.2 4.5-4.5" stroke="#04210f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+// custo efetivo (taxa mensal real, bisseção) — só pra exibir referência ao cliente
+function taxaEfetiva(pv,pmt,n){if(pv<=0||pmt<=0||n<=0)return 0;if(pmt*n<=pv)return 0;const vp=i=>i===0?pmt*n:pmt*(1-Math.pow(1+i,-n))/i;let lo=1e-9,hi=1.0;if(vp(hi)>pv)return hi*100;for(let k=0;k<200;k++){const mid=(lo+hi)/2,v=vp(mid);if(Math.abs(v-pv)<1e-6)return mid*100;if(v>pv)lo=mid;else hi=mid;}return((lo+hi)/2)*100;}
+function amCota(co){const pv=Math.max(0,co.c-co.e);return co.x?taxaEfetiva(pv,co.p,co.x):0;}
+
+let fTipo='todos',limite=24,modo='market';
+const $=id=>document.getElementById(id);
+
+function filtrar(){
+  let arr=COTAS.slice();
+  if(fTipo!=='todos')arr=arr.filter(c=>c.t===fTipo);
+  const fx=$('cotasFaixa').value;
+  if(fx!=='todos'){const[a,b]=fx.split('-').map(Number);arr=arr.filter(c=>c.c>=a&&c.c<b);}
+  const q=($('cotasBusca').value||'').replace(/\D/g,'');
+  if(q)arr=arr.filter(c=>String(c.n).includes(q)||String(c.c).includes(q));
+  return arr;
+}
+
+function zapMarket(co){
+  const tipo=tipoLabel(co.t).toLowerCase();
+  const msg=`Olá! Tenho interesse na carta contemplada de ${tipo} nº ${co.n} — crédito de ${BRL(co.c)}, entrada de ${BRL(co.e)} e parcela de ${BRL(co.p)}${co.x?`×${co.x}`:''}. Ainda está disponível?`;
+  return `https://wa.me/${CWA}?text=${encodeURIComponent(msg)}`;
+}
+function zapLeilao(co){
+  const tipo=tipoLabel(co.t).toLowerCase();
+  const pct=co.c>0?((co.e/co.c)*100).toFixed(0):0;
+  const msg=`Olá! Quero dar lance na carta contemplada de ${tipo} nº ${co.n} — crédito de ${BRL(co.c)}. Meu lance (entrada) é de ${BRL(co.e)} (${pct}% do crédito), assumindo as parcelas de ${BRL(co.p)}${co.x?`×${co.x}`:''}. Ainda está disponível pra leilão?`;
+  return `https://wa.me/${CWA}?text=${encodeURIComponent(msg)}`;
+}
+
+function renderMarket(){
+  let arr=filtrar();
+  const ord=$('cotasOrd').value;
+  arr.sort((a,b)=>ord==='credito-asc'?a.c-b.c:ord==='entrada-asc'?a.e-b.e:ord==='entrada-desc'?b.e-a.e:b.c-a.c);
+  $('cotasCount').innerHTML=`<b>${NUM(arr.length)}</b> cota(s)`;
+  const grid=$('cotasGrid');
+  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma cota com esses filtros. Ajuste a busca ou a faixa de crédito.</div>';$('cotasMore').style.display='none';return;}
+  const vis=arr.slice(0,limite);
+  grid.innerHTML=vis.map(co=>{
+    const pctEnt=co.c>0?((co.e/co.c)*100).toFixed(0):0;
+    const am=amCota(co);
+    return `
+    <div class="ccard ${co.t}">
+      <div class="ctop">
+        <span class="cstatus"><span class="dot"></span>Contemplada</span>
+        <span class="ctag ${co.t}">${tipoLabel(co.t)}</span>
+      </div>
+      <div class="ccat"><span class="emo">${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'}<span class="cnum" style="margin-left:auto">nº ${co.n}</span></div>
+      <div class="ccredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
+      <div class="centrada"><span class="l">Entrada</span><span class="v">${BRL(co.e)} <span style="font-size:11px;color:var(--cinza);font-weight:400">${pctEnt}%</span></span></div>
+      <div class="crows">
+        <div class="crow2"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">×${co.x}</span>`:''}</div></div>
+        <div class="crow2"><div class="l">Custo efetivo</div><div class="v">${co.x?am.toFixed(2).replace('.',',')+'% a.m.':'—'}</div></div>
+      </div>
+      <div class="cverif">${SELO}<span><b>Carta verificada</b> · Prospere</span></div>
+      <a class="czap" href="${zapMarket(co)}" target="_blank" rel="noopener">Tenho interesse</a>
+    </div>`;}).join('');
+  $('cotasMore').style.display=arr.length>limite?'block':'none';
+}
+
+function renderLeilao(){
+  let arr=filtrar();
+  arr.sort((a,b)=>b.e-a.e); // maior lance primeiro
+  $('cotasCount').innerHTML=`<b>${NUM(arr.length)}</b> carta(s) em leilão`;
+  const grid=$('cotasGrid');
+  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma carta com esses filtros.</div>';$('cotasMore').style.display='none';return;}
+  const vis=arr.slice(0,limite);
+  grid.innerHTML=vis.map((co,i)=>{
+    const pos=i+1;
+    const pct=co.c>0?((co.e/co.c)*100):0;
+    const am=amCota(co);
+    const medalha=pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':`#${pos}`;
+    return `
+    <div class="lcard ${co.t} ${pos===1?'top1':''}">
+      <div class="ltop">
+        <span class="lrank"><span class="pos">${medalha}</span>${pos<=3?'Maior lance':'Lance'}</span>
+        <span class="ltag ${co.t}">${tipoLabel(co.t)}</span>
+      </div>
+      <div class="lcat"><span>${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'}<span class="num">Carta nº ${co.n}</span></div>
+      <div class="lcredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
+      <div class="llance"><div class="l">🔨 Lance atual (entrada à vista)</div><div class="v">${BRL(co.e)}<span class="pc">${pct.toFixed(0)}% do crédito</span></div></div>
+      <div class="lmeta">
+        <div class="m"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`×${co.x}`:''}</div></div>
+        <div class="m"><div class="l">Custo efetivo</div><div class="v">${co.x?am.toFixed(2).replace('.',',')+'% a.m.':'—'}</div></div>
+      </div>
+      <div class="lverif">${SELO}<span>Carta verificada · Prospere</span></div>
+      <a class="lzap" href="${zapLeilao(co)}" target="_blank" rel="noopener">🔨 Dar meu lance</a>
+    </div>`;}).join('');
+  $('cotasMore').style.display=arr.length>limite?'block':'none';
+}
+
+function render(){modo==='leilao'?renderLeilao():renderMarket();}
+
+// filtros
+$('segTipo').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#segTipo button').forEach(x=>x.classList.remove('on'));b.classList.add('on');fTipo=b.dataset.tipo;limite=24;render();});
+['cotasFaixa','cotasOrd'].forEach(id=>$(id).addEventListener('change',()=>{limite=24;render();}));
+$('cotasBusca').addEventListener('input',()=>{limite=24;render();});
+$('cotasMore').addEventListener('click',()=>{limite+=24;render();});
+
+// toggle marketplace/leilão
+$('cotasModo').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#cotasModo button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  modo=b.dataset.modo;limite=24;
+  $('leilaoAviso').style.display=modo==='leilao'?'flex':'none';
+  $('grpOrd').style.opacity=modo==='leilao'?'.4':'1';
+  $('cotasOrd').disabled=modo==='leilao';
+  render();
+});
+
+// header zap
+$('hzap').href=`https://wa.me/${CWA}?text=${encodeURIComponent('Olá! Quero saber mais sobre as cotas contempladas disponíveis.')}`;
+// src line
+$('srcLine').textContent=`${COTAS.length} cartas disponíveis · ${DADOS.fonte||'Prospere Corretora'} · atualizado ${DADOS.atualizado||''}`;
+
+render();
+</script>
+</body>
+</html>
