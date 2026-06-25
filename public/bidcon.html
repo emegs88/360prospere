@@ -13,7 +13,8 @@
     --preto:#070709;--carvao:#121216;--carvao2:#1a1a20;--linha:#28282f;--linha2:#37373f;
     --branco:#f5f5f7;--cinza:#8c8c95;--cinza2:#54545c;
     --vermelho:#D4111E;--vermelho-l:#ff4651;--vermelho-d:#9c0c16;
-    --verde:#1faa59;--verde-l:#3ad17e;--ambar:#e3a008;--ambar-l:#f3c34a;--raio:18px;
+    --verde:#1faa59;--verde-l:#3ad17e;--ambar:#e3a008;--ambar-l:#f3c34a;
+    --azul:#2f6df0;--azul-l:#5b93ff;--raio:18px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--preto);color:var(--branco);font-family:'Archivo',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 0 80px;
@@ -36,6 +37,8 @@
   .hzap:hover{background:var(--verde-l)}
   .hloja{display:inline-flex;align-items:center;gap:7px;background:transparent;color:var(--ambar-l);font-weight:700;font-size:13px;text-decoration:none;border:1px solid var(--linha2);border-radius:10px;padding:9px 15px;transition:.12s}
   .hloja:hover{border-color:var(--ambar);background:rgba(227,160,8,.08)}
+  .himo{color:var(--azul-l)}
+  .himo:hover{border-color:var(--azul);background:rgba(47,109,240,.1)}
 
   /* HERO */
   .hero{margin:36px 0 8px;background:linear-gradient(150deg,rgba(212,17,30,.11),rgba(212,17,30,.015));border:1px solid rgba(212,17,30,.22);border-radius:var(--raio);padding:34px 34px 30px}
@@ -46,6 +49,16 @@
   .hero .selos{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px}
   .hero .selo{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#cfcfd4;font-weight:600}
   .hero .selo svg{width:18px;height:18px;flex:none}
+
+  /* O QUE É — explicação rápida */
+  .oque{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0 6px}
+  .oqc{background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:18px 18px 16px;position:relative}
+  .oqc .n{position:absolute;top:14px;right:16px;font-family:'JetBrains Mono';font-weight:800;font-size:34px;color:var(--linha2);line-height:1}
+  .oqc .ic{font-size:22px;line-height:1}
+  .oqc h3{font-family:'Archivo Narrow';font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.02em;margin:10px 0 5px;color:#fff}
+  .oqc p{font-size:13px;color:var(--cinza);line-height:1.55}
+  .oqc b{color:var(--vermelho-l)}
+  @media(max-width:720px){.oque{grid-template-columns:1fr}}
 
   /* STATS / prova social */
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 6px}
@@ -130,6 +143,9 @@
   .disc b{color:var(--ambar-l)}
   .foot{margin-top:26px;text-align:center;color:var(--cinza2);font-size:11px;letter-spacing:.1em;text-transform:uppercase;line-height:1.8}
   .foot b{color:var(--cinza)}
+  .footnav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:30px 0 4px}
+  .footnav a{display:inline-flex;align-items:center;gap:7px;background:var(--carvao);border:1px solid var(--linha);color:#cfcfd4;font-size:13px;font-weight:600;text-decoration:none;border-radius:10px;padding:11px 18px;transition:.12s}
+  .footnav a:hover{border-color:var(--linha2);color:#fff}
 
   /* Como funciona */
   .como{margin-top:46px}
@@ -240,6 +256,7 @@
       <div class="bsel">by <b>Prospere Consórcios</b></div>
     </div>
     <div class="hcta">
+      <a class="hloja himo" href="/bidcon-imobiliaria.html">🏡 Imóveis</a>
       <a class="hloja" href="/bidcon-lojista.html">🚗 Sou lojista</a>
       <a class="hzap" id="hzap" href="#" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.739-.981z"/></svg>
@@ -254,7 +271,34 @@
   <section class="hero">
     <div class="eyebrow">Marketplace de cotas contempladas</div>
     <h1>Crédito <b>já contemplado</b>, pronto pra usar</h1>
-    <p>Cartas de consórcio já contempladas de imóvel e veículo — você assume a carta, paga uma entrada e usa o crédito sem espera de sorteio. Tudo verificado pela Prospere.</p>
+    <p>Cartas de consórcio <b>já contempladas</b> de imóvel e veículo — você assume a carta, paga uma entrada e usa o crédito <b>sem esperar sorteio nem lance</b>. Sem juros de financiamento, sem entrada alta de banco. Cada carta é verificada pela Prospere e a transferência passa pela administradora do consórcio.</p>
+    <div class="selos">
+      <div class="selo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#1faa59"/><path d="M8 12l2.5 2.5L16 9" stroke="#04210f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Crédito já liberado — sem espera</div>
+      <div class="selo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#1faa59"/><path d="M8 12l2.5 2.5L16 9" stroke="#04210f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Entrada em dinheiro ou bem na troca</div>
+      <div class="selo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#1faa59"/><path d="M8 12l2.5 2.5L16 9" stroke="#04210f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Contrato e transferência oficial</div>
+      <div class="selo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#1faa59"/><path d="M8 12l2.5 2.5L16 9" stroke="#04210f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Acompanhamento Prospere em cada etapa</div>
+    </div>
+  </section>
+
+  <section class="oque">
+    <div class="oqc">
+      <span class="n">1</span>
+      <div class="ic">🎯</div>
+      <h3>O que é uma carta contemplada</h3>
+      <p>É uma cota de consórcio que <b>já foi sorteada</b> — o crédito está liberado. Você assume o lugar do titular e usa o valor pra comprar o bem.</p>
+    </div>
+    <div class="oqc">
+      <span class="n">2</span>
+      <div class="ic">💰</div>
+      <h3>Você paga só a entrada</h3>
+      <p>Para assumir a carta, paga a <b>entrada</b> (à vista ou dando um bem na troca) e segue com as parcelas. Nada de entrada de banco nem juros de financiamento.</p>
+    </div>
+    <div class="oqc">
+      <span class="n">3</span>
+      <div class="ic">🔑</div>
+      <h3>Crédito na mão, sem espera</h3>
+      <p>Com a transferência aprovada pela administradora, o <b>crédito fica disponível</b> pra usar — sem depender de sorteio ou lance, com contrato e acompanhamento Prospere.</p>
+    </div>
   </section>
 
   <div class="stats" id="stats"></div>
@@ -531,6 +575,12 @@
       </div>
     </div>
   </section>
+
+  <div class="footnav">
+    <a href="/bidcon-imobiliaria.html">🏡 <b style="color:var(--azul-l)">Imóveis × cartas</b> — ache o imóvel e a carta que cobre</a>
+    <a href="/bidcon-lojista.html">🚗 <b style="color:var(--ambar-l)">Sou lojista</b> — cruze seu estoque com as cartas</a>
+    <a href="#docs">📋 <b style="color:var(--vermelho-l)">Documentos</b> — check list da pré-análise</a>
+  </div>
 
   <div class="disc">
     <b>Importante.</b> A bidcon / Prospere Consórcios intermedia a negociação de cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. A transferência da carta está sujeita à análise e aprovação da administradora do consórcio. Consórcio é <b>compra programada / planejamento patrimonial</b>, não investimento. Valores e disponibilidade sujeitos a confirmação no atendimento.
