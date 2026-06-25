@@ -146,6 +146,53 @@
   .step.imp .sn{color:var(--ambar-l)}
   .step.imp .sh{color:var(--ambar-l)}
 
+  /* selo entrada: carro ou dinheiro */
+  .cpaga{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--cinza);background:rgba(58,209,126,.06);border:1px solid rgba(58,209,126,.18);border-radius:9px;padding:7px 10px}
+  .cpaga .ico{font-size:13px}
+  .cpaga b{color:var(--verde-l);font-weight:700}
+  .ccard.veiculo .cpaga{background:rgba(227,160,8,.06);border-color:rgba(227,160,8,.2)}
+  .ccard.veiculo .cpaga b{color:var(--ambar-l)}
+  /* botões do card */
+  .cbtns{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:2px}
+  .cdet{display:flex;align-items:center;justify-content:center;gap:6px;background:transparent;border:1px solid var(--linha2);color:#cfcfd4;font-family:'Archivo';font-weight:600;font-size:13px;border-radius:10px;padding:12px 14px;cursor:pointer;transition:.12s}
+  .cdet:hover{border-color:var(--branco);color:#fff}
+  .cbtns .czap{margin-top:0}
+
+  /* MODAL DETALHE */
+  .modal{position:fixed;inset:0;z-index:200;display:none;align-items:flex-end;justify-content:center;background:rgba(4,4,6,.74);backdrop-filter:blur(6px);padding:0}
+  .modal.on{display:flex}
+  .mbox{background:var(--carvao2);border:1px solid var(--linha2);border-radius:20px 20px 0 0;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;animation:mup .22s ease}
+  @keyframes mup{from{transform:translateY(40px);opacity:.4}to{transform:translateY(0);opacity:1}}
+  .mhead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:22px 24px 0;position:sticky;top:0}
+  .mtag{display:inline-flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:15px}
+  .mtag.imovel{color:var(--vermelho-l)}.mtag.veiculo{color:var(--ambar-l)}
+  .mnum{font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2);margin-top:3px}
+  .mclose{background:var(--carvao);border:1px solid var(--linha);color:var(--cinza);width:34px;height:34px;border-radius:9px;font-size:18px;cursor:pointer;flex-shrink:0;line-height:1;transition:.12s}
+  .mclose:hover{border-color:var(--vermelho);color:#fff}
+  .mbody{padding:16px 24px 24px}
+  .mcred{background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:18px;text-align:center;margin-bottom:14px}
+  .mcred .l{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cinza)}
+  .mcred .v{font-family:'JetBrains Mono';font-size:34px;font-weight:800;color:#fff;line-height:1.05;margin-top:5px}
+  .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .mcell{background:var(--carvao);border:1px solid var(--linha);border-radius:12px;padding:13px 15px}
+  .mcell .l{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza)}
+  .mcell .v{font-family:'JetBrains Mono';font-size:18px;font-weight:700;color:#fff;margin-top:4px}
+  .mcell .v small{font-size:11px;color:var(--cinza);font-weight:400}
+  .mcell.full{grid-column:1/-1}
+  .mpaga{background:rgba(58,209,126,.07);border:1px solid rgba(58,209,126,.22);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .mpaga .t{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:var(--verde-l)}
+  .mpaga .d{font-size:12.5px;color:#cfcfd4;line-height:1.55;margin-top:6px}
+  .mpaga .opts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .mopt{display:flex;align-items:center;gap:7px;background:var(--carvao2);border:1px solid var(--linha);border-radius:9px;padding:8px 12px;font-size:12px;font-weight:600}
+  .mopt .e{font-size:15px}
+  .mhow{margin-bottom:16px}
+  .mhow .t{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza);margin-bottom:8px}
+  .mhow ol{margin:0;padding-left:18px;color:#cfcfd4;font-size:13px;line-height:1.7}
+  .mzap{display:flex;align-items:center;justify-content:center;gap:9px;background:var(--verde);color:#04210f;font-family:'Archivo';font-weight:700;font-size:15px;text-decoration:none;border-radius:12px;padding:15px;transition:.12s}
+  .mzap:hover{background:var(--verde-l)}
+  .mobs{font-size:11px;color:var(--cinza2);text-align:center;margin-top:12px;line-height:1.5}
+
+  @media(min-width:560px){.modal{align-items:center;padding:20px}.mbox{border-radius:20px}}
   @media(max-width:600px){.cgrid{grid-template-columns:1fr}.hero h1{font-size:32px}.como h2{font-size:24px}.step{grid-template-columns:36px 1fr;gap:12px;padding:14px}}
 </style>
 </head>
@@ -261,6 +308,11 @@
 
 </main>
 
+<!-- MODAL DETALHE DA CARTA -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="mbox" id="mbox" role="dialog" aria-modal="true"></div>
+</div>
+
 <script src="/cotas.js"></script>
 <script>
 const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
@@ -278,6 +330,66 @@ function amCota(co){const pv=Math.max(0,co.c-co.e);return co.x?taxaEfetiva(pv,co
 
 let fTipo='todos',limite=24,modo='market';
 const $=id=>document.getElementById(id);
+
+// ===== MODAL DE DETALHE =====
+function abrirDetalhe(num){
+  const co=COTAS.find(c=>Number(c.n)===Number(num));
+  if(!co)return;
+  const veic=co.t==='veiculo';
+  const pctEntrada=co.c>0?((co.e/co.c)*100).toFixed(0):0;
+  const trocaTxt=veic?'um carro na troca':'um imóvel ou veículo na troca';
+  const custo=co.x?`${amCota(co).toFixed(2).replace('.',',')}% a.m. (referência)`:'—';
+  $('mbox').innerHTML=`
+    <div class="mhead">
+      <div>
+        <span class="mtag ${co.t}"><span>${veic?'🚗':'🏠'}</span>${veic?'Carta de Veículo':'Carta de Imóvel'}</span>
+        <div class="mnum">Carta contemplada nº ${co.n} · verificada pela Prospere</div>
+      </div>
+      <button class="mclose" onclick="fecharDetalhe()" aria-label="Fechar">✕</button>
+    </div>
+    <div class="mbody">
+      <div class="mcred"><div class="l">Crédito já contemplado</div><div class="v">${BRL(co.c)}</div></div>
+
+      <div class="mgrid">
+        <div class="mcell"><div class="l">Entrada pra assumir</div><div class="v">${BRL(co.e)} <small>(${pctEntrada}% do crédito)</small></div></div>
+        <div class="mcell"><div class="l">Parcela mensal</div><div class="v">${BRL(co.p)}${co.x?` <small>× ${co.x}×</small>`:''}</div></div>
+        ${co.x?`<div class="mcell full"><div class="l">Custo efetivo (referência)</div><div class="v">${custo}</div></div>`:''}
+      </div>
+
+      <div class="mpaga">
+        <div class="t">💰 A entrada pode ser paga de 2 formas</div>
+        <div class="d">Você assume a carta pagando a entrada de <b>${BRL(co.e)}</b> — e essa entrada pode ser:</div>
+        <div class="opts">
+          <span class="mopt"><span class="e">💵</span> Em dinheiro / PIX</span>
+          <span class="mopt"><span class="e">${veic?'🚗':'🏡'}</span> Dando ${trocaTxt}</span>
+        </div>
+      </div>
+
+      <div class="mhow">
+        <div class="t">Como funciona</div>
+        <ol>
+          <li>Você paga a entrada de <b>${BRL(co.e)}</b> (dinheiro ou ${trocaTxt}).</li>
+          <li>Assume as parcelas de <b>${BRL(co.p)}</b>${co.x?` por <b>${co.x} meses</b>`:''}.</li>
+          <li>O crédito de <b>${BRL(co.c)}</b> fica disponível pra usar — sem esperar sorteio.</li>
+          <li>A transferência da carta passa pela análise da administradora do consórcio.</li>
+        </ol>
+      </div>
+
+      <a class="mzap" href="${zapMarket(co)}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.739-.981z"/></svg>
+        Tenho interesse nesta carta
+      </a>
+      <div class="mobs">Valores e disponibilidade sujeitos a confirmação no atendimento. Consórcio é planejamento patrimonial, não investimento.</div>
+    </div>`;
+  $('modal').classList.add('on');
+  $('modal').setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function fecharDetalhe(){
+  $('modal').classList.remove('on');
+  $('modal').setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
 
 function filtrar(){
   let arr=COTAS.slice();
@@ -320,10 +432,14 @@ function renderMarket(){
       <div class="ccredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
       <div class="crows">
         <div class="crow2"><div class="l">Entrada</div><div class="v">${BRL(co.e)}</div></div>
-        <div class="crow2"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">×${co.x}</span>`:''}</div></div>
+        <div class="crow2"><div class="l">Parcela${co.x?` <span style="font-size:9px;color:var(--cinza2)">(${co.x}×)</span>`:''}</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">/mês</span>`:''}</div></div>
       </div>
+      <div class="cpaga"><span class="ico">💰</span><span>Entrada em <b>dinheiro</b> ou <b>${co.t==='imovel'?'imóvel/veículo':'carro'} na troca</b></span></div>
       ${co.x?`<div class="ccusto"><span class="l">Custo efetivo</span><span class="v">${amCota(co).toFixed(2).replace('.',',')}% a.m.</span></div>`:''}
-      <a class="czap" href="${zapMarket(co)}" target="_blank" rel="noopener">Tenho interesse</a>
+      <div class="cbtns">
+        <a class="czap" href="${zapMarket(co)}" target="_blank" rel="noopener">Tenho interesse</a>
+        <button class="cdet" onclick="abrirDetalhe(${co.n})">Ver detalhes</button>
+      </div>
     </div>`;}).join('');
   $('cotasMore').style.display=arr.length>limite?'block':'none';
 }
@@ -349,10 +465,14 @@ function renderLeilao(){
       <div class="lcredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
       <div class="llance"><div class="l">🔨 Entrada pra assumir</div><div class="v">${BRL(co.e)}</div></div>
       <div class="crows">
-        <div class="crow2"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">×${co.x}</span>`:''}</div></div>
+        <div class="crow2"><div class="l">Parcela${co.x?` <span style="font-size:9px;color:var(--cinza2)">(${co.x}×)</span>`:''}</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">/mês</span>`:''}</div></div>
         <div class="crow2"><div class="l">Tipo</div><div class="v">${tipoLabel(co.t)}</div></div>
       </div>
-      <a class="lzap" href="${zapLeilao(co)}" target="_blank" rel="noopener">🔨 Quero esta carta</a>
+      <div class="cpaga"><span class="ico">💰</span><span>Entrada em <b>dinheiro</b> ou <b>${co.t==='imovel'?'imóvel/veículo':'carro'} na troca</b></span></div>
+      <div class="cbtns">
+        <a class="lzap" href="${zapLeilao(co)}" target="_blank" rel="noopener">🔨 Quero esta carta</a>
+        <button class="cdet" onclick="abrirDetalhe(${co.n})">Detalhes</button>
+      </div>
     </div>`;}).join('');
   $('cotasMore').style.display=arr.length>limite?'block':'none';
 }
@@ -375,6 +495,10 @@ $('cotasModo').addEventListener('click',e=>{
   $('cotasOrd').disabled=modo==='leilao';
   render();
 });
+
+// fechar modal: clique no fundo + ESC
+$('modal').addEventListener('click',e=>{if(e.target===$('modal'))fecharDetalhe();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharDetalhe();});
 
 // header zap
 $('hzap').href=`https://wa.me/${CWA}?text=${encodeURIComponent('Olá! Quero saber mais sobre as cotas contempladas disponíveis.')}`;
