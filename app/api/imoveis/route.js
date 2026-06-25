@@ -42,47 +42,63 @@ function og(html, prop) {
 const num = (s) =>
   Number(String(s || '').replace(/[^\d,]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
 
-// Atenção: anúncios com venda E aluguel trazem 2 valores. No título, o preço de
-// venda vem depois de "à venda por"; no JSON aparecem vários "price" (o de
-// aluguel costuma ser o menor). Priorizamos o título; no JSON, pegamos o MAIOR.
+// Preço de venda. O título é pouco confiável (vem truncado com "…" e em vários
+// formatos), então a FONTE DE VERDADE é o JSON da página: anúncios com venda E
+// aluguel trazem 2 valores "price" e o de VENDA é sempre o MAIOR (o menor é o
+// aluguel mensal). Só caímos no título quando não há price no JSON.
 function precoDe(html, titulo) {
-  const tv = (titulo || '').match(/à\s*venda\s*por\s*R\$\s?([\d.]+(?:,\d{2})?)/i);
-  if (tv) {
-    const v = num(tv[1]);
-    if (v) return v;
-  }
   const precos = [...html.matchAll(/"price"\s*:\s*"?([\d.]+)/g)]
     .map((m) => Math.round(Number(m[1])) || 0)
     .filter(Boolean);
   if (precos.length) return Math.max(...precos);
+  const tv = (titulo || '').match(/(?:à\s*venda\s*por|por)\s*R\$\s?([\d.]+,\d{2})/i);
+  if (tv) return num(tv[1]);
   const m = (titulo || '').match(/R\$\s?([\d.]+,\d{2})/);
   return m ? num(m[1]) : 0;
 }
 
-// Aceita os dois formatos do parceiro:
+// Extrai tipo/bairro/cidade/área dos vários formatos de título do parceiro:
 //  "Casa à venda, 148 m² por R$ 1.170.000,00 - Parque Ortolândia - Hortolândia/SP"
 //  "Sala de 14 m² Centro - Campinas, à venda por R$ 198.532 ou aluguel por R$ 900/mês"
+//  "Apartamento de 50 m² na Avenida Mercedes Tiago, 1 - Residencial X - Cidade/SP"
+//  "Sobrado com 3 dormitórios, 230 m² - venda por R$ 1.400.000,00 - Bairro - Cidade/SP"
+const ehRuido = (s) =>
+  !s ||
+  /R\$|aluguel|à\s*venda|^venda\b|por\s*R\$|\bm²\b|dormit|quart|^\d+$/i.test(s);
 function parseTitulo(t) {
   const partes = (t || '').split(' - ').map((s) => s.trim());
-  let head = partes[0] || '';
-  // tipo = primeira palavra significativa (Casa, Apartamento, Sala, Terreno...)
+  const head = partes[0] || '';
+  // tipo = primeira palavra (Casa, Apartamento, Sala, Sobrado, Terreno, Barracão...)
   const mt = head.match(/^([A-Za-zÀ-ÿ]+)/);
   const tipo = mt ? mt[1] : head.split(',')[0].trim();
-  // bairro: no formato 1 vem em partes[1]; no formato 2 vem grudado depois do "m² "
-  let bairro = '';
-  const mb = head.match(/m²\s+(.+)$/);
-  if (mb) bairro = mb[1].trim();
-  else if (partes.length >= 2) bairro = partes[1];
-  // cidade: parte que tem "à venda"/UF, limpando o trecho de venda/aluguel
-  let cidade = '';
-  for (const p of partes.slice(1)) {
-    const c = p.split(',')[0].replace(/\/[A-Z]{2}.*$/, '').trim();
-    if (/à\s*venda|aluguel|R\$/i.test(p) || /\/[A-Z]{2}/.test(p)) {
-      cidade = c;
-      break;
-    }
+
+  // candidatos a bairro/cidade = partes que não são ruído (preço/área/endereço)
+  // e que não começam com "na Rua/Avenida" (isso é logradouro, não bairro).
+  const limpa = (s) =>
+    s
+      .replace(/,?\s*(à\s*venda|venda)\s*por[\s\S]*$/i, '')
+      .replace(/\/[A-Z]{2}\b.*$/, '')
+      .replace(/^na\s+(rua|av\.?|avenida|alameda|travessa|estrada)\b[^,]*,?\s*/i, '')
+      .replace(/,\s*\d+\s*$/, '')
+      .split(',')[0]
+      .trim();
+
+  const uteis = partes
+    .slice(1)
+    .map(limpa)
+    .filter((s) => s && !ehRuido(s));
+
+  // o último útil costuma ser a cidade; o anterior, o bairro.
+  let cidade = uteis.length ? uteis[uteis.length - 1] : '';
+  let bairro = uteis.length >= 2 ? uteis[uteis.length - 2] : '';
+
+  // formato "Tipo de N m² BAIRRO - Cidade...": bairro grudado depois do "m²"
+  if (!bairro) {
+    const mb = head.match(/m²\s+(.+)$/);
+    if (mb) bairro = limpa(mb[1]);
   }
-  if (!cidade && partes.length >= 3) cidade = partes[2].split(',')[0].trim();
+  if (bairro && bairro === cidade) bairro = '';
+
   const area = (() => {
     const m = (t || '').match(/([\d.,]+)\s*m²/);
     return m ? m[1] : '';

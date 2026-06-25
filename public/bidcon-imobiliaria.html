@@ -264,7 +264,8 @@
 <script>
 const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
 const CWA=DADOS.whatsapp||'5519997561909';
-const CARTAS=(DADOS.cotas||[]).filter(c=>c.t==='imovel'&&c.c>0);
+// só cotas DISPONÍVEIS: as reservadas/vendidas vêm com r:1 e não aparecem aqui
+const CARTAS=(DADOS.cotas||[]).filter(c=>c.t==='imovel'&&c.c>0&&!c.r);
 const $=id=>document.getElementById(id);
 const BRL=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
 const NUM=v=>Number(v).toLocaleString('pt-BR');

@@ -1,6 +1,11 @@
 /* ===== COTAS CONTEMPLADAS — fonte: Central de Contempladas / Prospere Corretora de Seguros =====
    Dados extraídos da carteira pública. Atualize periodicamente.
-   tipo: 'imovel' | 'veiculo' · valores em R$ */
+   Campos de cada cota:
+     n = número · t = 'imovel' | 'veiculo' · c = crédito · e = entrada
+     p = parcela · x = nº de parcelas
+   RESERVAR/VENDER uma cota: acrescente  r:1  ao objeto (ex.: {n:4033,...,r:1}).
+   Cotas com r:1 são tratadas como indisponíveis e NÃO aparecem em nenhuma
+   página bidcon (só puxamos as disponíveis). */
 window.PROSPERE_COTAS = {
   fonte: "Central de Contempladas · Prospere Corretora de Seguros LTDA",
   atualizado: "2026-06",
@@ -380,7 +385,6 @@ window.PROSPERE_COTAS = {
 {n:3865,t:"veiculo",c:24341,e:12171,p:313,x:89},
 {n:3903,t:"veiculo",c:24140,e:12070,p:330,x:88}
   ],
-  /* ===== LEILÃO — cartas selecionadas pela equipe (números das cotas) =====
-     A equipe marca no cérebro e cola a lista aqui. Só estas aparecem no Leilão da bidcon. */
+  /* ===== LEILÃO — números das cotas selecionadas para o modo Leilão da bidcon ===== */
   leilao: []
 };

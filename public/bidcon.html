@@ -543,7 +543,8 @@
 <script src="/cotas.js"></script>
 <script>
 const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
-const COTAS=(DADOS.cotas||[]).filter(c=>c.c>0);
+// só cotas DISPONÍVEIS: as reservadas/vendidas vêm com r:1 e não aparecem aqui
+const COTAS=(DADOS.cotas||[]).filter(c=>c.c>0&&!c.r);
 const LEILAO_SET=new Set((DADOS.leilao||[]).map(Number)); // cartas selecionadas pela equipe
 const CWA=DADOS.whatsapp||'5519997561909';
 const BRL=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
