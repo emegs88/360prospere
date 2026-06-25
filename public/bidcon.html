@@ -326,10 +326,14 @@
 
   <section class="docs">
     <div class="stitle">Check list oficial · pré-análise</div>
-    <h2>Documentos para a análise <b>(Veículo)</b></h2>
-    <p class="csub">Tudo que a administradora pede para liberar a carta sem retrabalho. Junte os documentos conforme o seu tipo de renda e a pré-análise sai em <b>até 1 dia útil</b>.</p>
+    <h2>Documentos para a análise</h2>
+    <p class="csub">Tudo que a administradora pede para liberar a carta sem retrabalho. Escolha o bem e o seu tipo de renda — com a documentação completa, a pré-análise sai em <b>até 1 dia útil</b>.</p>
 
-    <div class="dseg" id="docSeg">
+    <div class="dseg" id="bemSeg">
+      <button data-bem="veiculo" class="on">🚗 Veículo</button>
+      <button data-bem="imovel">🏡 Imóvel</button>
+    </div>
+    <div class="dseg" id="docSeg" style="margin-top:0">
       <button data-pf="pf" class="on">👤 Pessoa Física</button>
       <button data-pf="pj">🏢 Pessoa Jurídica</button>
     </div>
@@ -461,21 +465,62 @@
       </div>
     </div>
 
-    <div class="dveic">
-      <div class="dh"><span class="dt">🚗 Do veículo (PF e PJ)</span><span class="dbadge all">Todos</span></div>
-      <div class="dsub">Documentos do bem — necessários quando o veículo já está definido.</div>
-      <ul>
-        <li>DUT ou CRLV<small>Foto, digitalizado em PDF ou via digital.</small></li>
-        <li>Quatro fotos do veículo<small>Frente, traseira e as duas laterais.</small></li>
-      </ul>
+    <!-- BLOCO DO BEM: VEÍCULO -->
+    <div id="bemVeiculo">
+      <div class="dveic">
+        <div class="dh"><span class="dt">🚗 Do veículo (PF e PJ)</span><span class="dbadge all">Todos</span></div>
+        <div class="dsub">Documentos do bem — necessários quando o veículo já está definido.</div>
+        <ul>
+          <li>DUT ou CRLV<small>Foto, digitalizado em PDF ou via digital.</small></li>
+          <li>Quatro fotos do veículo<small>Frente, traseira e as duas laterais.</small></li>
+        </ul>
+      </div>
+
+      <div class="dtips" style="margin:18px 0 0;background:rgba(212,17,30,.05);border-color:rgba(212,17,30,.2)">
+        <div class="t" style="color:var(--vermelho-l)">📅 Ano e aceitação do veículo</div>
+        <ul>
+          <li>O <b>ano-limite</b> aceito e o estado do veículo dependem da <b>administradora e da tabela vigente</b> — confirme sempre com o atendimento antes de fechar.</li>
+          <li>A liberação final está sujeita à <b>vistoria e aprovação</b> da administradora; documentos em dia e fotos nítidas evitam recusa.</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="dtips" style="margin:18px 0 0;background:rgba(212,17,30,.05);border-color:rgba(212,17,30,.2)">
-      <div class="t" style="color:var(--vermelho-l)">📅 Ano e aceitação do veículo</div>
-      <ul>
-        <li>O <b>ano-limite</b> aceito e o estado do veículo dependem da <b>administradora e da tabela vigente</b> — confirme sempre com o atendimento antes de fechar.</li>
-        <li>A liberação final está sujeita à <b>vistoria e aprovação</b> da administradora; documentos em dia e fotos nítidas evitam recusa.</li>
-      </ul>
+    <!-- BLOCO DO BEM: IMÓVEL -->
+    <div id="bemImovel" style="display:none">
+      <div class="dcat">Do(s) vendedor(es) / proprietário(s) do imóvel — opcional</div>
+      <p class="csub" style="margin:0 2px 12px;font-size:12.5px">Não é obrigatório na pré-análise. Se enviar, traga completo (do vendedor e cônjuge, se houver) para adiantarmos as consultas.</p>
+      <div class="dgrid">
+        <div class="dcard">
+          <div class="dh"><span class="dt">Vendedor e cônjuge</span><span class="dbadge one">Opcional</span></div>
+          <div class="dsub">Não precisa estar autenticado para a pré-análise.</div>
+          <ul>
+            <li>RG e CPF, <b>ou</b> CNH</li>
+            <li>Comprovante de residência atualizado<small>Água, luz, telefone fixo ou internet residencial.</small></li>
+            <li>Comprovante de estado civil<small>Certidão de nascimento (solteiro) ou casamento (casado, divorciado com averbação ou viúvo com averbação do óbito).</small></li>
+            <li>Contrato Social e/ou última alteração<small>Caso o proprietário do imóvel seja uma empresa.</small></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dcat">Do imóvel — opcional</div>
+      <div class="dveic" style="background:rgba(212,17,30,.06);border-color:rgba(212,17,30,.22)">
+        <div class="dh"><span class="dt" style="color:var(--vermelho-l)">🏡 Documentos do imóvel</span><span class="dbadge one">Opcional</span></div>
+        <div class="dsub">Não obrigatório na pré-análise — envie se o imóvel já estiver definido.</div>
+        <ul>
+          <li><b>Imóvel urbano:</b> Matrícula ou Certidão de inteiro teor<small>Atualizada, emitida pelo Registro de Imóveis.</small></li>
+          <li><b>Imóvel urbano:</b> Espelho, Boletim ou Certidão cadastral<small>Emitido pela Prefeitura, com informações completas.</small></li>
+          <li><b>Imóvel rural:</b> Matrícula ou Certidão de inteiro teor<small>Atualizada, emitida pelo Registro de Imóveis.</small></li>
+          <li><b>Imóvel rural:</b> CAR, CCIR e Certidão da Receita Federal<small>Para verificarmos as informações do imóvel rural.</small></li>
+        </ul>
+      </div>
+
+      <div class="dtips" style="margin:18px 0 0;background:rgba(212,17,30,.05);border-color:rgba(212,17,30,.2)">
+        <div class="t" style="color:var(--vermelho-l)">🏡 Aceitação do imóvel</div>
+        <ul>
+          <li>A regularidade da matrícula e da situação cadastral do imóvel é <b>verificada na análise</b> — pendências (averbação, débitos, ônus) podem impedir a liberação.</li>
+          <li>A liberação final está sujeita à <b>análise e aprovação da administradora</b>; documentação atualizada evita retrabalho.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -688,6 +733,13 @@ $('docSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!
   const pj=b.dataset.pf==='pj';
   $('docPF').style.display=pj?'none':'';
   $('docPJ').style.display=pj?'':'none';
+});
+// seletor do bem: Veículo / Imóvel
+$('bemSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#bemSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  const imo=b.dataset.bem==='imovel';
+  $('bemVeiculo').style.display=imo?'none':'';
+  $('bemImovel').style.display=imo?'':'none';
 });
 
 // header zap
