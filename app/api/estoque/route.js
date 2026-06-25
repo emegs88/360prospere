@@ -21,14 +21,44 @@ function precoReais(prices) {
   return raw / Math.pow(10, minor);
 }
 
+// Extrai o ano (modelo/fabricação) do veículo. Lojas WooCommerce de veículos
+// costumam expor o ano como atributo "pa_ano". Caímos para o nome/descrição
+// se a taxonomia não existir, mantendo só anos plausíveis (1980..ano+1).
+function extraiAno(p) {
+  const limite = new Date().getFullYear() + 1;
+  const plausivel = (n) => {
+    const y = Number(n);
+    return Number.isFinite(y) && y >= 1980 && y <= limite ? y : 0;
+  };
+  // 1) atributo pa_ano (fonte mais confiável)
+  for (const a of p.attributes || []) {
+    const tax = String(a.taxonomy || a.name || '').toLowerCase();
+    if (tax === 'pa_ano' || tax === 'ano') {
+      for (const t of a.terms || []) {
+        const y = plausivel((t.name || t.slug || '').match(/\d{4}/)?.[0]);
+        if (y) return y;
+      }
+    }
+  }
+  // 2) fallback: primeiro ano plausível no nome ou descrição curta
+  const txt = `${p.name || ''} ${p.short_description || ''}`;
+  for (const m of txt.matchAll(/\b(19[89]\d|20[0-3]\d)\b/g)) {
+    const y = plausivel(m[1]);
+    if (y) return y;
+  }
+  return 0; // desconhecido
+}
+
 function normaliza(p) {
   const preco = precoReais(p.prices);
   const img = (p.images && p.images[0] && p.images[0].src) || '';
   const cats = (p.categories || []).map((c) => c.name);
+  const ano = extraiAno(p);
   return {
     id: p.id,
     nome: (p.name || '').trim(),
     preco,
+    ano, // ano do modelo/fabricação (0 = desconhecido)
     sku: p.sku || '',
     link: p.permalink || '',
     img,
