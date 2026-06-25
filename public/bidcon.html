@@ -96,6 +96,9 @@
   .crow2{background:var(--carvao);border:1px solid var(--linha);border-radius:10px;padding:10px 12px}
   .crow2 .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
   .crow2 .v{font-family:'JetBrains Mono';font-size:15px;font-weight:700;margin-top:4px}
+  .ccusto{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:var(--cinza);padding:2px 2px 0}
+  .ccusto .l{letter-spacing:.04em}
+  .ccusto .v{font-family:'JetBrains Mono';font-weight:700;color:var(--verde-l)}
   .czap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--verde);color:#04210f;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:12px;transition:.12s;margin-top:2px}
   .czap:hover{background:var(--verde-l)}
   .cempty{grid-column:1/-1;text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
@@ -313,6 +316,7 @@ function renderMarket(){
         <div class="crow2"><div class="l">Entrada</div><div class="v">${BRL(co.e)}</div></div>
         <div class="crow2"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">×${co.x}</span>`:''}</div></div>
       </div>
+      ${co.x?`<div class="ccusto"><span class="l">Custo efetivo</span><span class="v">${amCota(co).toFixed(2).replace('.',',')}% a.m.</span></div>`:''}
       <a class="czap" href="${zapMarket(co)}" target="_blank" rel="noopener">Tenho interesse</a>
     </div>`;}).join('');
   $('cotasMore').style.display=arr.length>limite?'block':'none';
