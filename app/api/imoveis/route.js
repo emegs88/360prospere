@@ -1,13 +1,18 @@
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic'; // cache fica no CDN via header
 
-// Proxy do estoque de imóveis da imobiliária parceira (Prospere Hortolândia,
-// plataforma Kenlo/ingaia). Não há API pública de produtos, então a fonte de
-// verdade é o sitemap de imóveis + as meta tags Open Graph de cada anúncio
-// (título, preço, descrição, imagem, localização). Roda no servidor pra
+// Proxy do estoque de imóveis das imobiliárias parceiras. Todas rodam na
+// plataforma Kenlo/ingaia (mesmo formato): não há API pública de produtos, então
+// a fonte de verdade é o sitemap de imóveis + as meta tags Open Graph de cada
+// anúncio (título, preço, descrição, imagem, localização). Roda no servidor pra
 // contornar CORS e normalizar igual ao /api/estoque.
-const SITE = 'https://www.prosperehortolandia.com.br';
-const SITEMAP = `${SITE}/sitemap.xml`;
+//
+// ?fonte=prospere (padrão) | fmi  -> escolhe a imobiliária parceira.
+const FONTES = {
+  prospere: { nome: 'Prospere Hortolândia', site: 'https://www.prosperehortolandia.com.br' },
+  fmi: { nome: 'FMI Imobiliária', site: 'https://www.fmiimobiliaria.com.br' },
+};
+const FONTE_PADRAO = 'prospere';
 const UA = 'Mozilla/5.0 (compatible; bidconBot/1.0; +https://360prospere.vercel.app)';
 const MAX_SITEMAPS = 60; // teto de sub-sitemaps de imóveis a varrer
 const MAX_IMOVEIS = 90; // teto de anúncios buscados por request
@@ -128,8 +133,14 @@ async function pool(items, worker, conc) {
   return out;
 }
 
-export async function GET() {
+export async function GET(request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const key = (searchParams.get('fonte') || FONTE_PADRAO).toLowerCase();
+    const fonte = FONTES[key] || FONTES[FONTE_PADRAO];
+    const SITE = fonte.site;
+    const SITEMAP = `${SITE}/sitemap.xml`;
+
     const idx = await txt(SITEMAP);
     const children = locs(idx).filter((u) => /\/sitemap\/imoveis\//.test(u)).slice(0, MAX_SITEMAPS);
 
@@ -154,7 +165,8 @@ export async function GET() {
     return new Response(
       JSON.stringify({
         ok: true,
-        parceiro: 'Prospere Hortolândia',
+        fonteId: key in FONTES ? key : FONTE_PADRAO,
+        parceiro: fonte.nome,
         fonte: SITE,
         atualizado: new Date().toISOString(),
         total: imoveis.length,

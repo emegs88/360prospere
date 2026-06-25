@@ -129,6 +129,11 @@
   .lnk{display:inline-flex;align-items:center;gap:8px;background:var(--carvao2);border:1px solid var(--linha);color:#cfcfd4;font-size:13px;font-weight:600;text-decoration:none;border-radius:10px;padding:10px 16px;transition:.12s}
   .lnk:hover{border-color:var(--azul);color:#fff}
   .lnk b{color:var(--azul-l)}
+  .fontebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:2px 0 6px}
+  .fontelbl{font-family:'Archivo Narrow';font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--cinza)}
+  .fontebtn{background:var(--carvao2);border:1px solid var(--linha);color:var(--cinza);font-family:'Archivo Narrow';font-weight:700;font-size:13px;padding:8px 15px;border-radius:9px;cursor:pointer;transition:.12s}
+  .fontebtn:hover{color:#fff;border-color:var(--linha2)}
+  .fontebtn.on{background:var(--azul);border-color:var(--azul);color:#fff}
 
   .disc{background:var(--carvao);border:1px solid var(--linha);border-left:3px solid var(--azul);border-radius:12px;padding:16px 18px;margin-top:30px;font-size:12.5px;color:#cfcfd4;line-height:1.6}
   .disc b{color:var(--azul-l)}
@@ -168,9 +173,16 @@
   <div class="stats" id="stats"></div>
 
   <div class="links">
-    <a class="lnk" id="lnkImoveis" href="https://www.prosperehortolandia.com.br/imoveis/a-venda" target="_blank" rel="noopener">🏠 Imóveis <b>Prospere Hortolândia</b> ↗</a>
+    <a class="lnk" id="lnkImoveis" href="https://www.prosperehortolandia.com.br/imoveis/a-venda" target="_blank" rel="noopener">🏠 Imóveis <b>da imobiliária</b> ↗</a>
     <a class="lnk" id="lnkQuinto" href="https://www.quintoandar.com.br/comprar/imovel/hortolandia-sp-brasil" target="_blank" rel="noopener">🔑 Buscar no <b>QuintoAndar</b> ↗</a>
+    <a class="lnk" id="lnkZap" href="https://www.zapimoveis.com.br/venda/imoveis/sp+hortolandia/" target="_blank" rel="noopener">🟧 Buscar no <b>ZAP Imóveis</b> ↗</a>
     <a class="lnk" href="/bidcon.html#docs" target="_blank" rel="noopener">📋 Check list de <b>documentos</b> ↗</a>
+  </div>
+
+  <div class="fontebar">
+    <span class="fontelbl">Imobiliária parceira:</span>
+    <button class="fontebtn on" data-fonte="prospere">Prospere Hortolândia</button>
+    <button class="fontebtn" data-fonte="fmi">FMI Imobiliária</button>
   </div>
 
   <div class="tabs">
@@ -318,22 +330,29 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
 }));
 
 // ===== ABA 1: IMÓVEIS =====
-let IMOVEIS=[],vLimite=18;
-async function carregarImoveis(){
+let IMOVEIS=[],vLimite=18,FONTE_ATUAL='prospere';
+async function carregarImoveis(fonte){
+  if(fonte)FONTE_ATUAL=fonte;
+  // marca o parceiro ativo no seletor
+  document.querySelectorAll('.fontebtn').forEach(b=>b.classList.toggle('on',b.dataset.fonte===FONTE_ATUAL));
+  $('vgrid').innerHTML='<div class="loading"><span class="spin"></span>Buscando imóveis da imobiliária…</div>';
+  $('imovSub').textContent='Carregando imóveis da imobiliária…';
+  vLimite=18;
   try{
-    const r=await fetch('/api/imoveis');
+    const r=await fetch('/api/imoveis?fonte='+encodeURIComponent(FONTE_ATUAL));
     const j=await r.json();
     if(!j.ok){throw new Error(j.error||'falha');}
     IMOVEIS=(j.imoveis||[]).map(v=>({...v,cartas:cartasPara(v.preco),combo:comboPara(v.preco)}));
     if(j.parceiro){$('imovSub').textContent=`Imóveis de ${j.parceiro} cruzados com ${CARTAS.length} cartas de imóvel · atualizado em tempo real`;$('discParceiro').textContent=j.parceiro;}
-    if(j.fonte)$('footFonte').href=j.fonte;
+    if(j.fonte){$('footFonte').href=j.fonte;$('footFonte').textContent=j.parceiro||'imobiliária parceira';$('lnkImoveis').href=j.fonte+'/imoveis/a-venda';}
     // popula tipos
     const tipos=[...new Set(IMOVEIS.map(v=>v.tipo).filter(Boolean))].sort();
     $('fTipo').innerHTML='<option value="">Todos</option>'+tipos.map(t=>`<option value="${t}">${t}</option>`).join('');
     renderImoveis();
   }catch(e){
-    $('vgrid').innerHTML='<div class="cempty">Não consegui carregar os imóveis da imobiliária agora. Recarregue em instantes ou fale com a gente no WhatsApp.</div>';
+    $('vgrid').innerHTML='<div class="cempty">Não consegui carregar os imóveis dessa imobiliária agora. Tente outra fonte acima, recarregue em instantes ou fale com a gente no WhatsApp.</div>';
     $('imovSub').textContent='Imóveis temporariamente indisponíveis.';
+    $('vCount').innerHTML='';$('vMore').style.display='none';
   }
 }
 function imoveisFiltrado(){
@@ -429,6 +448,12 @@ $('cMore').addEventListener('click',()=>{cLimite+=18;renderCartas();});
 })();
 
 $('hzap').href=`https://wa.me/${CWA}?text=${encodeURIComponent('Olá! Quero usar uma carta de consórcio contemplada para comprar um imóvel. Como funciona?')}`;
+
+// seletor de imobiliária parceira
+document.querySelectorAll('.fontebtn').forEach(b=>b.addEventListener('click',()=>{
+  if(b.classList.contains('on'))return;
+  carregarImoveis(b.dataset.fonte);
+}));
 
 carregarImoveis();
 renderCartas();
