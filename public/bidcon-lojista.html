@@ -166,6 +166,9 @@
   .vcombo .cline .mn{color:var(--verde-l);font-weight:700}
   .vcombo .ctot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--linha2);color:var(--cinza)}
   .vcombo .ctot b{color:#fff;font-family:'JetBrains Mono'}
+  .ccusto{margin-top:8px;padding-top:8px;border-top:1px dashed var(--linha2)}
+  .ccusto .cline{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11.5px;font-family:'JetBrains Mono';padding:3px 0;border:0;color:var(--cinza)}
+  .ccusto .cline span:last-child{color:#cfcfd4;font-weight:700}
   .vzap.combo{background:var(--verde);color:#04210f}
   .vzap.combo:hover{background:var(--verde-l)}
   .iatag{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono';font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(58,209,126,.16);color:var(--verde-l);border:1px solid rgba(58,209,126,.4);border-radius:6px;padding:2px 7px}
@@ -365,6 +368,25 @@ function comboPara(preco){
   }
   return melhor;
 }
+// custos de uma carta/combinação (mesmo padrão da plataforma de contempladas):
+//  saldo devedor = parcela × nº de parcelas; taxa de transferência ≈ 1% do
+//  crédito + R$ 85/carta; seguro de vida ≈ 0,0633% do crédito/mês.
+//  Valores de simulação, sujeitos à administradora.
+const TX_TRANSF=0.01, TX_TRANSF_CARTA=85, TX_SEGURO=0.000633;
+function custosDe(cartas){
+  const arr=Array.isArray(cartas)?cartas:[cartas];
+  const credito=arr.reduce((s,c)=>s+(c.c||0),0);
+  const entrada=arr.reduce((s,c)=>s+(c.e||0),0);
+  const saldo=arr.reduce((s,c)=>s+((c.p||0)*(c.x||0)),0);
+  const transf=Math.round(credito*TX_TRANSF + arr.length*TX_TRANSF_CARTA);
+  const seguro=credito*TX_SEGURO;
+  return {credito,entrada,saldo,transf,seguro,n:arr.length};
+}
+function custoLinhas(cu){
+  return `<div class="cline"><span>Saldo devedor</span><span>${BRL(cu.saldo)}</span></div>`+
+    `<div class="cline"><span>Taxa de transferência</span><span>${BRL(cu.transf)}</span></div>`+
+    `<div class="cline"><span>Seguro de vida <i style="color:var(--cinza);font-style:normal">/mês</i></span><span>${BRL(cu.seguro)}</span></div>`;
+}
 function zapCombo(combo,veic){
   const lst=combo.map(c=>`nº ${c.n} (crédito ${BRL(c.c)}, entrada ${BRL(c.e)})`).join(' + ');
   const cred=combo.reduce((s,c)=>s+c.c,0),ent=combo.reduce((s,c)=>s+c.e,0);
@@ -436,14 +458,18 @@ function renderEstoque(){
     const top=v.cartas.slice(0,2);
     let matchHtml,best=v.cartas[0],comboHtml='';
     if(v.cartas.length){
+      const cu=custosDe(best);
       matchHtml=`<div class="vmatch has"><div class="mh">🔨 ${v.cartas.length} carta(s) cobrem este veículo</div>`+
         top.map(c=>`<div class="mcarta"><span class="mn">nº ${c.n}</span><span class="md">crédito <b>${BRL(c.c)}</b> · entrada <b>${BRL(c.e)}</b> · ${pctAm(c)}</span></div>`).join('')+
+        `<div class="ccusto">${custoLinhas(cu)}</div>`+
       `</div>`;
     }else if(v.combo){
       matchHtml='';
+      const cu=custosDe(v.combo.combo);
       comboHtml=`<div class="vcombo"><div class="mh">🤖 <span class="iatag">junção IA</span> ${v.combo.combo.length} cartas juntas cobrem este veículo</div>`+
         v.combo.combo.map(c=>`<div class="cline"><span class="mn">nº ${c.n}</span><span>crédito ${BRL(c.c)} · entrada ${BRL(c.e)}</span></div>`).join('')+
-        `<div class="ctot"><span>Crédito somado <b>${BRL(v.combo.cred)}</b></span><span>Entrada <b>${BRL(v.combo.ent)}</b> · sobra <b>${BRL(v.combo.sobra)}</b></span></div></div>`;
+        `<div class="ctot"><span>Crédito somado <b>${BRL(v.combo.cred)}</b></span><span>Entrada <b>${BRL(v.combo.ent)}</b> · sobra <b>${BRL(v.combo.sobra)}</b></span></div>`+
+        `<div class="ccusto">${custoLinhas(cu)}</div></div>`;
     }else{
       matchHtml=`<div class="vmatch"><div class="mh none">Nenhuma carta cobre este valor hoje</div><div class="mcarta"><span class="md">Fale com a gente — buscamos uma carta sob medida.</span></div></div>`;
     }
@@ -513,6 +539,7 @@ $('fpAno').addEventListener('change',async e=>{
         `<div class="vcombo" style="grid-column:1/-1"><div class="mh">🤖 <span class="iatag">junção IA</span> ${cb.combo.length} cartas juntas cobrem ${j.valorTexto||BRL(j.valor)}</div>`+
           cb.combo.map(c=>`<div class="cline"><span class="mn">nº ${c.n}</span><span>crédito ${BRL(c.c)} · entrada ${BRL(c.e)}</span></div>`).join('')+
           `<div class="ctot"><span>Crédito somado <b>${BRL(cb.cred)}</b></span><span>Entrada <b>${BRL(cb.ent)}</b> · sobra <b>${BRL(cb.sobra)}</b></span></div>`+
+          `<div class="ccusto">${custoLinhas(custosDe(cb.combo))}</div>`+
           `<a class="vzap combo" style="margin-top:11px" href="${zapCombo(cb.combo,{nome:j.modelo,preco:j.valor})}" target="_blank" rel="noopener">🤖 Fechar juntando ${cb.combo.length} cartas</a></div>`:
         `<div class="cempty" style="padding:24px">Nenhuma carta (nem junção) cobre esse valor hoje — fale com a gente pra buscar uma carta sob medida.</div>`;
     }

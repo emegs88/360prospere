@@ -179,6 +179,14 @@
   .mcell .v{font-family:'JetBrains Mono';font-size:18px;font-weight:700;color:#fff;margin-top:4px}
   .mcell .v small{font-size:11px;color:var(--cinza);font-weight:400}
   .mcell.full{grid-column:1/-1}
+  .mcustos{background:var(--carvao);border:1px solid var(--linha);border-radius:12px;padding:13px 16px;margin-bottom:14px}
+  .mcustos .t{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--cinza);font-weight:700;margin-bottom:9px}
+  .mcustos .t small{text-transform:none;letter-spacing:0;color:var(--cinza2);font-weight:400}
+  .mcustos .crow{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;font-family:'JetBrains Mono';padding:5px 0;border-top:1px dashed var(--linha);color:var(--cinza)}
+  .mcustos .crow:first-of-type{border-top:0}
+  .mcustos .crow b{color:#fff}
+  .mcustos .crow i{color:var(--cinza2);font-style:normal;font-size:11px}
+  .mcustos .cnote{font-size:10.5px;color:var(--cinza2);margin-top:9px;line-height:1.5}
   .mpaga{background:rgba(58,209,126,.07);border:1px solid rgba(58,209,126,.22);border-radius:12px;padding:14px 16px;margin-bottom:14px}
   .mpaga .t{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:var(--verde-l)}
   .mpaga .d{font-size:12.5px;color:#cfcfd4;line-height:1.55;margin-top:6px}
@@ -559,6 +567,19 @@ function amCota(co){const pv=Math.max(0,co.c-co.e);return co.x?taxaEfetiva(pv,co
 let fTipo='todos',limite=24,modo='market';
 const $=id=>document.getElementById(id);
 
+// custos de transferência da carta (mesmo padrão da plataforma de contempladas):
+//  saldo devedor = parcela × nº de parcelas; taxa de transferência ≈ 1% do
+//  crédito + R$ 85; seguro de vida ≈ 0,0633% do crédito/mês.
+//  Valores de simulação, sujeitos à administradora.
+const TX_TRANSF=0.01, TX_TRANSF_CARTA=85, TX_SEGURO=0.000633;
+function custosDe(co){
+  const credito=co.c||0;
+  const saldo=(co.p||0)*(co.x||0);
+  const transf=Math.round(credito*TX_TRANSF + TX_TRANSF_CARTA);
+  const seguro=credito*TX_SEGURO;
+  return {saldo,transf,seguro};
+}
+
 // ===== MODAL DE DETALHE =====
 function abrirDetalhe(num){
   const co=COTAS.find(c=>Number(c.n)===Number(num));
@@ -567,6 +588,7 @@ function abrirDetalhe(num){
   const pctEntrada=co.c>0?((co.e/co.c)*100).toFixed(0):0;
   const trocaTxt=veic?'um carro na troca':'um imóvel ou veículo na troca';
   const custo=co.x?`${amCota(co).toFixed(2).replace('.',',')}% a.m. (referência)`:'—';
+  const cu=custosDe(co);
   $('mbox').innerHTML=`
     <div class="mhead">
       <div>
@@ -582,6 +604,14 @@ function abrirDetalhe(num){
         <div class="mcell"><div class="l">Entrada pra assumir</div><div class="v">${BRL(co.e)} <small>(${pctEntrada}% do crédito)</small></div></div>
         <div class="mcell"><div class="l">Parcela mensal</div><div class="v">${BRL(co.p)}${co.x?` <small>× ${co.x}×</small>`:''}</div></div>
         ${co.x?`<div class="mcell full"><div class="l">Custo efetivo (referência)</div><div class="v">${custo}</div></div>`:''}
+      </div>
+
+      <div class="mcustos">
+        <div class="t">Custos de transferência <small>(estimativa)</small></div>
+        <div class="crow"><span>Saldo devedor</span><b>${BRL(cu.saldo)}</b></div>
+        <div class="crow"><span>Taxa de transferência</span><b>${BRL(cu.transf)}</b></div>
+        <div class="crow"><span>Seguro de vida <i>/mês</i></span><b>${BRL(cu.seguro)}</b></div>
+        <div class="cnote">Estimativas pelo padrão de mercado — os valores finais são definidos pela administradora do consórcio na transferência.</div>
       </div>
 
       <div class="mpaga">

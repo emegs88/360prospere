@@ -64,9 +64,12 @@ function precoDe(html, titulo) {
 //  "Sobrado com 3 dormitórios, 230 m² - venda por R$ 1.400.000,00 - Bairro - Cidade/SP"
 const ehRuido = (s) =>
   !s ||
-  /R\$|aluguel|à\s*venda|^venda\b|por\s*R\$|\bm²\b|dormit|quart|^\d+$/i.test(s);
+  /R\$|aluguel|à\s*venda|\bvenda\b|\bpor\b|\bm²\b|dormit|quart|^\d+$/i.test(s) ||
+  /^(são\s+paulo|minas\s+gerais|paraná|rio\s+de\s+janeiro|santa\s+catarina|sp|mg|pr|rj|sc)$/i.test(s);
 function parseTitulo(t) {
-  const partes = (t || '').split(' - ').map((s) => s.trim());
+  // og:title às vezes vem truncado com reticências (… ou ...): corta tudo a partir delas
+  const tt = (t || '').replace(/(\.\.\.|…)[\s\S]*$/, '').trim();
+  const partes = tt.split(' - ').map((s) => s.trim());
   const head = partes[0] || '';
   // tipo = primeira palavra (Casa, Apartamento, Sala, Sobrado, Terreno, Barracão...)
   const mt = head.match(/^([A-Za-zÀ-ÿ]+)/);
@@ -77,7 +80,8 @@ function parseTitulo(t) {
   const limpa = (s) =>
     s
       .replace(/,?\s*(à\s*venda|venda)\s*por[\s\S]*$/i, '')
-      .replace(/\/[A-Z]{2}\b.*$/, '')
+      .replace(/[,/]\s*[A-Z]{2}\b[\s\S]*$/, '') // "/SP", ", SP", e estado por extenso
+      .replace(/,\s*(são\s+paulo|minas|paraná|rio|santa\s+catarina)[\s\S]*$/i, '')
       .replace(/^na\s+(rua|av\.?|avenida|alameda|travessa|estrada)\b[^,]*,?\s*/i, '')
       .replace(/,\s*\d+\s*$/, '')
       .split(',')[0]
