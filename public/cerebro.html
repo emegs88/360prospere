@@ -148,23 +148,34 @@
   .ccard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--vermelho)}
   .ccard.veiculo::before{background:var(--ambar)}
   .ccard .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .ctag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:20px;border:1px solid}
+  .cstatus{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--verde-l);background:rgba(58,209,126,.1);border:1px solid rgba(58,209,126,.35);padding:5px 10px;border-radius:20px}
+  .cstatus .dot{width:6px;height:6px;border-radius:50%;background:var(--verde-l);box-shadow:0 0 8px var(--verde-l)}
+  .ccat{display:flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:15px;color:#fff}
+  .ccat .emo{font-size:17px}
+  .ctag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:20px;border:1px solid;white-space:nowrap}
   .ctag.imovel{color:var(--vermelho-l);border-color:rgba(212,17,30,.4);background:rgba(212,17,30,.08)}
   .ctag.veiculo{color:var(--ambar-l);border-color:rgba(227,160,8,.4);background:rgba(227,160,8,.08)}
   .ccard .cnum{font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2)}
   .ccredito .l{font-size:10px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
   .ccredito .v{font-family:'JetBrains Mono';font-size:27px;font-weight:700;color:#fff;line-height:1.05;margin-top:2px}
+  .centrada{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(58,209,126,.07);border:1px solid rgba(58,209,126,.3);border-radius:10px;padding:11px 13px}
+  .centrada .l{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--verde-l)}
+  .centrada .v{font-family:'JetBrains Mono';font-size:20px;font-weight:700;color:#fff}
   .crows{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .crow2{background:var(--carvao);border:1px solid var(--linha);border-radius:9px;padding:9px 11px}
   .crow2 .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
   .crow2 .v{font-family:'JetBrains Mono';font-size:14.5px;font-weight:700;margin-top:3px}
   .crow2 .v.grn{color:var(--verde-l)}
+  .crow2 .v.amb{color:var(--ambar-l)}
   .cef{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--carvao);border:1px solid var(--linha);border-left:3px solid var(--vermelho);border-radius:10px;padding:10px 12px}
   .cef .lab{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase;line-height:1.3}
   .cef .lab b{display:block;font-family:'JetBrains Mono';font-size:15px;font-weight:700;color:#fff;letter-spacing:0;text-transform:none;margin-top:2px}
-  .cef .badge{font-family:'JetBrains Mono';font-size:13px;font-weight:700;padding:5px 10px;border-radius:8px;white-space:nowrap}
+  .cef .badge{font-family:'JetBrains Mono';font-size:13px;font-weight:700;padding:5px 10px;border-radius:8px;white-space:nowrap;text-align:right}
   .cef .badge.bom{color:var(--verde-l);background:rgba(58,209,126,.1);border:1px solid rgba(58,209,126,.35)}
   .cef .badge.alto{color:var(--ambar-l);background:rgba(227,160,8,.1);border:1px solid rgba(227,160,8,.35)}
+  .cverif{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--cinza);font-weight:600}
+  .cverif svg{width:15px;height:15px;flex:none}
+  .cverif b{color:#cfcfd4;font-weight:600}
   .czap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--verde);color:#04210f;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s;margin-top:2px}
   .czap:hover{background:var(--verde-l)}
   .cempty{grid-column:1/-1;text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
@@ -286,6 +297,8 @@
       <div class="cf-grp">
         <label>Ordenar</label>
         <select id="cotasOrd">
+          <option value="custo-asc">Melhor custo (a.m.)</option>
+          <option value="saldo-asc">Menor saldo devedor</option>
           <option value="credito-desc">Maior crédito</option>
           <option value="credito-asc">Menor crédito</option>
           <option value="entrada-asc">Menor entrada</option>
@@ -446,25 +459,35 @@ const CWA=(window.PROSPERE_COTAS&&window.PROSPERE_COTAS.whatsapp)||'551999756190
 let cFiltroTipo='todos',cLimite=24,cKpisFeitos=false;
 const tipoLabel=t=>t==='imovel'?'Imóvel':'Veículo';
 
-/* Custo efetivo = entrada + (parcela × nº parcelas). Compara com o crédito recebido. */
+const SELO='<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.8 3 .1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .1L12 22l-2.4-1.8-3-.1-.9-2.9L3.3 15l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.1L12 2z" fill="#3ad17e"/><path d="M8.5 12l2.2 2.2 4.5-4.5" stroke="#04210f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+/* Custo efetivo:
+   - total = entrada + (parcela × nº parcelas)  → desembolso total
+   - sobre = % do total sobre o crédito recebido (ágio/deságio)
+   - am    = custo efetivo aproximado ao mês: sobre distribuído no prazo (juros simples), só pra comparar cotas */
 function custoEfetivo(co){
   const x=co.x||0;
-  const total=co.e+(co.p*x);
-  const sobre=co.c>0?((total/co.c)-1)*100:0; // >0 ágio, <0 deságio
-  return {total, sobre};
+  const parcelas=co.p*x;        // total das parcelas a vencer (fluxo de caixa)
+  const total=co.e+parcelas;    // desembolso total (entrada + parcelas)
+  // Saldo devedor do bem nunca ultrapassa o crédito/avaliação: limitado ao crédito menos a entrada já paga
+  const saldo=co.c>0?Math.max(0,Math.min(parcelas,co.c-co.e)):parcelas;
+  const sobre=co.c>0?((total/co.c)-1)*100:0;
+  const am=x>0?(sobre/x):0;     // % ao mês aproximado (linear) — métrica comparativa entre cotas
+  const saldoSobre=co.c>0?((saldo/co.c)*100):0; // saldo devedor como % do crédito
+  return {saldo, parcelas, total, sobre, am, saldoSobre};
 }
 function custoEfetivoHTML(co){
-  if(!co.x)return ''; // sem nº de parcelas não dá pra calcular total confiável
-  const{total,sobre}=custoEfetivo(co);
-  const bom=sobre<=0;
-  const sinal=sobre>0?'+':'';
-  const txt=bom?`${sinal}${sobre.toFixed(1)}% · abaixo do crédito`:`${sinal}${sobre.toFixed(1)}% sobre o crédito`;
-  return `<div class="cef"><div class="lab">Custo efetivo (entrada + parcelas)<b>${BRL(Math.round(total))}</b></div><div class="badge ${bom?'bom':'alto'}">${txt}</div></div>`;
+  if(!co.x)return '';
+  const{total,sobre,am}=custoEfetivo(co);
+  const bom=am<=0.6; // até ~0,6% a.m. é competitivo pra crédito contemplado
+  const amTxt=(am>0?'+':'')+am.toFixed(2).replace('.',',')+'% a.m.';
+  return `<div class="cef"><div class="lab">Custo efetivo (entrada + parcelas)<b>${BRL(Math.round(total))}</b></div><div class="badge ${bom?'bom':'alto'}">${amTxt}<br><span style="font-size:9.5px;font-weight:600;opacity:.8">${(sobre>0?'+':'')+sobre.toFixed(0)}% total</span></div></div>`;
 }
 
 function zapLink(co){
   const tipo=tipoLabel(co.t).toLowerCase();
-  const cef=co.x?` · custo efetivo ${BRL(Math.round(custoEfetivo(co).total))}`:'';
+  const ce=co.x?custoEfetivo(co):null;
+  const cef=ce?` · saldo devedor ${BRL(Math.round(ce.saldo))} · custo efetivo ${BRL(Math.round(ce.total))}`:'';
   const msg=`Olá! Tenho interesse na cota contemplada de ${tipo} nº ${co.n} — crédito de ${BRL(co.c)} (entrada ${BRL(co.e)}, parcelas de ${BRL(co.p)}${co.x?`×${co.x}`:''}${cef}). Ainda está disponível?`;
   return `https://wa.me/${CWA}?text=${encodeURIComponent(msg)}`;
 }
@@ -477,7 +500,7 @@ function cotasFiltradas(){
   const q=(document.getElementById('cotasBusca').value||'').replace(/\D/g,'');
   if(q)arr=arr.filter(c=>String(c.n).includes(q)||String(c.c).includes(q));
   const ord=document.getElementById('cotasOrd').value;
-  const cmp={'credito-desc':(a,b)=>b.c-a.c,'credito-asc':(a,b)=>a.c-b.c,'entrada-asc':(a,b)=>a.e-b.e,'parcela-asc':(a,b)=>a.p-b.p}[ord];
+  const cmp={'custo-asc':(a,b)=>custoEfetivo(a).am-custoEfetivo(b).am,'saldo-asc':(a,b)=>custoEfetivo(a).saldo-custoEfetivo(b).saldo,'credito-desc':(a,b)=>b.c-a.c,'credito-asc':(a,b)=>a.c-b.c,'entrada-asc':(a,b)=>a.e-b.e,'parcela-asc':(a,b)=>a.p-b.p}[ord];
   if(cmp)arr.sort(cmp);
   return arr;
 }
@@ -492,7 +515,7 @@ function renderKpis(){
     <div class="kpi"><div class="l">Cotas disponíveis</div><div class="v red">${NUM(COTAS.length)}</div></div>
     <div class="kpi"><div class="l">Imóvel · Veículo</div><div class="v">${NUM(im.length)} · ${NUM(ve.length)}</div></div>
     <div class="kpi"><div class="l">Crédito total em carteira</div><div class="v grn">${BRLc(totCred)}</div></div>
-    <div class="kpi"><div class="l">Menor entrada</div><div class="v">${BRLc(menorEnt)}</div></div>`;
+    <div class="kpi"><div class="l">Melhor custo efetivo</div><div class="v grn">${(()=>{const v=COTAS.filter(c=>c.x).map(c=>custoEfetivo(c).am);return v.length?(Math.min(...v)).toFixed(2).replace('.',',')+'% a.m.':'—';})()}</div></div>`;
   cKpisFeitos=true;
 }
 
@@ -507,15 +530,18 @@ function renderCotas(){
   grid.innerHTML=vis.map(co=>`
     <div class="ccard ${co.t}">
       <div class="ctop">
+        <span class="cstatus"><span class="dot"></span>Contemplada</span>
         <span class="ctag ${co.t}">${tipoLabel(co.t)}</span>
-        <span class="cnum">COTA Nº ${co.n}</span>
       </div>
+      <div class="ccat"><span class="emo">${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'} <span class="cnum" style="margin-left:auto">Nº ${co.n}</span></div>
       <div class="ccredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
+      <div class="centrada"><div class="l">Compra imediata (entrada)</div><div class="v">${BRL(co.e)}</div></div>
       <div class="crows">
-        <div class="crow2"><div class="l">Entrada</div><div class="v">${BRL(co.e)}</div></div>
         <div class="crow2"><div class="l">Parcela</div><div class="v grn">${BRL(co.p)}${co.x?` <span style="color:var(--cinza2);font-size:11px">×${co.x}</span>`:''}</div></div>
+        ${(()=>{const{saldo,saldoSobre}=custoEfetivo(co);return `<div class="crow2"><div class="l">Saldo devedor do bem</div><div class="v">${BRLc(saldo)}${co.c>0?` <span style="color:var(--cinza2);font-size:11px">${saldoSobre.toFixed(0)}% do crédito</span>`:''}</div></div>`;})()}
       </div>
       ${custoEfetivoHTML(co)}
+      <div class="cverif">${SELO}<b>Atendimento verificado · Prospere Corretora</b></div>
       <a class="czap" href="${zapLink(co)}" target="_blank" rel="noopener">⬤ Quero esta cota</a>
     </div>`).join('');
   document.getElementById('cotasMore').classList.toggle('hide',arr.length<=cLimite);
