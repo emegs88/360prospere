@@ -80,15 +80,27 @@ const limpaLocal = (s) =>
 // A og:description do parceiro vem COMPLETA (o título é truncado em ~95 chars com
 // "..."). A 1ª linha segue sempre o padrão "...por R$ X - Bairro - Cidade/SP", então
 // ela é a fonte de verdade pra bairro/cidade. O título só serve de fallback.
+// nome de local plausível: poucas palavras, sem pontuação de frase, não truncado.
+// "Sumaré", "Recanto dos Sonhos" => ok; "Este apartamento no..." / "Ho" => não.
+const ehLocalValido = (s) =>
+  !!s &&
+  s.length >= 4 &&
+  s.split(/\s+/).length <= 5 &&
+  !/[.!?:;]/.test(s) &&
+  /^[A-Za-zÀ-ÿ]/.test(s);
+
 function localDaDescricao(desc) {
+  // só a 1ª linha, e só se ela seguir o padrão "...- Bairro - Cidade/SP" (tem o /UF).
   const linha = String(desc || '').split(/[\r\n]/)[0];
-  if (!linha) return null;
+  if (!linha || !/\/(SP|MG|PR|RJ|SC)\b/i.test(linha)) return null;
   const partes = linha.split(/\s+-\s+/).map((s) => s.trim()).filter(Boolean);
   const uteis = partes.map(limpaLocal).filter((s) => s && !ehRuido(s));
   if (!uteis.length) return null;
   const cidade = uteis[uteis.length - 1];
   let bairro = uteis.length >= 2 ? uteis[uteis.length - 2] : '';
   if (bairro && bairro === cidade) bairro = '';
+  // se algum dos dois não parece nome de lugar (texto corrido/truncado), descarta.
+  if (!ehLocalValido(cidade) || (bairro && !ehLocalValido(bairro))) return null;
   return { bairro, cidade };
 }
 
@@ -125,6 +137,8 @@ function parseTitulo(t, desc) {
       }
     }
     if (bairro && bairro === cidade) bairro = '';
+    // cidade truncada pelo "..." (ex.: "Ho" de Hortolândia): melhor vazio que quebrado.
+    if (cidade && !ehLocalValido(cidade)) cidade = '';
   }
 
   const area = (() => {
