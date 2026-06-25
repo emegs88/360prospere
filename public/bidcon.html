@@ -192,7 +192,34 @@
   .mzap:hover{background:var(--verde-l)}
   .mobs{font-size:11px;color:var(--cinza2);text-align:center;margin-top:12px;line-height:1.5}
 
+  /* DOCUMENTOS PRÉ-ANÁLISE (VEÍCULO) */
+  .docs{margin-top:46px}
+  .docs .stitle{font-family:'Archivo Narrow';font-weight:700;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--ambar-l)}
+  .docs h2{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:4px 0 6px}
+  .docs .csub{color:var(--cinza);font-size:14px;max-width:64ch;line-height:1.55}
+  .dseg{display:inline-flex;gap:6px;background:var(--carvao);border:1px solid var(--linha);border-radius:12px;padding:5px;margin:22px 0 18px}
+  .dseg button{background:transparent;border:none;color:var(--cinza);font-family:'Archivo';font-weight:700;font-size:13px;padding:9px 18px;border-radius:8px;cursor:pointer;transition:.12s}
+  .dseg button.on{background:var(--ambar);color:#1a1200}
+  .dtips{background:rgba(227,160,8,.05);border:1px solid rgba(227,160,8,.2);border-radius:12px;padding:15px 18px;margin-bottom:18px}
+  .dtips .t{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:var(--ambar-l);margin-bottom:8px}
+  .dtips ul{margin:0;padding-left:18px;color:#cfcfd4;font-size:12.5px;line-height:1.7}
+  .dgrid{display:grid;gap:12px;grid-template-columns:1fr}
+  .dcard{background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:16px 18px}
+  .dcard .dh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+  .dcard .dt{font-weight:800;font-size:15px;color:#fff;letter-spacing:.01em}
+  .dcard .dbadge{font-family:'Archivo Narrow';font-weight:700;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:7px}
+  .dbadge.all{background:rgba(212,17,30,.12);color:var(--vermelho-l);border:1px solid rgba(212,17,30,.3)}
+  .dbadge.one{background:rgba(58,209,126,.1);color:var(--verde-l);border:1px solid rgba(58,209,126,.28)}
+  .dcard .dsub{font-size:11.5px;color:var(--cinza);margin-bottom:10px}
+  .dcard ul{margin:0;padding-left:18px;color:#dcdce0;font-size:13px;line-height:1.65}
+  .dcard li{margin-bottom:5px}
+  .dcard li small{display:block;color:var(--cinza);font-size:11px;line-height:1.45;margin-top:1px}
+  .dcat{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza2);margin:6px 2px 2px;font-weight:700}
+  .dveic{background:rgba(227,160,8,.07);border:1px solid rgba(227,160,8,.25);border-radius:14px;padding:16px 18px;margin-top:12px}
+  .dveic .dt{color:var(--ambar-l)}
+
   @media(min-width:560px){.modal{align-items:center;padding:20px}.mbox{border-radius:20px}}
+  @media(min-width:760px){.dgrid{grid-template-columns:1fr 1fr}}
   @media(max-width:600px){.cgrid{grid-template-columns:1fr}.hero h1{font-size:32px}.como h2{font-size:24px}.step{grid-template-columns:36px 1fr;gap:12px;padding:14px}}
 </style>
 </head>
@@ -294,6 +321,161 @@
       <div class="step"><div class="sn">9</div><div><div class="sh">Análise e efetivação da transferência</div><div class="sd">A administradora analisa, faz contato com o pretendente e efetiva a transferência das cotas.</div></div></div>
       <div class="step"><div class="sn">10</div><div><div class="sh">Processo de faturamento</div><div class="sd">Com a transferência efetivada, abre-se o grupo de faturamento junto ao setor de contemplação da administradora.</div></div></div>
       <div class="step imp"><div class="sn">!</div><div><div class="sh">Bom saber</div><div class="sd">É possível reservar antes da pré-análise, mas a reserva só se efetiva com a documentação completa. Quanto mais claros os detalhes (finalidade, comprovação de renda, vendedor), mais rápido e seguro o faturamento.</div></div></div>
+    </div>
+  </section>
+
+  <section class="docs">
+    <div class="stitle">Check list oficial · pré-análise</div>
+    <h2>Documentos para a análise <b>(Veículo)</b></h2>
+    <p class="csub">Tudo que a administradora pede para liberar a carta sem retrabalho. Junte os documentos conforme o seu tipo de renda e a pré-análise sai em <b>até 1 dia útil</b>.</p>
+
+    <div class="dseg" id="docSeg">
+      <button data-pf="pf" class="on">👤 Pessoa Física</button>
+      <button data-pf="pj">🏢 Pessoa Jurídica</button>
+    </div>
+
+    <div class="dtips">
+      <div class="t">⚡ Dicas para agilizar</div>
+      <ul>
+        <li>Digitalize <b>em PDF legível</b>, cada documento em um arquivo separado (foto não é indicada).</li>
+        <li>Documento com mais de uma página: digitalize todas no mesmo arquivo e na ordem certa.</li>
+        <li>Reúna a documentação completa e envie tudo de uma vez ao seu vendedor.</li>
+      </ul>
+    </div>
+
+    <div id="docPF">
+      <div class="dcat">Identificação — do pretendente e cônjuge (se houver)</div>
+      <div class="dgrid">
+        <div class="dcard">
+          <div class="dh"><span class="dt">Identificação</span><span class="dbadge all">Todos</span></div>
+          <div class="dsub">Não precisa estar autenticado para a pré-análise.</div>
+          <ul>
+            <li>RG e CPF, <b>ou</b> CNH</li>
+            <li>Comprovante de residência atualizado<small>Água, luz, telefone fixo ou internet residencial — pode estar em nome de terceiros.</small></li>
+            <li>Comprovante de estado civil<small>Certidão de nascimento ou casamento (vale também para divorciado ou viúvo).</small></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dcat">Comprovação de renda — envie conforme o seu caso</div>
+      <p class="csub" style="margin:0 2px 12px;font-size:12.5px">Pode somar mais de uma renda ou agregar a renda do cônjuge. A <b>última Declaração de IR + recibo de entrega</b> entra em todos os casos (só se você declara).</p>
+      <div class="dgrid">
+        <div class="dcard">
+          <div class="dh"><span class="dt">Assalariado (CLT)</span><span class="dbadge all">Todos</span></div>
+          <ul>
+            <li>3 últimos contracheques<small>Se tiver férias / horas extras, envie os 6 últimos.</small></li>
+            <li>Carteira de Trabalho<small>Páginas: foto, identificação e contrato atual — ou a CTPS digital.</small></li>
+            <li>Extrato FGTS<small>Pelo app/site da Caixa, últimos 3 meses.</small></li>
+            <li>Última Declaração de IR + recibo (se declara)</li>
+          </ul>
+        </div>
+        <div class="dcard">
+          <div class="dh"><span class="dt">Funcionário público</span><span class="dbadge all">Todos</span></div>
+          <div class="dsub">Ativo, aposentado ou pensionista.</div>
+          <ul>
+            <li>3 últimos contracheques<small>Com férias etc., envie os 6 últimos.</small></li>
+            <li>Última Declaração de IR + recibo (se declara)</li>
+          </ul>
+        </div>
+        <div class="dcard">
+          <div class="dh"><span class="dt">Empresário (sócio de CNPJ)</span><span class="dbadge one">Uma opção</span></div>
+          <div class="dsub">Escolha a que se enquadra + IR.</div>
+          <ul>
+            <li>3 contracheques de pró-labore e/ou distribuição de lucros<small>Para o processo não vale contracheque — somente DECORE.</small></li>
+            <li>DEFIS do último ano (Simples Nacional)</li>
+            <li>SIMEI do último ano (se for MEI)</li>
+            <li>Última Declaração de IR + recibo (se declara)</li>
+          </ul>
+        </div>
+        <div class="dcard">
+          <div class="dh"><span class="dt">Autônomo (sem CNPJ)</span><span class="dbadge one">Uma opção</span></div>
+          <div class="dsub">Escolha a que se enquadra + IR.</div>
+          <ul>
+            <li>DECORE dos 3 últimos meses<small>Feito por contador com registro no CFC no estado do pretendente.</small></li>
+            <li>Notas fiscais de frete dos 6 últimos meses</li>
+            <li>RPA + comprovante de quitação dos 6 últimos meses</li>
+            <li>Uber/99 — extratos do app dos 6 últimos meses</li>
+            <li>Contrato de prestação + extrato bancário (6 meses)<small>Analisamos o extrato; informe qual serviço é prestado.</small></li>
+            <li>Última Declaração de IR + recibo (se declara)</li>
+          </ul>
+        </div>
+        <div class="dcard">
+          <div class="dh"><span class="dt">Locador de imóveis (aluguel)</span><span class="dbadge all">Todos</span></div>
+          <ul>
+            <li>Extrato bancário com recebimentos (6 meses)<small>Ou os 6 últimos comprovantes de pagamento.</small></li>
+            <li>Contrato de aluguel vigente<small>Assinado por locador e locatário.</small></li>
+            <li>Matrícula do imóvel<small>Em seu nome e atualizada. Dispensada se o imóvel já está declarado no IR.</small></li>
+            <li>Última Declaração de IR + recibo (se declara)</li>
+          </ul>
+        </div>
+        <div class="dcard">
+          <div class="dh"><span class="dt">Aposentado / pensionista (INSS)</span><span class="dbadge one">Uma opção</span></div>
+          <ul>
+            <li>Extrato do INSS dos 3 últimos meses</li>
+            <li>Carta de concessão + extrato bancário (3 meses)</li>
+            <li>Última Declaração de IR + recibo (se declara)</li>
+          </ul>
+        </div>
+        <div class="dcard">
+          <div class="dh"><span class="dt">Produtor rural</span><span class="dbadge one">Uma opção</span></div>
+          <ul>
+            <li>Notas/contra notas dos últimos 12 meses<small>Se emite mensalmente, envie os últimos 6 meses.</small></li>
+            <li>Relação de notas emitida pela Prefeitura/Estado<small>Identificando quem emitiu e/ou com carimbo do órgão.</small></li>
+            <li>Última Declaração de IR + recibo<small>Se tiver valores de atividade rural declarados.</small></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="docPJ" style="display:none">
+      <div class="dcat">Identificação da empresa</div>
+      <div class="dgrid">
+        <div class="dcard">
+          <div class="dh"><span class="dt">Constituição</span><span class="dbadge one">Uma opção</span></div>
+          <ul>
+            <li>Contrato Social e/ou última alteração</li>
+            <li>Estatuto Social e/ou alterações + Ata de eleição da Diretoria</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dcat">Comprovação de renda — conforme o regime</div>
+      <p class="csub" style="margin:0 2px 12px;font-size:12.5px">Se usar <b>fiador</b>, avise para solicitarmos os documentos dele.</p>
+      <div class="dgrid">
+        <div class="dcard">
+          <div class="dh"><span class="dt">Não optante do Simples</span><span class="dbadge all">Todos</span></div>
+          <ul>
+            <li>Relatório de faturamento dos últimos 12 meses</li>
+            <li>Balancete de todos os meses do ano corrente</li>
+            <li>Balanço Patrimonial do último ano</li>
+            <li>DRE do último ano</li>
+          </ul>
+        </div>
+        <div class="dcard">
+          <div class="dh"><span class="dt">Optante do Simples Nacional</span><span class="dbadge all">Todos</span></div>
+          <ul><li>PGDAS dos últimos 12 meses</li></ul>
+        </div>
+        <div class="dcard">
+          <div class="dh"><span class="dt">Optante pelo SIMEI</span><span class="dbadge all">Todos</span></div>
+          <ul><li>Declaração do SIMEI do último ano</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="dveic">
+      <div class="dh"><span class="dt">🚗 Do veículo (PF e PJ)</span><span class="dbadge all">Todos</span></div>
+      <div class="dsub">Documentos do bem — necessários quando o veículo já está definido.</div>
+      <ul>
+        <li>DUT ou CRLV<small>Foto, digitalizado em PDF ou via digital.</small></li>
+        <li>Quatro fotos do veículo<small>Frente, traseira e as duas laterais.</small></li>
+      </ul>
+    </div>
+
+    <div class="dtips" style="margin:18px 0 0;background:rgba(212,17,30,.05);border-color:rgba(212,17,30,.2)">
+      <div class="t" style="color:var(--vermelho-l)">📅 Ano e aceitação do veículo</div>
+      <ul>
+        <li>O <b>ano-limite</b> aceito e o estado do veículo dependem da <b>administradora e da tabela vigente</b> — confirme sempre com o atendimento antes de fechar.</li>
+        <li>A liberação final está sujeita à <b>vistoria e aprovação</b> da administradora; documentos em dia e fotos nítidas evitam recusa.</li>
+      </ul>
     </div>
   </section>
 
@@ -499,6 +681,14 @@ $('cotasModo').addEventListener('click',e=>{
 // fechar modal: clique no fundo + ESC
 $('modal').addEventListener('click',e=>{if(e.target===$('modal'))fecharDetalhe();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharDetalhe();});
+
+// abas documentos PF / PJ
+$('docSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#docSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  const pj=b.dataset.pf==='pj';
+  $('docPF').style.display=pj?'none':'';
+  $('docPJ').style.display=pj?'':'none';
+});
 
 // header zap
 $('hzap').href=`https://wa.me/${CWA}?text=${encodeURIComponent('Olá! Quero saber mais sobre as cotas contempladas disponíveis.')}`;
