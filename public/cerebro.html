@@ -183,6 +183,56 @@
   .cmore:hover{border-color:var(--vermelho)}
   @media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:600px){.cgrid{grid-template-columns:1fr}}
+  /* ===== MONTADOR DE CRÉDITO IA ===== */
+  .montador{background:linear-gradient(135deg,var(--carvao2),var(--carvao));border:1px solid var(--linha2);border-radius:16px;padding:20px 22px;margin-bottom:20px;position:relative;overflow:hidden}
+  .montador::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(var(--vermelho),var(--vermelho-d))}
+  .mont-h{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .mont-h .ico{font-size:20px}
+  .mont-h h3{font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:19px;color:#fff}
+  .mont-h h3 b{color:var(--vermelho-l)}
+  .mont-sub{font-size:12px;color:var(--cinza);margin-bottom:14px;line-height:1.5}
+  .mont-in{display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end}
+  .mont-in .grp{display:flex;flex-direction:column;gap:4px}
+  .mont-in label{font-size:9.5px;color:var(--cinza);letter-spacing:.12em;text-transform:uppercase}
+  .mont-in input,.mont-in select{background:var(--preto);border:1px solid var(--linha2);color:#fff;border-radius:9px;padding:11px 13px;font-family:'Archivo';font-size:14px;outline:none;transition:.12s}
+  .mont-in input:focus,.mont-in select:focus{border-color:var(--vermelho)}
+  .mont-in .q{flex:1;min-width:240px}
+  .mont-btn{background:var(--vermelho);color:#fff;border:0;font-family:'Archivo';font-weight:700;font-size:14px;padding:12px 22px;border-radius:9px;cursor:pointer;transition:.12s;display:flex;align-items:center;gap:7px;white-space:nowrap}
+  .mont-btn:hover{background:var(--vermelho-l)}
+  .mont-btn:disabled{opacity:.5;cursor:default}
+  .mont-ex{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+  .mont-ex span{font-size:11px;color:var(--cinza);background:var(--carvao);border:1px solid var(--linha);border-radius:20px;padding:5px 11px;cursor:pointer;transition:.12s}
+  .mont-ex span:hover{border-color:var(--vermelho);color:#fff}
+  .mont-out{margin-top:16px}
+  .mont-think{text-align:center;color:var(--cinza);padding:22px;font-size:13px}
+  .mont-res{background:var(--preto);border:1px solid var(--linha2);border-radius:13px;padding:18px}
+  .mont-res .topo{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .mont-res .alvo{font-size:12px;color:var(--cinza)}
+  .mont-res .alvo b{color:#fff;font-size:15px}
+  .mont-tot{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:14px}
+  .mont-tot .b{background:var(--carvao2);border:1px solid var(--linha);border-radius:10px;padding:11px 13px}
+  .mont-tot .b .l{font-size:9px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .mont-tot .b .v{font-family:'JetBrains Mono';font-size:18px;font-weight:700;color:#fff;margin-top:3px}
+  .mont-tot .b .v.grn{color:var(--verde-l)}.mont-tot .b .v.red{color:var(--vermelho-l)}
+  .mont-lista{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+  .mont-item{display:flex;align-items:center;gap:10px;background:var(--carvao2);border:1px solid var(--linha);border-radius:10px;padding:9px 12px}
+  .mont-item .em{font-size:16px}
+  .mont-item .nm{font-family:'JetBrains Mono';font-size:12px;color:var(--cinza)}
+  .mont-item .cr{font-family:'JetBrains Mono';font-weight:700;color:#fff;font-size:14px;margin-left:auto}
+  .mont-item .pc{font-size:11px;color:var(--cinza2)}
+  .mont-cta{display:flex;gap:9px;flex-wrap:wrap}
+  .mont-cta a,.mont-cta button{flex:1;min-width:150px;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:12px;cursor:pointer;border:0;transition:.12s}
+  .mont-cta .zap{background:var(--verde);color:#04210f}
+  .mont-cta .zap:hover{background:var(--verde-l)}
+  .mont-cta .copy{background:var(--carvao2);border:1px solid var(--linha2);color:#fff}
+  .mont-cta .copy:hover{border-color:var(--vermelho)}
+  /* comissão — visão interna */
+  .mont-comissao{background:rgba(212,17,30,.06);border:1px dashed rgba(255,70,81,.4);border-radius:10px;padding:10px 13px;margin-bottom:14px;display:flex;align-items:center;gap:9px}
+  .mont-comissao .lock{font-size:13px}
+  .mont-comissao .txt{font-size:11px;color:var(--cinza);letter-spacing:.04em}
+  .mont-comissao .txt b{color:var(--vermelho-l);font-family:'JetBrains Mono';font-size:15px}
+  .mont-comissao .tag{margin-left:auto;font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--vermelho-l);border:1px solid rgba(255,70,81,.4);border-radius:5px;padding:3px 7px}
+  @media(max-width:980px){.mont-tot{grid-template-columns:repeat(2,1fr)}}
   .hide{display:none!important}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--vermelho);color:#fff;font-weight:700;font-size:13px;padding:11px 20px;border-radius:10px;opacity:0;transition:.25s;z-index:100}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -267,6 +317,38 @@
 
   <!-- COTAS CONTEMPLADAS -->
   <section id="tab-cotas" class="hide">
+
+    <div class="montador">
+      <div class="mont-h"><span class="ico">🧠</span><h3>Montador de Crédito <b>IA</b></h3></div>
+      <div class="mont-sub">Diga em texto o que o cliente precisa — a IA encontra e <b>soma cotas contempladas disponíveis</b> pra chegar no valor, escolhendo sempre o <b>menor custo efetivo</b>.</div>
+      <div class="mont-in">
+        <div class="grp q">
+          <label>O que o cliente precisa</label>
+          <input id="montTexto" placeholder="Ex.: preciso de 500 mil pra comprar um apartamento">
+        </div>
+        <div class="grp">
+          <label>Valor alvo (R$)</label>
+          <input id="montValor" inputmode="numeric" placeholder="500.000" style="width:130px">
+        </div>
+        <div class="grp">
+          <label>Tipo</label>
+          <select id="montTipo">
+            <option value="auto">Detectar</option>
+            <option value="imovel">Imóvel</option>
+            <option value="veiculo">Veículo</option>
+          </select>
+        </div>
+        <button class="mont-btn" id="montBtn"><span>⚡</span> Montar</button>
+      </div>
+      <div class="mont-ex" id="montEx">
+        <span data-ex="preciso de 500 mil pra comprar um apartamento">🏠 500 mil pra apartamento</span>
+        <span data-ex="quero 1 milhão em imóvel">🏠 1 milhão em imóvel</span>
+        <span data-ex="120 mil pra trocar de carro">🚗 120 mil pra carro</span>
+        <span data-ex="300 mil pra reformar e comprar uma casa">🏠 300 mil pra casa</span>
+      </div>
+      <div class="mont-out" id="montOut"></div>
+    </div>
+
     <div class="cotas-head">
       <div>
         <div class="eyebrow">Carteira de cotas contempladas · pronta pra usar</div>
@@ -566,6 +648,155 @@ document.getElementById('cotasTipo').addEventListener('click',e=>{const b=e.targ
 ['cotasFaixa','cotasOrd'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{cLimite=24;renderCotas();}));
 document.getElementById('cotasBusca').addEventListener('input',()=>{cLimite=24;renderCotas();});
 document.getElementById('cotasMore').addEventListener('click',()=>{cLimite+=24;renderCotas();});
+
+/* ===== MONTADOR DE CRÉDITO IA ===== */
+const COMISSAO_PCT=0.07; // 7% do crédito — VISÃO INTERNA, nunca aparece no card do cliente
+
+// Parsing local (sem IA): extrai valor-alvo e tipo do texto livre
+function parseLocal(texto){
+  const t=(texto||'').toLowerCase();
+  let valor=0;
+  // "500 mil", "1 milhão", "1,2 mi", "300mil", "120.000", "R$ 250000"
+  const milhao=t.match(/(\d+[.,]?\d*)\s*(milh(ã|a)o|milhões|mi\b)/);
+  const mil=t.match(/(\d+[.,]?\d*)\s*mil\b/);
+  if(milhao){valor=parseFloat(milhao[1].replace('.','').replace(',','.'))*1e6;}
+  else if(mil){valor=parseFloat(mil[1].replace('.','').replace(',','.'))*1e3;}
+  else{
+    const num=t.replace(/r\$/g,'').match(/(\d[\d.\s]*\d|\d)/);
+    if(num){const v=parseFloat(num[1].replace(/[.\s]/g,''));if(v>=1000)valor=v;}
+  }
+  let tipo='auto';
+  if(/(im(ó|o)vel|apartamento|apto|casa|terreno|sala|loja|reforma|constru)/.test(t))tipo='imovel';
+  else if(/(carro|ve(í|i)culo|autom(ó|o)vel|moto|caminh(ã|a)o|caminhonete|trocar de carro)/.test(t))tipo='veiculo';
+  return {valor, tipo};
+}
+
+// Combina cotas pra chegar no alvo, priorizando MENOR custo efetivo (a.m.)
+function montarCombinacao(alvo, tipo){
+  let pool=COTAS.filter(c=>c.c>0);
+  if(tipo==='imovel'||tipo==='veiculo')pool=pool.filter(c=>c.t===tipo);
+  if(!pool.length)return null;
+  // ordena por custo efetivo crescente (melhor primeiro); cotas sem prazo vão pro fim
+  pool=pool.slice().sort((a,b)=>{
+    const am=c=>c.x?custoEfetivo(c).am:999;
+    return am(a)-am(b);
+  });
+  const tol=0.10; // tolera ±10% do alvo
+  const min=alvo*(1-tol), max=alvo*(1+tol);
+
+  // 1) cota única que já cobre o alvo dentro da tolerância (mais simples = melhor)
+  const unica=pool.filter(c=>c.c>=min&&c.c<=max).sort((a,b)=>{
+    const am=c=>c.x?custoEfetivo(c).am:999;return am(a)-am(b);
+  })[0];
+  if(unica)return {cotas:[unica], modo:'única'};
+
+  // 2) greedy: soma as de menor custo até cruzar o alvo
+  const sel=[];let soma=0;
+  for(const c of pool){
+    if(soma>=min)break;
+    if(soma+c.c<=max||soma<min){sel.push(c);soma+=c.c;}
+    if(soma>=min)break;
+  }
+  if(!sel.length)return null;
+
+  // 3) refino: se passou muito do alvo, tenta trocar a última por uma menor que ainda cubra
+  if(soma>max){
+    const semUlt=sel.slice(0,-1);const base=semUlt.reduce((s,c)=>s+c.c,0);
+    const falta=alvo-base;
+    const repo=pool.filter(c=>!semUlt.includes(c)&&base+c.c>=min).sort((a,b)=>Math.abs((base+a.c)-alvo)-Math.abs((base+b.c)-alvo))[0];
+    if(repo){sel.length=0;sel.push(...semUlt,repo);soma=base+repo.c;}
+  }
+  return {cotas:sel, modo:sel.length===1?'única':'combinação'};
+}
+
+function montarResultadoHTML(res, alvo){
+  if(!res||!res.cotas.length)return `<div class="mont-res" style="color:var(--ambar-l)">Não encontrei cotas disponíveis pra esse valor. Tenta ajustar o valor-alvo ou o tipo.</div>`;
+  const cotas=res.cotas;
+  const credito=cotas.reduce((s,c)=>s+c.c,0);
+  const entrada=cotas.reduce((s,c)=>s+c.e,0);
+  const parcela=cotas.reduce((s,c)=>s+c.p,0);
+  const ams=cotas.filter(c=>c.x).map(c=>custoEfetivo(c).am);
+  const amMedio=ams.length?ams.reduce((s,v)=>s+v,0)/ams.length:0;
+  const comissao=credito*COMISSAO_PCT; // INTERNO
+  const dif=credito-alvo, difPct=alvo>0?((credito/alvo-1)*100):0;
+  const difTxt=Math.abs(difPct)<1?'no alvo':(dif>=0?`+${difPct.toFixed(0)}% acima`:`${difPct.toFixed(0)}% abaixo`);
+
+  const itens=cotas.map(c=>`
+    <div class="mont-item">
+      <span class="em">${c.t==='imovel'?'🏠':'🚗'}</span>
+      <div><div class="nm">Cota nº ${c.n} · ${tipoLabel(c.t)}</div><div class="pc">entrada ${BRL(c.e)} · ${BRL(c.p)}${c.x?`×${c.x}`:''}${c.x?` · ${custoEfetivo(c).am.toFixed(2).replace('.',',')}% a.m.`:''}</div></div>
+      <span class="cr">${BRLc(c.c)}</span>
+    </div>`).join('');
+
+  // mensagem WhatsApp pro cliente — SEM comissão
+  const linhasZap=cotas.map(c=>`• Cota nº ${c.n} (${tipoLabel(c.t)}): crédito ${BRL(c.c)} · entrada ${BRL(c.e)} · ${BRL(c.p)}${c.x?`×${c.x}`:''}`).join('\n');
+  const msgZap=`*Montagem de crédito — Prospere Corretora*\n\nCrédito total: *${BRL(credito)}*\nEntrada total: ${BRL(entrada)}\nParcela total: ${BRL(parcela)}/mês\nCusto efetivo médio: ${amMedio.toFixed(2).replace('.',',')}% a.m.\n\n${cotas.length} cota(s) contemplada(s):\n${linhasZap}\n\nTodas contempladas e disponíveis pra usar agora. Quer que eu reserve?`;
+  const zap=`https://wa.me/${CWA}?text=${encodeURIComponent(msgZap)}`;
+
+  return `<div class="mont-res">
+    <div class="topo">
+      <div class="alvo">Alvo do cliente: <b>${BRL(alvo)}</b> · ${cotas.length} cota(s) · <span style="color:${Math.abs(difPct)<5?'var(--verde-l)':'var(--ambar-l)'}">${difTxt}</span></div>
+    </div>
+    <div class="mont-tot">
+      <div class="b"><div class="l">Crédito total</div><div class="v grn">${BRLc(credito)}</div></div>
+      <div class="b"><div class="l">Entrada total</div><div class="v">${BRLc(entrada)}</div></div>
+      <div class="b"><div class="l">Parcela /mês</div><div class="v">${BRLc(parcela)}</div></div>
+      <div class="b"><div class="l">Custo efetivo médio</div><div class="v ${amMedio<=1.2?'grn':'red'}">${amMedio?amMedio.toFixed(2).replace('.',',')+'% a.m.':'—'}</div></div>
+    </div>
+    <div class="mont-comissao">
+      <span class="lock">🔒</span>
+      <span class="txt">Comissão estimada (7% do crédito): <b>${BRL(Math.round(comissao))}</b></span>
+      <span class="tag">só você vê</span>
+    </div>
+    <div class="mont-lista">${itens}</div>
+    <div class="mont-cta">
+      <a class="zap" href="${zap}" target="_blank" rel="noopener">⬤ Enviar ao cliente (WhatsApp)</a>
+      <button class="copy" id="montCopy">Copiar resumo</button>
+    </div>
+  </div>`;
+}
+
+let montUltimaMsg='';
+async function montar(){
+  const texto=document.getElementById('montTexto').value.trim();
+  const valIn=document.getElementById('montValor').value.replace(/\D/g,'');
+  const tipoSel=document.getElementById('montTipo').value;
+  const out=document.getElementById('montOut');
+  let alvo=valIn?parseInt(valIn,10):0;
+  let tipo=tipoSel;
+  // se não digitou valor, tenta extrair do texto
+  if(!alvo&&texto){const p=parseLocal(texto);alvo=p.valor;if(tipo==='auto')tipo=p.tipo;}
+  else if(tipoSel==='auto'&&texto){tipo=parseLocal(texto).tipo;}
+  if(!alvo){
+    // último recurso: IA interpreta o texto
+    if(texto){
+      out.innerHTML='<div class="mont-think">🧠 Interpretando o pedido…</div>';
+      try{
+        const sys='Você extrai a intenção de compra de consórcio. Responda APENAS um JSON {"valor":<número em reais, só dígitos>,"tipo":"imovel"|"veiculo"|"auto"}. Sem texto extra.';
+        const r=await callBrain(sys, texto, false);
+        const j=JSON.parse(r.match(/\{[\s\S]*\}/)[0]);
+        alvo=Number(j.valor)||0; if(tipo==='auto')tipo=j.tipo||'auto';
+      }catch(e){/* segue sem IA */}
+    }
+    if(!alvo){out.innerHTML='<div class="mont-res" style="color:var(--ambar-l)">Me diz o valor que o cliente precisa (ex.: "500 mil" no texto, ou preenche o campo Valor alvo).</div>';return;}
+  }
+  if(tipo==='auto')tipo='';
+  const res=montarCombinacao(alvo, tipo);
+  out.innerHTML=montarResultadoHTML(res, alvo);
+  // botão copiar
+  const cp=document.getElementById('montCopy');
+  if(cp&&res&&res.cotas.length){
+    const cotas=res.cotas;
+    const credito=cotas.reduce((s,c)=>s+c.c,0),entrada=cotas.reduce((s,c)=>s+c.e,0),parcela=cotas.reduce((s,c)=>s+c.p,0);
+    const ams=cotas.filter(c=>c.x).map(c=>custoEfetivo(c).am);const amMedio=ams.length?ams.reduce((s,v)=>s+v,0)/ams.length:0;
+    const linhas=cotas.map(c=>`• Cota nº ${c.n} (${tipoLabel(c.t)}): crédito ${BRL(c.c)} · entrada ${BRL(c.e)} · ${BRL(c.p)}${c.x?`×${c.x}`:''}`).join('\n');
+    montUltimaMsg=`Montagem de crédito — Prospere Corretora\n\nCrédito total: ${BRL(credito)}\nEntrada total: ${BRL(entrada)}\nParcela total: ${BRL(parcela)}/mês\nCusto efetivo médio: ${amMedio.toFixed(2).replace('.',',')}% a.m.\n\n${cotas.length} cota(s) contemplada(s):\n${linhas}`;
+    cp.addEventListener('click',()=>navigator.clipboard.writeText(montUltimaMsg).then(()=>toast('Resumo copiado (sem comissão)')));
+  }
+}
+document.getElementById('montBtn').addEventListener('click',montar);
+document.getElementById('montTexto').addEventListener('keydown',e=>{if(e.key==='Enter')montar();});
+document.getElementById('montEx').addEventListener('click',e=>{const s=e.target.closest('span[data-ex]');if(!s)return;document.getElementById('montTexto').value=s.dataset.ex;montar();});
 
 clock();setInterval(clock,1000);renderMap();renderModes();renderConsole();
 </script>
