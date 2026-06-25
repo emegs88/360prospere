@@ -548,8 +548,11 @@
   <div class="mbox" id="mbox" role="dialog" aria-modal="true"></div>
 </div>
 
-<script src="/cotas.js"></script>
+<!-- Base das APIs/dados. No 360 fica vazia (mesmo domínio). Na bidcon (domínio
+     separado) config.js define window.BIDCON_API='https://360prospere.vercel.app'. -->
+<script>window.API360=(window.BIDCON_API||'').replace(/\/$/,'');document.write('<scr'+'ipt src="'+window.API360+'/cotas.js"></scr'+'ipt>');</script>
 <script>
+const API360=window.API360||'';
 const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
 // só cotas DISPONÍVEIS: as reservadas/vendidas vêm com r:1 e não aparecem aqui
 const COTAS=(DADOS.cotas||[]).filter(c=>c.c>0&&!c.r);

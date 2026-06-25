@@ -298,8 +298,11 @@
 
 </main>
 
-<script src="/cotas.js"></script>
+<!-- Base das APIs/dados. No 360 fica vazia (mesmo domínio). Na bidcon (domínio
+     separado) config.js define window.BIDCON_API='https://360prospere.vercel.app'. -->
+<script>window.API360=(window.BIDCON_API||'').replace(/\/$/,'');document.write('<scr'+'ipt src="'+window.API360+'/cotas.js"></scr'+'ipt>');</script>
 <script>
+const API360=window.API360||'';
 const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
 const CWA=DADOS.whatsapp||'5519997561909';
 // só cotas DISPONÍVEIS: as reservadas/vendidas vêm com r:1 e não aparecem aqui
@@ -402,7 +405,7 @@ const LOJA_KEY='bidcon_loja_url';
 function setLojaStatus(msg,cls){const el=$('lojaStatus');el.textContent=msg||'';el.className='lstatus'+(cls?' '+cls:'');}
 async function carregarEstoque(){
   const lojaUrl=(localStorage.getItem(LOJA_KEY)||'').trim();
-  const api=lojaUrl?`/api/estoque?url=${encodeURIComponent(lojaUrl)}`:'/api/estoque';
+  const api=lojaUrl?`${API360}/api/estoque?url=${encodeURIComponent(lojaUrl)}`:API360+'/api/estoque';
   $('vgrid').innerHTML='<div class="loading"><span class="spin"></span>Buscando estoque…</div>';
   try{
     const r=await fetch(api);
@@ -498,7 +501,7 @@ let fipeReady=false;
 async function fipeInit(){
   if(fipeReady)return;fipeReady=true;
   try{
-    const r=await fetch('/api/fipe');const j=await r.json();
+    const r=await fetch(API360+'/api/fipe');const j=await r.json();
     $('fpMarca').innerHTML='<option value="">Selecione…</option>'+(j.itens||[]).map(m=>`<option value="${m.codigo}">${m.nome}</option>`).join('');
   }catch(e){$('fpMarca').innerHTML='<option value="">Erro ao carregar</option>';}
 }
@@ -513,19 +516,19 @@ $('fpMarca').addEventListener('change',e=>{
   const m=e.target.value;$('fpRes').classList.remove('on');
   $('fpAno').disabled=true;$('fpAno').innerHTML='<option value="">Escolha o modelo</option>';
   if(!m){$('fpModelo').disabled=true;$('fpModelo').innerHTML='<option value="">Escolha a marca</option>';return;}
-  fipeFill($('fpModelo'),`/api/fipe?marca=${m}`,'Selecione o modelo…');
+  fipeFill($('fpModelo'),`${API360}/api/fipe?marca=${m}`,'Selecione o modelo…');
 });
 $('fpModelo').addEventListener('change',e=>{
   const m=$('fpMarca').value,mo=e.target.value;$('fpRes').classList.remove('on');
   if(!mo){$('fpAno').disabled=true;$('fpAno').innerHTML='<option value="">Escolha o modelo</option>';return;}
-  fipeFill($('fpAno'),`/api/fipe?marca=${m}&modelo=${mo}`,'Selecione o ano…');
+  fipeFill($('fpAno'),`${API360}/api/fipe?marca=${m}&modelo=${mo}`,'Selecione o ano…');
 });
 $('fpAno').addEventListener('change',async e=>{
   const m=$('fpMarca').value,mo=$('fpModelo').value,a=e.target.value;
   if(!a){$('fpRes').classList.remove('on');return;}
   $('fpValor').innerHTML='<span class="spin"></span>';$('fpRes').classList.add('on');$('fpMeta').textContent='';$('fpCartas').innerHTML='';
   try{
-    const r=await fetch(`/api/fipe?marca=${m}&modelo=${mo}&ano=${encodeURIComponent(a)}`);const j=await r.json();
+    const r=await fetch(`${API360}/api/fipe?marca=${m}&modelo=${mo}&ano=${encodeURIComponent(a)}`);const j=await r.json();
     if(!j.ok||!j.valor){$('fpValor').textContent='—';$('fpMeta').textContent='Não foi possível obter o valor.';return;}
     $('fpValor').textContent=j.valorTexto||BRL(j.valor);
     $('fpMeta').textContent=`${j.marca} ${j.modelo} · ${j.anoModelo} · ${j.combustivel} · ref. ${j.referencia}`;

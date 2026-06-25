@@ -263,8 +263,11 @@
 
 </main>
 
-<script src="/cotas.js"></script>
+<!-- Base das APIs/dados. No 360 fica vazia (mesmo domínio). Na bidcon (domínio
+     separado) config.js define window.BIDCON_API='https://360prospere.vercel.app'. -->
+<script>window.API360=(window.BIDCON_API||'').replace(/\/$/,'');document.write('<scr'+'ipt src="'+window.API360+'/cotas.js"></scr'+'ipt>');</script>
 <script>
+const API360=window.API360||'';
 const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
 const CWA=DADOS.whatsapp||'5519997561909';
 // só cotas DISPONÍVEIS: as reservadas/vendidas vêm com r:1 e não aparecem aqui
@@ -362,7 +365,7 @@ async function carregarImoveis(fonte){
   $('imovSub').textContent='Carregando imóveis da imobiliária…';
   vLimite=18;
   try{
-    const r=await fetch('/api/imoveis?fonte='+encodeURIComponent(FONTE_ATUAL));
+    const r=await fetch(API360+'/api/imoveis?fonte='+encodeURIComponent(FONTE_ATUAL));
     const j=await r.json();
     if(!j.ok){throw new Error(j.error||'falha');}
     IMOVEIS=(j.imoveis||[]).map(v=>({...v,cartas:cartasPara(v.preco),combo:comboPara(v.preco)}));
