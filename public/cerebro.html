@@ -119,6 +119,53 @@
   .note b{color:var(--ambar-l)}
   .foot{margin-top:26px;text-align:center;color:var(--cinza2);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
   .foot b{color:var(--vermelho-l)}
+  /* ===== COTAS CONTEMPLADAS ===== */
+  .cotas-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:4px 0 18px}
+  .cotas-head .eyebrow{margin-bottom:6px}
+  .cotas-head h2{font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:25px;line-height:1.05}
+  .cotas-head h2 b{color:var(--vermelho-l)}
+  .cotas-head .csrc{font-size:11px;color:var(--cinza);margin-top:6px;letter-spacing:.04em}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:18px}
+  .kpi{background:var(--carvao2);border:1px solid var(--linha);border-radius:12px;padding:14px 15px}
+  .kpi .l{font-size:10.5px;color:var(--cinza);letter-spacing:.13em;text-transform:uppercase}
+  .kpi .v{font-family:'JetBrains Mono';font-size:22px;font-weight:700;margin-top:5px}
+  .kpi .v.red{color:var(--vermelho-l)}.kpi .v.grn{color:var(--verde-l)}
+  .cfilters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--carvao);border:1px solid var(--linha);border-radius:12px;padding:13px 15px;margin-bottom:16px}
+  .cseg{display:flex;gap:2px;background:var(--carvao2);border:1px solid var(--linha);border-radius:9px;padding:3px}
+  .cseg button{background:none;border:0;color:var(--cinza);font-family:'Archivo';font-size:12px;font-weight:600;padding:7px 13px;border-radius:7px;cursor:pointer;transition:.12s}
+  .cseg button.on{background:var(--vermelho);color:#fff}
+  .cf-grp{display:flex;flex-direction:column;gap:4px}
+  .cf-grp label{font-size:9.5px;color:var(--cinza);letter-spacing:.12em;text-transform:uppercase}
+  .cf-grp select,.cf-grp input{background:var(--carvao2);border:1px solid var(--linha);color:#fff;border-radius:8px;padding:8px 11px;font-family:'Archivo';font-size:13px;outline:none;transition:.12s}
+  .cf-grp select:focus,.cf-grp input:focus{border-color:var(--vermelho)}
+  .cf-grp input{min-width:150px}
+  .cf-spacer{flex:1}
+  .ccount{font-size:12px;color:var(--cinza);font-family:'JetBrains Mono'}
+  .ccount b{color:#fff}
+  .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:13px}
+  .ccard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:16px 17px;display:flex;flex-direction:column;gap:12px;transition:.14s;position:relative;overflow:hidden}
+  .ccard:hover{border-color:var(--vermelho);transform:translateY(-2px)}
+  .ccard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--vermelho)}
+  .ccard.veiculo::before{background:var(--ambar)}
+  .ccard .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .ctag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:20px;border:1px solid}
+  .ctag.imovel{color:var(--vermelho-l);border-color:rgba(212,17,30,.4);background:rgba(212,17,30,.08)}
+  .ctag.veiculo{color:var(--ambar-l);border-color:rgba(227,160,8,.4);background:rgba(227,160,8,.08)}
+  .ccard .cnum{font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2)}
+  .ccredito .l{font-size:10px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .ccredito .v{font-family:'JetBrains Mono';font-size:27px;font-weight:700;color:#fff;line-height:1.05;margin-top:2px}
+  .crows{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .crow2{background:var(--carvao);border:1px solid var(--linha);border-radius:9px;padding:9px 11px}
+  .crow2 .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .crow2 .v{font-family:'JetBrains Mono';font-size:14.5px;font-weight:700;margin-top:3px}
+  .crow2 .v.grn{color:var(--verde-l)}
+  .czap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--verde);color:#04210f;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s;margin-top:2px}
+  .czap:hover{background:var(--verde-l)}
+  .cempty{grid-column:1/-1;text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
+  .cmore{display:block;margin:18px auto 0;background:var(--carvao2);border:1px solid var(--linha);color:#fff;font-family:'Archivo';font-weight:600;font-size:13px;padding:12px 26px;border-radius:10px;cursor:pointer;transition:.12s}
+  .cmore:hover{border-color:var(--vermelho)}
+  @media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.cgrid{grid-template-columns:1fr}}
   .hide{display:none!important}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--vermelho);color:#fff;font-weight:700;font-size:13px;padding:11px 20px;border-radius:10px;opacity:0;transition:.25s;z-index:100}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -144,6 +191,7 @@
     <div class="tabs">
       <button class="tab on" data-tab="mapa">Mapa de Oportunidade</button>
       <button class="tab" data-tab="cerebro">Cérebro IA</button>
+      <button class="tab" data-tab="cotas">Cotas Contempladas</button>
     </div>
   </div>
 </header>
@@ -200,10 +248,66 @@
     <div class="foot">Prospere 360 · Grupo Prospere <b>by Âncora</b> · cérebro de decisão sobre dados reais</div>
   </section>
 
+  <!-- COTAS CONTEMPLADAS -->
+  <section id="tab-cotas" class="hide">
+    <div class="cotas-head">
+      <div>
+        <div class="eyebrow">Carteira de cotas contempladas · pronta pra usar</div>
+        <h2>Cotas <b>Contempladas</b></h2>
+        <div class="csrc" id="cotasSrc">—</div>
+      </div>
+    </div>
+
+    <div class="kpis" id="cotasKpis"></div>
+
+    <div class="cfilters">
+      <div class="cseg" id="cotasTipo">
+        <button data-tipo="todos" class="on">Todas</button>
+        <button data-tipo="imovel">Imóvel</button>
+        <button data-tipo="veiculo">Veículo</button>
+      </div>
+      <div class="cf-grp">
+        <label>Crédito</label>
+        <select id="cotasFaixa">
+          <option value="todos">Qualquer valor</option>
+          <option value="0-100000">Até R$ 100 mil</option>
+          <option value="100000-300000">R$ 100 mil – 300 mil</option>
+          <option value="300000-600000">R$ 300 mil – 600 mil</option>
+          <option value="600000-1000000">R$ 600 mil – 1 mi</option>
+          <option value="1000000-999999999">Acima de R$ 1 mi</option>
+        </select>
+      </div>
+      <div class="cf-grp">
+        <label>Ordenar</label>
+        <select id="cotasOrd">
+          <option value="credito-desc">Maior crédito</option>
+          <option value="credito-asc">Menor crédito</option>
+          <option value="entrada-asc">Menor entrada</option>
+          <option value="parcela-asc">Menor parcela</option>
+        </select>
+      </div>
+      <div class="cf-grp">
+        <label>Buscar</label>
+        <input id="cotasBusca" placeholder="nº da cota ou valor...">
+      </div>
+      <div class="cf-spacer"></div>
+      <div class="ccount" id="cotasCount">—</div>
+    </div>
+
+    <div class="cgrid" id="cotasGrid"></div>
+    <button class="cmore hide" id="cotasMore">Ver mais cotas</button>
+
+    <div class="note">
+      <b>Como funciona.</b> Cota contemplada = crédito já liberado pra usar agora (imóvel ou veículo), sem sorteio e sem lance. Você paga a <b>entrada</b> e assume as parcelas restantes. Os valores são da carteira atual da Prospere Corretora e mudam conforme disponibilidade — confirme a cota no atendimento antes de fechar. Nada de "investimento" ou "rendimento garantido": é <b>compra programada / crédito de consórcio</b>.
+    </div>
+    <div class="foot">Prospere 360 · Grupo Prospere <b>by Âncora</b> · carteira de contempladas</div>
+  </section>
+
 </main>
 
 <div class="toast" id="toast"></div>
 
+<script src="cotas.js"></script>
 <script>
 /* ===== DADOS REAIS — Itamaraty/MRE ano-base 2023 ===== */
 const DIASPORA=[
@@ -320,6 +424,8 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
   document.getElementById('tab-mapa').classList.toggle('hide',t.dataset.tab!=='mapa');
   document.getElementById('tab-cerebro').classList.toggle('hide',t.dataset.tab!=='cerebro');
+  document.getElementById('tab-cotas').classList.toggle('hide',t.dataset.tab!=='cotas');
+  if(t.dataset.tab==='cotas')renderCotas();
 }));
 ['pen','ticket'].forEach(id=>document.getElementById(id).addEventListener('input',renderMap));
 document.getElementById('sortPop').addEventListener('click',()=>{sortMode='pop';document.getElementById('sortPop').classList.add('on');document.getElementById('sortOpp').classList.remove('on');renderMap();});
@@ -327,6 +433,74 @@ document.getElementById('sortOpp').addEventListener('click',()=>{sortMode='opp';
 document.getElementById('cRun').addEventListener('click',run);
 document.getElementById('cQ').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
 document.getElementById('cCopy').addEventListener('click',()=>{if(!lastOut)return toast('Rode o cérebro primeiro');navigator.clipboard.writeText(lastOut).then(()=>toast('Copiado'));});
+
+/* ===== COTAS CONTEMPLADAS ===== */
+const COTAS=(window.PROSPERE_COTAS&&window.PROSPERE_COTAS.cotas)||[];
+const CWA=(window.PROSPERE_COTAS&&window.PROSPERE_COTAS.whatsapp)||'5519997561909';
+let cFiltroTipo='todos',cLimite=24,cKpisFeitos=false;
+const tipoLabel=t=>t==='imovel'?'Imóvel':'Veículo';
+
+function zapLink(co){
+  const tipo=tipoLabel(co.t).toLowerCase();
+  const msg=`Olá! Tenho interesse na cota contemplada de ${tipo} nº ${co.n} — crédito de ${BRL(co.c)} (entrada ${BRL(co.e)}, parcelas de ${BRL(co.p)}). Ainda está disponível?`;
+  return `https://wa.me/${CWA}?text=${encodeURIComponent(msg)}`;
+}
+
+function cotasFiltradas(){
+  let arr=COTAS.slice();
+  if(cFiltroTipo!=='todos')arr=arr.filter(c=>c.t===cFiltroTipo);
+  const fx=document.getElementById('cotasFaixa').value;
+  if(fx!=='todos'){const[a,b]=fx.split('-').map(Number);arr=arr.filter(c=>c.c>=a&&c.c<b);}
+  const q=(document.getElementById('cotasBusca').value||'').replace(/\D/g,'');
+  if(q)arr=arr.filter(c=>String(c.n).includes(q)||String(c.c).includes(q));
+  const ord=document.getElementById('cotasOrd').value;
+  const cmp={'credito-desc':(a,b)=>b.c-a.c,'credito-asc':(a,b)=>a.c-b.c,'entrada-asc':(a,b)=>a.e-b.e,'parcela-asc':(a,b)=>a.p-b.p}[ord];
+  if(cmp)arr.sort(cmp);
+  return arr;
+}
+
+function renderKpis(){
+  const src=window.PROSPERE_COTAS||{};
+  document.getElementById('cotasSrc').textContent=`Fonte: ${src.fonte||'Prospere'} · atualizado ${src.atualizado||''}`;
+  const im=COTAS.filter(c=>c.t==='imovel'),ve=COTAS.filter(c=>c.t==='veiculo');
+  const totCred=COTAS.reduce((s,c)=>s+c.c,0);
+  const menorEnt=COTAS.length?Math.min(...COTAS.map(c=>c.e)):0;
+  document.getElementById('cotasKpis').innerHTML=`
+    <div class="kpi"><div class="l">Cotas disponíveis</div><div class="v red">${NUM(COTAS.length)}</div></div>
+    <div class="kpi"><div class="l">Imóvel · Veículo</div><div class="v">${NUM(im.length)} · ${NUM(ve.length)}</div></div>
+    <div class="kpi"><div class="l">Crédito total em carteira</div><div class="v grn">${BRLc(totCred)}</div></div>
+    <div class="kpi"><div class="l">Menor entrada</div><div class="v">${BRLc(menorEnt)}</div></div>`;
+  cKpisFeitos=true;
+}
+
+function renderCotas(){
+  if(!COTAS.length){document.getElementById('cotasGrid').innerHTML='<div class="cempty">Carteira de cotas indisponível no momento.</div>';return;}
+  if(!cKpisFeitos)renderKpis();
+  const arr=cotasFiltradas();
+  document.getElementById('cotasCount').innerHTML=`<b>${NUM(arr.length)}</b> cota(s)`;
+  const grid=document.getElementById('cotasGrid');
+  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma cota com esses filtros. Ajuste a busca ou a faixa de crédito.</div>';document.getElementById('cotasMore').classList.add('hide');return;}
+  const vis=arr.slice(0,cLimite);
+  grid.innerHTML=vis.map(co=>`
+    <div class="ccard ${co.t}">
+      <div class="ctop">
+        <span class="ctag ${co.t}">${tipoLabel(co.t)}</span>
+        <span class="cnum">COTA Nº ${co.n}</span>
+      </div>
+      <div class="ccredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
+      <div class="crows">
+        <div class="crow2"><div class="l">Entrada</div><div class="v">${BRL(co.e)}</div></div>
+        <div class="crow2"><div class="l">Parcela</div><div class="v grn">${BRL(co.p)}${co.x?` <span style="color:var(--cinza2);font-size:11px">×${co.x}</span>`:''}</div></div>
+      </div>
+      <a class="czap" href="${zapLink(co)}" target="_blank" rel="noopener">⬤ Quero esta cota</a>
+    </div>`).join('');
+  document.getElementById('cotasMore').classList.toggle('hide',arr.length<=cLimite);
+}
+
+document.getElementById('cotasTipo').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#cotasTipo button').forEach(x=>x.classList.remove('on'));b.classList.add('on');cFiltroTipo=b.dataset.tipo;cLimite=24;renderCotas();});
+['cotasFaixa','cotasOrd'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{cLimite=24;renderCotas();}));
+document.getElementById('cotasBusca').addEventListener('input',()=>{cLimite=24;renderCotas();});
+document.getElementById('cotasMore').addEventListener('click',()=>{cLimite+=24;renderCotas();});
 
 clock();setInterval(clock,1000);renderMap();renderModes();renderConsole();
 </script>
