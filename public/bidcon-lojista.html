@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bidcon Lojista · Estoque parceiro × Cartas contempladas | Prospere Consórcios</title>
+<meta name="description" content="Para lojistas de veículos: cruze seu estoque com cartas de consórcio já contempladas e descubra na hora quais carros dá pra fechar. Consultor FIPE integrado. Prospere Consórcios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Archivo+Narrow:wght@600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#070709;--carvao:#121216;--carvao2:#1a1a20;--linha:#28282f;--linha2:#37373f;
+    --branco:#f5f5f7;--cinza:#8c8c95;--cinza2:#54545c;
+    --vermelho:#D4111E;--vermelho-l:#ff4651;--vermelho-d:#9c0c16;
+    --verde:#1faa59;--verde-l:#3ad17e;--ambar:#e3a008;--ambar-l:#f3c34a;--raio:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--preto);color:var(--branco);font-family:'Archivo',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 26px}
+  ::selection{background:var(--vermelho);color:#fff}
+  a{color:inherit}
+
+  /* HEADER */
+  header{border-bottom:1px solid var(--linha);background:rgba(7,7,9,.72);position:sticky;top:0;z-index:50;backdrop-filter:blur(16px) saturate(1.2)}
+  .hbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:13px}
+  .blogo{font-family:'Archivo Narrow';font-weight:700;font-size:28px;letter-spacing:-.02em;line-height:1;color:#fff}
+  .blogo b{color:var(--vermelho-l);font-weight:700}
+  .blogo .seg{color:var(--ambar-l);font-weight:700}
+  .bsel{font-size:10.5px;color:var(--cinza);letter-spacing:.08em;text-transform:uppercase;border-left:1px solid var(--linha);padding-left:13px}
+  .bsel b{color:#cfcfd4;font-weight:600}
+  .hzap{display:inline-flex;align-items:center;gap:8px;background:var(--verde);color:#04210f;font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:10px 16px;transition:.12s}
+  .hzap:hover{background:var(--verde-l)}
+
+  /* HERO */
+  .hero{margin:36px 0 8px;background:linear-gradient(150deg,rgba(227,160,8,.10),rgba(227,160,8,.015));border:1px solid rgba(227,160,8,.22);border-radius:var(--raio);padding:34px 34px 30px}
+  .hero .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ambar-l);font-weight:700}
+  .hero h1{font-family:'Archivo Narrow';font-weight:700;font-size:40px;line-height:1.06;text-transform:uppercase;letter-spacing:.01em;margin:12px 0 10px;max-width:22ch}
+  .hero h1 b{color:var(--ambar-l)}
+  .hero p{color:#cfcfd4;font-size:15px;max-width:60ch}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:18px 0 4px}
+  .stat{background:var(--carvao2);border:1px solid var(--linha);border-radius:12px;padding:15px 16px}
+  .stat .sv{font-family:'JetBrains Mono';font-weight:800;font-size:22px;color:#fff;line-height:1}
+  .stat .sl{font-size:11px;color:var(--cinza);margin-top:5px;letter-spacing:.04em}
+  @media(max-width:780px){.stats{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:30px}}
+
+  /* TABS */
+  .tabs{display:flex;gap:8px;margin:30px 0 16px;flex-wrap:wrap}
+  .tab{background:var(--carvao2);border:1px solid var(--linha);color:var(--cinza);font-family:'Archivo Narrow';font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.04em;padding:11px 20px;border-radius:10px;cursor:pointer;transition:.12s}
+  .tab:hover{color:#fff}
+  .tab.on{background:var(--ambar);border-color:var(--ambar);color:#1a1200}
+  .panel{display:none}
+  .panel.on{display:block}
+
+  /* FILTROS */
+  .cf{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;background:var(--carvao2);border:1px solid var(--linha);border-radius:12px;padding:15px 16px;margin-bottom:16px}
+  .cf-grp{display:flex;flex-direction:column;gap:5px}
+  .cf-grp label{font-size:10px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .cf-grp select,.cf-grp input{background:var(--carvao);border:1px solid var(--linha2);color:#fff;border-radius:9px;padding:9px 12px;font-family:'Archivo';font-size:13px;outline:none;transition:.12s}
+  .cf-grp select:focus,.cf-grp input:focus{border-color:var(--ambar)}
+  .cf-grp input{min-width:150px}
+  .cf-spacer{flex:1}
+  .ccount{font-size:12px;color:var(--cinza);font-family:'JetBrains Mono'}
+  .ccount b{color:#fff}
+
+  /* GRID DE VEÍCULOS (estoque) */
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+  .vcard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:.14s}
+  .vcard:hover{border-color:var(--ambar);transform:translateY(-2px)}
+  .vimg{position:relative;aspect-ratio:16/10;background:var(--carvao);overflow:hidden}
+  .vimg img{width:100%;height:100%;object-fit:cover;display:block}
+  .vimg .noimg{display:flex;align-items:center;justify-content:center;height:100%;color:var(--cinza2);font-size:40px}
+  .vbadge{position:absolute;top:10px;left:10px;font-family:'JetBrains Mono';font-weight:700;font-size:11px;padding:5px 9px;border-radius:8px;backdrop-filter:blur(6px)}
+  .vbadge.ok{background:rgba(31,170,89,.92);color:#04210f}
+  .vbadge.no{background:rgba(140,140,149,.85);color:#fff}
+  .vbody{padding:15px 16px;display:flex;flex-direction:column;gap:11px;flex:1}
+  .vnome{font-family:'Archivo Narrow';font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.02em;line-height:1.15}
+  .vpreco{font-family:'JetBrains Mono';font-weight:800;font-size:21px;color:#fff}
+  .vpreco .l{display:block;font-family:'Archivo';font-size:9.5px;font-weight:600;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+  .vmatch{background:var(--carvao);border:1px solid var(--linha);border-radius:10px;padding:11px 12px}
+  .vmatch.has{border-color:rgba(243,195,74,.4);background:linear-gradient(135deg,rgba(227,160,8,.10),rgba(227,160,8,.02))}
+  .vmatch .mh{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ambar-l);font-weight:700;margin-bottom:7px}
+  .vmatch .mh.none{color:var(--cinza)}
+  .mcarta{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;padding:6px 0;border-top:1px dashed var(--linha)}
+  .mcarta:first-of-type{border-top:0}
+  .mcarta .mn{font-family:'JetBrains Mono';color:var(--ambar-l);font-weight:700}
+  .mcarta .md{font-family:'JetBrains Mono';color:#cfcfd4}
+  .mcarta .md b{color:#fff}
+  .vlink{font-size:11px;color:var(--cinza);text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+  .vlink:hover{color:#fff}
+  .vzap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ambar);color:#1a1200;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s;margin-top:auto}
+  .vzap:hover{background:var(--ambar-l)}
+  .vzap.off{background:var(--carvao);color:var(--cinza);border:1px solid var(--linha);pointer-events:none}
+
+  .cempty{grid-column:1/-1;text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
+  .cmore{display:block;margin:18px auto 0;background:var(--carvao2);border:1px solid var(--linha);color:#fff;font-family:'Archivo';font-weight:600;font-size:13px;padding:12px 26px;border-radius:10px;cursor:pointer;transition:.12s}
+  .cmore:hover{border-color:var(--ambar)}
+  .loading{text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
+  .spin{display:inline-block;width:16px;height:16px;border:2px solid var(--linha2);border-top-color:var(--ambar);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px;margin-right:8px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+
+  /* CONSULTOR FIPE */
+  .fipe{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:20px}
+  .fipe-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:780px){.fipe-row{grid-template-columns:1fr}}
+  .fres{margin-top:18px;background:var(--carvao);border:1px solid var(--linha);border-radius:12px;padding:18px;display:none}
+  .fres.on{display:block}
+  .fres .fv{font-family:'JetBrains Mono';font-weight:800;font-size:30px;color:var(--ambar-l)}
+  .fres .fl{font-size:11px;color:var(--cinza);letter-spacing:.06em;text-transform:uppercase}
+  .fres .fmeta{font-size:12px;color:#cfcfd4;margin-top:4px}
+  .fcartas{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:11px}
+
+  /* CARTAS (vitrine veículo) */
+  .ccard{background:var(--carvao2);border:1px solid var(--linha);border-radius:14px;padding:16px 17px;display:flex;flex-direction:column;gap:12px;transition:.14s}
+  .ccard:hover{border-color:var(--ambar);transform:translateY(-2px)}
+  .ccard .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .ccat{display:flex;align-items:center;gap:7px;font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:14px;color:var(--ambar-l)}
+  .ccard .cnum{font-family:'JetBrains Mono';font-size:11px;color:var(--cinza2)}
+  .ccredito .l{font-size:10px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .ccredito .v{font-family:'JetBrains Mono';font-size:26px;font-weight:700;color:#fff;line-height:1.05;margin-top:3px}
+  .crows{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .crow2{background:var(--carvao);border:1px solid var(--linha);border-radius:10px;padding:9px 11px}
+  .crow2 .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .crow2 .v{font-family:'JetBrains Mono';font-size:14px;font-weight:700;margin-top:4px}
+  .ccusto{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:var(--cinza);padding:1px 2px 0}
+  .ccusto .v{font-family:'JetBrains Mono';font-weight:700;color:var(--verde-l)}
+  .czap{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--verde);color:#04210f;font-family:'Archivo';font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:11px;transition:.12s}
+  .czap:hover{background:var(--verde-l)}
+
+  /* DISCLAIMER */
+  .disc{background:var(--carvao);border:1px solid var(--linha);border-left:3px solid var(--ambar);border-radius:12px;padding:16px 18px;margin-top:30px;font-size:12.5px;color:#cfcfd4;line-height:1.6}
+  .disc b{color:var(--ambar-l)}
+  .foot{margin-top:26px;text-align:center;color:var(--cinza2);font-size:11px;letter-spacing:.1em;text-transform:uppercase;line-height:1.8}
+  .foot b{color:var(--cinza)}
+  .foot a{color:var(--cinza);text-decoration:underline}
+
+  .sec-head{margin:6px 0 14px}
+  .sec-head h2{font-family:'Archivo Narrow';font-weight:700;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+  .sec-head h2 b{color:var(--ambar-l)}
+  .sec-head p{font-size:13px;color:var(--cinza);margin-top:3px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hbar">
+    <div class="brand">
+      <div class="blogo">bid<b>con</b> <span class="seg">Lojista</span></div>
+      <div class="bsel">by <b>Prospere Consórcios</b></div>
+    </div>
+    <a class="hzap" id="hzap" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.739-.981z"/></svg>
+      Falar no WhatsApp
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Para lojistas de veículos</div>
+    <h1>Seu estoque <b>cruzado</b> com crédito já contemplado</h1>
+    <p>Veja em tempo real quais carros do estoque parceiro já dá pra fechar com uma carta de consórcio contemplada — crédito, entrada e custo na hora. Ou use o consultor FIPE pra qualquer veículo.</p>
+  </section>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="tabs">
+    <button class="tab on" data-tab="estoque">🚗 Estoque parceiro × cartas</button>
+    <button class="tab" data-tab="fipe">📊 Consultor FIPE</button>
+    <button class="tab" data-tab="cartas">🔨 Cartas de veículo</button>
+  </div>
+
+  <!-- ABA 1: ESTOQUE PARCEIRO -->
+  <section class="panel on" id="panel-estoque">
+    <div class="sec-head">
+      <h2>Estoque <b>parceiro</b> × cartas contempladas</h2>
+      <p id="estoqueSub">Carregando estoque do parceiro…</p>
+    </div>
+    <div class="cf">
+      <div class="cf-grp">
+        <label>Mostrar</label>
+        <select id="fMatch">
+          <option value="todos">Todos os veículos</option>
+          <option value="ok" selected>Só os que dá pra fechar</option>
+        </select>
+      </div>
+      <div class="cf-grp">
+        <label>Preço até</label>
+        <input id="fPreco" type="number" placeholder="ex: 100000" min="0" step="1000">
+      </div>
+      <div class="cf-grp">
+        <label>Buscar</label>
+        <input id="fBusca" type="text" placeholder="marca ou modelo">
+      </div>
+      <div class="cf-spacer"></div>
+      <div class="ccount" id="vCount"></div>
+    </div>
+    <div class="vgrid" id="vgrid"><div class="loading"><span class="spin"></span>Buscando estoque do parceiro…</div></div>
+    <button class="cmore" id="vMore" style="display:none">Ver mais veículos</button>
+  </section>
+
+  <!-- ABA 2: CONSULTOR FIPE -->
+  <section class="panel" id="panel-fipe">
+    <div class="sec-head">
+      <h2>Consultor <b>FIPE</b></h2>
+      <p>Escolha o veículo, veja o valor de tabela FIPE e quais cartas contempladas cobrem esse crédito.</p>
+    </div>
+    <div class="fipe">
+      <div class="fipe-row">
+        <div class="cf-grp"><label>Marca</label><select id="fpMarca"><option value="">Carregando…</option></select></div>
+        <div class="cf-grp"><label>Modelo</label><select id="fpModelo" disabled><option value="">Escolha a marca</option></select></div>
+        <div class="cf-grp"><label>Ano</label><select id="fpAno" disabled><option value="">Escolha o modelo</option></select></div>
+      </div>
+      <div class="fres" id="fpRes">
+        <div class="fl">Valor FIPE</div>
+        <div class="fv" id="fpValor">—</div>
+        <div class="fmeta" id="fpMeta"></div>
+        <div class="fcartas" id="fpCartas"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABA 3: CARTAS DE VEÍCULO -->
+  <section class="panel" id="panel-cartas">
+    <div class="sec-head">
+      <h2>Cartas de <b>veículo</b> disponíveis</h2>
+      <p id="cartasSub">Crédito já contemplado pra veículo, ordenado por menor entrada.</p>
+    </div>
+    <div class="cf">
+      <div class="cf-grp">
+        <label>Ordenar</label>
+        <select id="cOrd">
+          <option value="entrada-asc">Menor entrada</option>
+          <option value="credito-desc">Maior crédito</option>
+          <option value="credito-asc">Menor crédito</option>
+        </select>
+      </div>
+      <div class="cf-spacer"></div>
+      <div class="ccount" id="cCount"></div>
+    </div>
+    <div class="vgrid" id="cgrid" style="grid-template-columns:repeat(auto-fill,minmax(270px,1fr))"></div>
+    <button class="cmore" id="cMore" style="display:none">Ver mais cartas</button>
+  </section>
+
+  <div class="disc">
+    <b>Importante.</b> A bidcon / Prospere Consórcios intermedia cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. O estoque exibido é do parceiro <b id="discParceiro">Unimais Veículos</b>; preços e disponibilidade dos veículos são responsabilidade da loja e podem mudar. Valores FIPE são referência de tabela. A transferência da carta está sujeita à análise da administradora. Consórcio é <b>compra programada</b>, não investimento.
+  </div>
+
+  <div class="foot">
+    bidcon Lojista · Estoque parceiro × cartas contempladas<br>
+    by <b>Prospere Consórcios</b> · Grupo Âncora · estoque via <a id="footFonte" href="https://unimaisveiculos.com.br/estoque/" target="_blank" rel="noopener">parceiro</a>
+  </div>
+
+</main>
+
+<script src="/cotas.js"></script>
+<script>
+const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
+const CWA=DADOS.whatsapp||'5519997561909';
+const CARTAS=(DADOS.cotas||[]).filter(c=>c.t==='veiculo'&&c.c>0);
+const $=id=>document.getElementById(id);
+const BRL=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
+const NUM=v=>Number(v).toLocaleString('pt-BR');
+
+// custo efetivo (% a.m.) sobre crédito - entrada
+function taxaEfetiva(pv,pmt,n){if(pv<=0||pmt<=0||n<=0)return 0;if(pmt*n<=pv)return 0;const vp=i=>i===0?pmt*n:pmt*(1-Math.pow(1+i,-n))/i;let lo=1e-9,hi=1.0;if(vp(hi)>pv)return hi*100;for(let k=0;k<200;k++){const mid=(lo+hi)/2,v=vp(mid);if(Math.abs(v-pv)<1e-6)return mid*100;if(v>pv)lo=mid;else hi=mid;}return((lo+hi)/2)*100;}
+function amCota(co){const pv=Math.max(0,co.c-co.e);return co.x?taxaEfetiva(pv,co.p,co.x):0;}
+const pctAm=co=>co.x?amCota(co).toFixed(2).replace('.',',')+'% a.m.':'à vista';
+
+// cartas que cobrem um preço (credito >= preco), ranqueadas pela menor sobra e menor entrada
+function cartasPara(preco){
+  return CARTAS.filter(c=>c.c>=preco)
+    .map(c=>({...c,sobra:c.c-preco}))
+    .sort((a,b)=>a.sobra-b.sobra||a.e-b.e);
+}
+
+function zapVeiculo(co,veic){
+  const txt=`Olá! Sou lojista. Quero usar a carta contemplada nº ${co.n} (crédito ${BRL(co.c)}, entrada ${BRL(co.e)}) `+
+    (veic?`pra fechar o ${veic.nome} (${BRL(veic.preco)}). `:`pra um veículo. `)+`Como funciona?`;
+  return `https://wa.me/${CWA}?text=${encodeURIComponent(txt)}`;
+}
+function zapCarta(co){
+  const txt=`Olá! Tenho interesse na carta contemplada de veículo nº ${co.n} — crédito ${BRL(co.c)}, entrada ${BRL(co.e)}.`;
+  return `https://wa.me/${CWA}?text=${encodeURIComponent(txt)}`;
+}
+
+// ===== TABS =====
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  $('panel-'+t.dataset.tab).classList.add('on');
+  if(t.dataset.tab==='fipe')fipeInit();
+}));
+
+// ===== ABA 1: ESTOQUE PARCEIRO =====
+let ESTOQUE=[],vLimite=18;
+async function carregarEstoque(){
+  try{
+    const r=await fetch('/api/estoque');
+    const j=await r.json();
+    ESTOQUE=(j.veiculos||[]).map(v=>({...v,cartas:cartasPara(v.preco)}));
+    if(j.parceiro){$('estoqueSub').textContent=`Estoque de ${j.parceiro} cruzado com ${CARTAS.length} cartas de veículo · em tempo real`;$('discParceiro').textContent=j.parceiro;}
+    if(j.fonte)$('footFonte').href=j.fonte;
+    renderEstoque();
+  }catch(e){
+    $('vgrid').innerHTML='<div class="cempty">Não consegui carregar o estoque do parceiro agora. Tente recarregar a página em instantes.</div>';
+    $('estoqueSub').textContent='Estoque temporariamente indisponível.';
+  }
+}
+function estoqueFiltrado(){
+  const match=$('fMatch').value, teto=Number($('fPreco').value)||0, q=($('fBusca').value||'').toLowerCase().trim();
+  let arr=ESTOQUE.slice();
+  if(match==='ok')arr=arr.filter(v=>v.cartas.length);
+  if(teto>0)arr=arr.filter(v=>v.preco<=teto);
+  if(q)arr=arr.filter(v=>v.nome.toLowerCase().includes(q));
+  return arr.sort((a,b)=>a.preco-b.preco);
+}
+function renderEstoque(){
+  const arr=estoqueFiltrado();
+  $('vCount').innerHTML=`<b>${NUM(arr.length)}</b> veículo(s)`;
+  const grid=$('vgrid');
+  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhum veículo com esse filtro. Ajuste o preço, a busca ou mostre todos.</div>';$('vMore').style.display='none';return;}
+  const vis=arr.slice(0,vLimite);
+  grid.innerHTML=vis.map(v=>{
+    const top=v.cartas.slice(0,2);
+    const matchHtml=v.cartas.length?
+      `<div class="vmatch has"><div class="mh">🔨 ${v.cartas.length} carta(s) cobrem este veículo</div>`+
+        top.map(c=>`<div class="mcarta"><span class="mn">nº ${c.n}</span><span class="md">crédito <b>${BRL(c.c)}</b> · entrada <b>${BRL(c.e)}</b> · ${pctAm(c)}</span></div>`).join('')+
+      `</div>`:
+      `<div class="vmatch"><div class="mh none">Nenhuma carta cobre este valor hoje</div><div class="mcarta"><span class="md">Fale com a gente — buscamos uma carta sob medida.</span></div></div>`;
+    const best=v.cartas[0];
+    return `
+    <div class="vcard">
+      <div class="vimg">
+        ${v.img?`<img src="${v.img}" alt="${v.nome}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=&quot;noimg&quot;>🚗</div>'">`:'<div class="noimg">🚗</div>'}
+        <span class="vbadge ${v.cartas.length?'ok':'no'}">${v.cartas.length?'✓ dá pra fechar':'sem carta'}</span>
+      </div>
+      <div class="vbody">
+        <div class="vnome">${v.nome}</div>
+        <div class="vpreco"><span class="l">Preço na loja</span>${BRL(v.preco)}</div>
+        ${matchHtml}
+        ${v.link?`<a class="vlink" href="${v.link}" target="_blank" rel="noopener">Ver anúncio na loja ↗</a>`:''}
+        ${best?`<a class="vzap" href="${zapVeiculo(best,v)}" target="_blank" rel="noopener">🔨 Fechar com a carta nº ${best.n}</a>`:`<span class="vzap off">Sem carta disponível</span>`}
+      </div>
+    </div>`;}).join('');
+  $('vMore').style.display=arr.length>vLimite?'block':'none';
+}
+['fMatch','fPreco','fBusca'].forEach(id=>$(id).addEventListener('input',()=>{vLimite=18;renderEstoque();}));
+$('vMore').addEventListener('click',()=>{vLimite+=18;renderEstoque();});
+
+// ===== ABA 2: CONSULTOR FIPE =====
+let fipeReady=false;
+async function fipeInit(){
+  if(fipeReady)return;fipeReady=true;
+  try{
+    const r=await fetch('/api/fipe');const j=await r.json();
+    $('fpMarca').innerHTML='<option value="">Selecione…</option>'+(j.itens||[]).map(m=>`<option value="${m.codigo}">${m.nome}</option>`).join('');
+  }catch(e){$('fpMarca').innerHTML='<option value="">Erro ao carregar</option>';}
+}
+async function fipeFill(sel,url,placeholder){
+  sel.disabled=true;sel.innerHTML=`<option value="">Carregando…</option>`;
+  try{const r=await fetch(url);const j=await r.json();
+    sel.innerHTML=`<option value="">${placeholder}</option>`+(j.itens||[]).map(i=>`<option value="${i.codigo}">${i.nome}</option>`).join('');
+    sel.disabled=false;
+  }catch(e){sel.innerHTML='<option value="">Erro</option>';}
+}
+$('fpMarca').addEventListener('change',e=>{
+  const m=e.target.value;$('fpRes').classList.remove('on');
+  $('fpAno').disabled=true;$('fpAno').innerHTML='<option value="">Escolha o modelo</option>';
+  if(!m){$('fpModelo').disabled=true;$('fpModelo').innerHTML='<option value="">Escolha a marca</option>';return;}
+  fipeFill($('fpModelo'),`/api/fipe?marca=${m}`,'Selecione o modelo…');
+});
+$('fpModelo').addEventListener('change',e=>{
+  const m=$('fpMarca').value,mo=e.target.value;$('fpRes').classList.remove('on');
+  if(!mo){$('fpAno').disabled=true;$('fpAno').innerHTML='<option value="">Escolha o modelo</option>';return;}
+  fipeFill($('fpAno'),`/api/fipe?marca=${m}&modelo=${mo}`,'Selecione o ano…');
+});
+$('fpAno').addEventListener('change',async e=>{
+  const m=$('fpMarca').value,mo=$('fpModelo').value,a=e.target.value;
+  if(!a){$('fpRes').classList.remove('on');return;}
+  $('fpValor').innerHTML='<span class="spin"></span>';$('fpRes').classList.add('on');$('fpMeta').textContent='';$('fpCartas').innerHTML='';
+  try{
+    const r=await fetch(`/api/fipe?marca=${m}&modelo=${mo}&ano=${encodeURIComponent(a)}`);const j=await r.json();
+    if(!j.ok||!j.valor){$('fpValor').textContent='—';$('fpMeta').textContent='Não foi possível obter o valor.';return;}
+    $('fpValor').textContent=j.valorTexto||BRL(j.valor);
+    $('fpMeta').textContent=`${j.marca} ${j.modelo} · ${j.anoModelo} · ${j.combustivel} · ref. ${j.referencia}`;
+    const cs=cartasPara(j.valor);
+    $('fpCartas').innerHTML=cs.length?
+      `<div class="vmatch has" style="grid-column:1/-1"><div class="mh">🔨 ${cs.length} carta(s) cobrem ${j.valorTexto||BRL(j.valor)}</div></div>`+
+      cs.slice(0,6).map(renderCartaMini).join(''):
+      `<div class="cempty" style="padding:24px">Nenhuma carta cobre esse valor hoje — fale com a gente pra buscar uma carta sob medida.</div>`;
+  }catch(e){$('fpValor').textContent='—';$('fpMeta').textContent='Erro ao consultar a FIPE.';}
+});
+function renderCartaMini(co){
+  return `<div class="ccard">
+    <div class="ctop"><span class="ccat">🚗 nº ${co.n}</span><span class="cnum">sobra ${BRL(co.sobra||0)}</span></div>
+    <div class="ccredito"><div class="l">Crédito</div><div class="v">${BRL(co.c)}</div></div>
+    <div class="crows"><div class="crow2"><div class="l">Entrada</div><div class="v">${BRL(co.e)}</div></div><div class="crow2"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">×${co.x}</span>`:''}</div></div></div>
+    <div class="ccusto"><span>Custo efetivo</span><span class="v">${pctAm(co)}</span></div>
+    <a class="czap" href="${zapCarta(co)}" target="_blank" rel="noopener">Quero esta carta</a>
+  </div>`;
+}
+
+// ===== ABA 3: CARTAS DE VEÍCULO =====
+let cLimite=18;
+function renderCartas(){
+  const ord=$('cOrd').value;
+  let arr=CARTAS.slice().sort((a,b)=>ord==='credito-asc'?a.c-b.c:ord==='credito-desc'?b.c-a.c:a.e-b.e);
+  $('cCount').innerHTML=`<b>${NUM(arr.length)}</b> carta(s)`;
+  const grid=$('cgrid');
+  if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma carta de veículo disponível no momento.</div>';$('cMore').style.display='none';return;}
+  const vis=arr.slice(0,cLimite);
+  grid.innerHTML=vis.map(co=>`
+    <div class="ccard">
+      <div class="ctop"><span class="ccat">🚗 Veículo</span><span class="cnum">nº ${co.n}</span></div>
+      <div class="ccredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
+      <div class="crows"><div class="crow2"><div class="l">Entrada</div><div class="v">${BRL(co.e)}</div></div><div class="crow2"><div class="l">Parcela</div><div class="v">${BRL(co.p)}${co.x?`<span style="font-size:11px;color:var(--cinza)">×${co.x}</span>`:''}</div></div></div>
+      <div class="ccusto"><span>Custo efetivo</span><span class="v">${pctAm(co)}</span></div>
+      <a class="czap" href="${zapCarta(co)}" target="_blank" rel="noopener">Tenho interesse</a>
+    </div>`).join('');
+  $('cMore').style.display=arr.length>cLimite?'block':'none';
+}
+$('cOrd').addEventListener('change',()=>{cLimite=18;renderCartas();});
+$('cMore').addEventListener('click',()=>{cLimite+=18;renderCartas();});
+
+// ===== STATS =====
+(function(){
+  const totalCartas=CARTAS.length;
+  const credito=CARTAS.reduce((s,c)=>s+c.c,0);
+  const maxCred=CARTAS.reduce((m,c)=>Math.max(m,c.c),0);
+  const minEnt=CARTAS.length?CARTAS.reduce((m,c)=>Math.min(m,c.e),Infinity):0;
+  const mi=v=>v>=1e6?(v/1e6).toFixed(1).replace('.',',')+' mi':BRL(v);
+  $('stats').innerHTML=`
+    <div class="stat"><div class="sv">${NUM(totalCartas)}</div><div class="sl">Cartas de veículo 🚗</div></div>
+    <div class="stat"><div class="sv">R$ ${mi(credito)}</div><div class="sl">Em crédito disponível</div></div>
+    <div class="stat"><div class="sv">${BRL(maxCred)}</div><div class="sl">Maior crédito</div></div>
+    <div class="stat"><div class="sv">${BRL(minEnt)}</div><div class="sl">Menor entrada</div></div>`;
+})();
+
+// header zap
+$('hzap').href=`https://wa.me/${CWA}?text=${encodeURIComponent('Olá! Sou lojista de veículos e quero entender a parceria com cartas contempladas.')}`;
+
+carregarEstoque();
+renderCartas();
+</script>
+</body>
+</html>
