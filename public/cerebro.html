@@ -461,10 +461,24 @@ const tipoLabel=t=>t==='imovel'?'Imóvel':'Veículo';
 
 const SELO='<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.8 3 .1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .1L12 22l-2.4-1.8-3-.1-.9-2.9L3.3 15l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.1L12 2z" fill="#3ad17e"/><path d="M8.5 12l2.2 2.2 4.5-4.5" stroke="#04210f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-/* Custo efetivo:
-   - total = entrada + (parcela × nº parcelas)  → desembolso total
-   - sobre = % do total sobre o crédito recebido (ágio/deságio)
-   - am    = custo efetivo aproximado ao mês: sobre distribuído no prazo (juros simples), só pra comparar cotas */
+/* Custo efetivo — taxa de juros REAL ao mês (método Newton-Raphson / IRR, igual HP-12C):
+   - PV  = crédito − entrada  → valor financiado (o que você não pagou à vista)
+   - PMT = parcela mensal ; n = nº de parcelas
+   - resolve i em:  PV = PMT × (1 − (1+i)^−n) / i   → taxa efetiva mensal
+   - parcelas/total/saldo mantidos para os demais campos do card */
+function taxaEfetiva(pv, pmt, n){
+  if(pv<=0||pmt<=0||n<=0)return 0;
+  if(pmt*n<=pv)return 0;                    // paga ≤ financiado → sem juros
+  const vp=i=> i===0 ? pmt*n : pmt*(1-Math.pow(1+i,-n))/i; // VP das parcelas a uma taxa i
+  let lo=1e-9, hi=1.0;                       // intervalo de busca: 0% a 100% a.m.
+  if(vp(hi)>pv) return hi*100;               // taxa altíssima — satura em 100% a.m.
+  for(let k=0;k<200;k++){                     // bisseção (robusta, sempre converge)
+    const mid=(lo+hi)/2, v=vp(mid);
+    if(Math.abs(v-pv)<1e-6) return mid*100;
+    if(v>pv) lo=mid; else hi=mid;
+  }
+  return ((lo+hi)/2)*100;                     // % ao mês
+}
 function custoEfetivo(co){
   const x=co.x||0;
   const parcelas=co.p*x;        // total das parcelas a vencer (fluxo de caixa)
@@ -472,16 +486,17 @@ function custoEfetivo(co){
   // Saldo devedor do bem nunca ultrapassa o crédito/avaliação: limitado ao crédito menos a entrada já paga
   const saldo=co.c>0?Math.max(0,Math.min(parcelas,co.c-co.e)):parcelas;
   const sobre=co.c>0?((total/co.c)-1)*100:0;
-  const am=x>0?(sobre/x):0;     // % ao mês aproximado (linear) — métrica comparativa entre cotas
+  const pv=Math.max(0,co.c-co.e);          // valor financiado = crédito − entrada (PV)
+  const am=taxaEfetiva(pv, co.p, x);       // custo efetivo real ao mês (% a.m.) via IRR
   const saldoSobre=co.c>0?((saldo/co.c)*100):0; // saldo devedor como % do crédito
   return {saldo, parcelas, total, sobre, am, saldoSobre};
 }
 function custoEfetivoHTML(co){
   if(!co.x)return '';
   const{total,sobre,am}=custoEfetivo(co);
-  const bom=am<=0.6; // até ~0,6% a.m. é competitivo pra crédito contemplado
-  const amTxt=(am>0?'+':'')+am.toFixed(2).replace('.',',')+'% a.m.';
-  return `<div class="cef"><div class="lab">Custo efetivo (entrada + parcelas)<b>${BRL(Math.round(total))}</b></div><div class="badge ${bom?'bom':'alto'}">${amTxt}<br><span style="font-size:9.5px;font-weight:600;opacity:.8">${(sobre>0?'+':'')+sobre.toFixed(0)}% total</span></div></div>`;
+  const bom=am<=1.2; // ≤ ~1,2% a.m. é competitivo (abaixo de financiamento bancário)
+  const amTxt=am.toFixed(2).replace('.',',')+'% a.m.';
+  return `<div class="cef"><div class="lab">Custo efetivo (taxa real)<b>${amTxt}</b></div><div class="badge ${bom?'bom':'alto'}">${BRLc(total)}<br><span style="font-size:9.5px;font-weight:600;opacity:.8">desembolso total</span></div></div>`;
 }
 
 function zapLink(co){
