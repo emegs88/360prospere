@@ -193,6 +193,21 @@
   .leilaobar button{background:var(--carvao2);border:1px solid var(--linha2);color:#fff;font-family:'Archivo';font-weight:700;font-size:12.5px;padding:8px 14px;border-radius:9px;cursor:pointer;transition:.12s}
   .leilaobar button.prim{background:var(--ambar);border-color:var(--ambar);color:#1a1200}
   .leilaobar button:hover{border-color:var(--ambar)}
+  /* barra de RESERVA (cota vendida/reservada → some da bidcon via r:1) */
+  .reservabar{display:none;align-items:center;gap:12px;flex-wrap:wrap;background:rgba(212,17,30,.08);border:1px solid rgba(212,17,30,.4);border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:13px}
+  .reservabar.on{display:flex}
+  .reservabar .rb-count{font-weight:700;color:var(--vermelho-l)}
+  .reservabar .rb-sp{flex:1}
+  .reservabar button{background:var(--carvao2);border:1px solid var(--linha2);color:#fff;font-family:'Archivo';font-weight:700;font-size:12.5px;padding:8px 14px;border-radius:9px;cursor:pointer;transition:.12s}
+  .reservabar button.prim{background:var(--vermelho);border-color:var(--vermelho);color:#fff}
+  .reservabar button:hover{border-color:var(--vermelho)}
+  /* botão 🔒 reservar no card + estado reservada */
+  .rbtn{flex:none;display:flex;align-items:center;justify-content:center;gap:6px;background:transparent;border:1px solid var(--linha2);color:var(--cinza);font-family:'Archivo';font-weight:700;font-size:13px;border-radius:10px;padding:11px 13px;cursor:pointer;transition:.12s}
+  .rbtn:hover{border-color:var(--vermelho);color:var(--vermelho-l)}
+  .rbtn.on{background:rgba(212,17,30,.14);border-color:var(--vermelho);color:var(--vermelho-l)}
+  .ccard.reservada{opacity:.62;outline:1px solid rgba(212,17,30,.55);outline-offset:-1px}
+  .ccard.reservada .cstatus{color:var(--vermelho-l);background:rgba(212,17,30,.1);border-color:rgba(212,17,30,.4)}
+  .ccard.reservada .cstatus .dot{background:var(--vermelho-l);box-shadow:0 0 8px var(--vermelho-l)}
   .cempty{grid-column:1/-1;text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
   .cmore{display:block;margin:18px auto 0;background:var(--carvao2);border:1px solid var(--linha);color:#fff;font-family:'Archivo';font-weight:600;font-size:13px;padding:12px 26px;border-radius:10px;cursor:pointer;transition:.12s}
   .cmore:hover{border-color:var(--vermelho)}
@@ -485,6 +500,14 @@
       <button id="lbLimpar">Limpar</button>
     </div>
 
+    <div class="reservabar" id="reservabar">
+      <span class="rb-count" id="rbCount">0 cartas reservadas</span>
+      <span style="color:var(--cinza)">— marque com 🔒 as cotas vendidas/reservadas (somem da bidcon)</span>
+      <span class="rb-sp"></span>
+      <button class="prim" id="rbCopiar">📋 Copiar r:1 p/ cotas.js</button>
+      <button id="rbLimpar">Limpar</button>
+    </div>
+
     <div class="cgrid" id="cotasGrid"></div>
     <button class="cmore hide" id="cotasMore">Ver mais cotas</button>
 
@@ -658,6 +681,21 @@ function leilaoBarAtualizar(){
   if(c)c.textContent=`${LEILAO.size} carta${LEILAO.size===1?'':'s'} no leilão`;
 }
 
+/* ===== RESERVA / VENDIDA (localStorage) — equipe marca com 🔒 e gera r:1 pro cotas.js ===== */
+const RK='bidcon_reserva';
+let RESERVA=new Set();
+try{RESERVA=new Set((JSON.parse(localStorage.getItem(RK))||[]).map(Number));}catch(e){}
+function reservaSalvar(){try{localStorage.setItem(RK,JSON.stringify([...RESERVA].sort((a,b)=>a-b)));}catch(e){}}
+function reservaTem(n){return RESERVA.has(Number(n));}
+function reservaToggle(n){n=Number(n);if(RESERVA.has(n))RESERVA.delete(n);else RESERVA.add(n);reservaSalvar();reservaBarAtualizar();}
+function reservaBarAtualizar(){
+  const bar=document.getElementById('reservabar');if(!bar)return;
+  bar.classList.toggle('on',cModo==='market');
+  const c=document.getElementById('rbCount');
+  if(c)c.textContent=`${RESERVA.size} carta${RESERVA.size===1?'':'s'} reservada${RESERVA.size===1?'':'s'}`;
+  if(typeof cKpisFeitos!=='undefined'&&cKpisFeitos&&typeof renderKpis==='function')renderKpis();
+}
+
 const SELO='<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 1.8 3 .1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .1L12 22l-2.4-1.8-3-.1-.9-2.9L3.3 15l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.1L12 2z" fill="#3ad17e"/><path d="M8.5 12l2.2 2.2 4.5-4.5" stroke="#04210f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 /* Custo efetivo — taxa de juros REAL ao mês (método Newton-Raphson / IRR, igual HP-12C):
@@ -725,8 +763,10 @@ function renderKpis(){
   const im=COTAS.filter(c=>c.t==='imovel'),ve=COTAS.filter(c=>c.t==='veiculo');
   const totCred=COTAS.reduce((s,c)=>s+c.c,0);
   const menorEnt=COTAS.length?Math.min(...COTAS.map(c=>c.e)):0;
+  const nRes=(typeof RESERVA!=='undefined')?[...RESERVA].filter(n=>COTAS.some(c=>Number(c.n)===Number(n))).length:0;
+  const disp=Math.max(0,COTAS.length-nRes);
   document.getElementById('cotasKpis').innerHTML=`
-    <div class="kpi"><div class="l">Cotas disponíveis</div><div class="v red">${NUM(COTAS.length)}</div></div>
+    <div class="kpi"><div class="l">Cotas disponíveis${nRes?` · ${NUM(nRes)} reservada${nRes===1?'':'s'}`:''}</div><div class="v red">${NUM(disp)}</div></div>
     <div class="kpi"><div class="l">Imóvel · Veículo</div><div class="v">${NUM(im.length)} · ${NUM(ve.length)}</div></div>
     <div class="kpi"><div class="l">Crédito total em carteira</div><div class="v grn">${BRLc(totCred)}</div></div>
     <div class="kpi"><div class="l">Melhor custo efetivo</div><div class="v grn">${(()=>{const v=COTAS.filter(c=>c.x).map(c=>custoEfetivo(c).am);return v.length?(Math.min(...v)).toFixed(2).replace('.',',')+'% a.m.':'—';})()}</div></div>`;
@@ -742,10 +782,10 @@ function renderCotas(){
   const grid=document.getElementById('cotasGrid');
   if(!arr.length){grid.innerHTML='<div class="cempty">Nenhuma cota com esses filtros. Ajuste a busca ou a faixa de crédito.</div>';document.getElementById('cotasMore').classList.add('hide');return;}
   const vis=arr.slice(0,cLimite);
-  grid.innerHTML=vis.map(co=>{const sel=leilaoTem(co.n);return `
-    <div class="ccard ${co.t} ${sel?'naleilao':''}">
+  grid.innerHTML=vis.map(co=>{const sel=leilaoTem(co.n);const res=reservaTem(co.n);return `
+    <div class="ccard ${co.t} ${sel?'naleilao':''} ${res?'reservada':''}">
       <div class="ctop">
-        <span class="cstatus"><span class="dot"></span>Contemplada</span>
+        <span class="cstatus"><span class="dot"></span>${res?'Reservada':'Contemplada'}</span>
         <span class="ctag ${co.t}">${tipoLabel(co.t)}</span>
       </div>
       <div class="ccat"><span class="emo">${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'} <span class="cnum" style="margin-left:auto">Nº ${co.n}</span></div>
@@ -760,6 +800,7 @@ function renderCotas(){
       <div class="cbtns">
         <a class="czap" href="${zapLink(co)}" target="_blank" rel="noopener">⬤ Quero esta cota</a>
         <button class="lbtn ${sel?'on':''}" data-leilao="${co.n}" title="${sel?'Tirar do leilão':'Mandar pro leilão'}">🔨</button>
+        <button class="rbtn ${res?'on':''}" data-reserva="${co.n}" title="${res?'Tornar disponível de novo':'Marcar como reservada/vendida'}">🔒</button>
       </div>
     </div>`;}).join('');
   document.getElementById('cotasMore').classList.toggle('hide',arr.length<=cLimite);
@@ -791,6 +832,34 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
     LEILAO.clear();leilaoSalvar();leilaoBarAtualizar();renderCotas();toast('Leilão limpo');
   });
   leilaoBarAtualizar();
+})();
+/* toggle 🔒 marcar/desmarcar como reservada/vendida (delegação no grid) */
+document.getElementById('cotasGrid').addEventListener('click',e=>{
+  const b=e.target.closest('.rbtn');if(!b)return;
+  const n=Number(b.dataset.reserva);reservaToggle(n);
+  const res=reservaTem(n);b.classList.toggle('on',res);
+  b.title=res?'Tornar disponível de novo':'Marcar como reservada/vendida';
+  const card=b.closest('.ccard');card.classList.toggle('reservada',res);
+  const st=card.querySelector('.cstatus');
+  if(st)st.innerHTML='<span class="dot"></span>'+(res?'Reservada':'Contemplada');
+});
+/* barra de reserva: copiar r:1 p/ cotas.js + limpar */
+(function(){
+  const cp=document.getElementById('rbCopiar'),lp=document.getElementById('rbLimpar');
+  if(cp)cp.addEventListener('click',()=>{
+    const nums=[...RESERVA].sort((a,b)=>a-b);
+    if(!nums.length)return toast('Nenhuma carta marcada');
+    const txt='// cotas reservadas/vendidas — somem da bidcon\n'
+      +'// no cotas.js, adicione  r:1  nestas cotas (ou remova p/ liberar de novo):\n'
+      +'// nºs: '+nums.join(', ')+'\n'
+      +'const RESERVADAS = ['+nums.join(',')+'];';
+    navigator.clipboard.writeText(txt).then(()=>toast(`Copiado · ${nums.length} carta(s) — marque r:1 no cotas.js`)).catch(()=>toast('Falha ao copiar'));
+  });
+  if(lp)lp.addEventListener('click',()=>{
+    if(!RESERVA.size)return;
+    RESERVA.clear();reservaSalvar();reservaBarAtualizar();renderCotas();toast('Reservas limpas');
+  });
+  reservaBarAtualizar();
 })();
 
 /* ===== CHECKLIST OPERACIONAL — processo de aquisição (10 etapas) ===== */
