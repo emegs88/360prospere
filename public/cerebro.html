@@ -531,7 +531,8 @@
           <option value="saldo-asc">Menor saldo devedor</option>
           <option value="credito-desc">Maior crédito</option>
           <option value="credito-asc">Menor crédito</option>
-          <option value="entrada-asc">Menor entrada</option>
+          <option value="entrada-asc">Menor entrada (R$)</option>
+          <option value="entradapct-asc">Menor % de entrada</option>
           <option value="parcela-asc">Menor parcela</option>
         </select>
       </div>
@@ -831,7 +832,7 @@ function cotasFiltradas(){
   const q=(document.getElementById('cotasBusca').value||'').replace(/\D/g,'');
   if(q)arr=arr.filter(c=>String(c.n).includes(q)||String(c.c).includes(q));
   const ord=document.getElementById('cotasOrd').value;
-  const cmp={'custo-asc':(a,b)=>custoEfetivo(a).am-custoEfetivo(b).am,'saldo-asc':(a,b)=>custoEfetivo(a).saldo-custoEfetivo(b).saldo,'credito-desc':(a,b)=>b.c-a.c,'credito-asc':(a,b)=>a.c-b.c,'entrada-asc':(a,b)=>a.e-b.e,'parcela-asc':(a,b)=>a.p-b.p}[ord];
+  const cmp={'custo-asc':(a,b)=>custoEfetivo(a).am-custoEfetivo(b).am,'saldo-asc':(a,b)=>custoEfetivo(a).saldo-custoEfetivo(b).saldo,'credito-desc':(a,b)=>b.c-a.c,'credito-asc':(a,b)=>a.c-b.c,'entrada-asc':(a,b)=>a.e-b.e,'entradapct-asc':(a,b)=>(a.e/a.c)-(b.e/b.c),'parcela-asc':(a,b)=>a.p-b.p}[ord];
   if(cmp)arr.sort(cmp);
   return arr;
 }
@@ -869,7 +870,7 @@ function renderCotas(){
       </div>
       <div class="ccat"><span class="emo">${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'} <span class="cnum" style="margin-left:auto">Nº ${co.n}</span></div>
       <div class="ccredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
-      <div class="centrada"><div class="l">Compra imediata (entrada)</div><div class="v">${BRL(co.e)}</div></div>
+      <div class="centrada"><div class="l">Compra imediata (entrada)</div><div class="v">${BRL(co.e)}${co.c>0?` <span style="color:var(--cinza2);font-size:11px">${(co.e/co.c*100).toFixed(0)}% do crédito</span>`:''}</div></div>
       <div class="crows">
         <div class="crow2"><div class="l">Parcela</div><div class="v grn">${BRL(co.p)}${co.x?` <span style="color:var(--cinza2);font-size:11px">×${co.x}</span>`:''}</div></div>
         ${(()=>{const{saldo,saldoSobre}=custoEfetivo(co);return `<div class="crow2"><div class="l">Saldo devedor do bem</div><div class="v">${BRLc(saldo)}${co.c>0?` <span style="color:var(--cinza2);font-size:11px">${saldoSobre.toFixed(0)}% do crédito</span>`:''}</div></div>`;})()}
