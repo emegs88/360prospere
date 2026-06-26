@@ -208,6 +208,57 @@
   .ccard.reservada{opacity:.62;outline:1px solid rgba(212,17,30,.55);outline-offset:-1px}
   .ccard.reservada .cstatus{color:var(--vermelho-l);background:rgba(212,17,30,.1);border-color:rgba(212,17,30,.4)}
   .ccard.reservada .cstatus .dot{background:var(--vermelho-l);box-shadow:0 0 8px var(--vermelho-l)}
+  .sbtn{flex:none;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--linha2);color:var(--cinza);font-size:14px;border-radius:10px;padding:11px 13px;cursor:pointer;transition:.12s}
+  .sbtn:hover{border-color:#36C5F0;color:#36C5F0}
+  /* ===== MODAL SIMULAÇÃO ESCROW (visual bidcon) ===== */
+  .simov{position:fixed;inset:0;background:rgba(4,5,9,.78);backdrop-filter:blur(4px);z-index:200;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:26px 14px}
+  .simov.on{display:flex}
+  .simwrap{width:100%;max-width:430px;margin:auto 0}
+  .simtoggle{display:flex;gap:6px;justify-content:center;margin-bottom:14px}
+  .simtoggle button{background:#16161c;border:1px solid #2a2a33;color:#9a9aa6;font-family:'Archivo';font-weight:700;font-size:12px;letter-spacing:.03em;text-transform:uppercase;padding:9px 18px;border-radius:999px;cursor:pointer;transition:.14s}
+  .simtoggle button.on{background:#1E6FE6;border-color:#1E6FE6;color:#fff}
+  /* CARD bidcon — padrão banco */
+  #simCard{background:linear-gradient(170deg,#0d1322,#08080b 60%);border:1px solid #1f2a44;border-radius:22px;padding:26px 24px 22px;box-shadow:0 30px 60px -20px rgba(0,0,0,.7);font-family:'Inter',system-ui,sans-serif;color:#fff}
+  #simCard .blogo{display:inline-flex;align-items:baseline;font-family:'Poppins','Sora',system-ui,sans-serif;font-weight:700;font-size:23px;letter-spacing:-.02em;line-height:1;color:#fff}
+  #simCard .blogo b{font-weight:800;background:linear-gradient(100deg,#8FB7FF,#36C5F0 45%,#1E6FE6);-webkit-background-clip:text;background-clip:text;color:transparent}
+  #simCard .blogo .seal{display:inline-flex;width:.86em;height:.86em;margin:0 -.02em;transform:translateY(.06em)}
+  #simCard .blogo .seal svg{width:100%;height:100%;display:block}
+  .sim-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border-bottom:1px solid #1f2a44;padding-bottom:14px;margin-bottom:16px}
+  .sim-head .by{font-size:10.5px;color:#7d8aa3;margin-top:5px;letter-spacing:.02em}
+  .sim-head .cota{text-align:right}
+  .sim-head .cota .n{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;color:#36C5F0}
+  .sim-head .cota .t{font-size:11px;color:#9a9aa6;margin-top:3px}
+  .sim-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;margin-bottom:14px;color:#cfe0ff}
+  .sim-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13.5px}
+  .sim-row .l{color:#9aa6bd}
+  .sim-row .v{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;font-weight:700;color:#fff}
+  .sim-row .pct{color:#7d8aa3;font-size:11px;margin-left:6px;font-weight:400}
+  .sim-row.risca .v{text-decoration:line-through;color:#7d8aa3;font-weight:400}
+  .sim-liq{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;padding:15px 16px;border-radius:14px;background:linear-gradient(100deg,rgba(30,111,230,.18),rgba(54,197,240,.1));border:1px solid #2f6fe6}
+  .sim-liq .l{font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;color:#cfe0ff}
+  .sim-liq .v{font-family:'IBM Plex Mono',monospace;font-weight:800;font-size:20px;color:#36C5F0}
+  .sim-parc{margin-top:12px;text-align:center;font-size:12.5px;color:#9aa6bd}
+  .sim-parc b{color:#fff;font-family:'IBM Plex Mono',monospace}
+  .sim-cob{margin-top:12px;padding:11px 14px;border-radius:11px;font-size:12.5px;display:flex;justify-content:space-between;align-items:center}
+  .sim-cob.ok{background:rgba(31,170,89,.12);border:1px solid rgba(31,170,89,.45);color:#34D399}
+  .sim-cob.warn{background:rgba(227,160,8,.12);border:1px solid rgba(227,160,8,.45);color:#f3c34a}
+  .sim-cob .pc{font-family:'IBM Plex Mono',monospace;font-weight:800}
+  .sim-note{margin-top:14px;font-size:10.5px;line-height:1.5;color:#6b7488;text-align:center}
+  .sim-foot{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:14px;padding-top:13px;border-top:1px solid #1f2a44;font-size:10px;color:#7d8aa3}
+  /* campos editáveis (visão interna) */
+  .sim-edit{margin-top:14px;padding:14px;background:rgba(255,255,255,.03);border:1px solid #1f2a44;border-radius:12px}
+  .sim-edit h4{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#7d8aa3;margin:0 0 11px;font-weight:700}
+  .sim-edit .grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .sim-edit label{display:block;font-size:10.5px;color:#9aa6bd;margin-bottom:3px}
+  .sim-edit input{width:100%;background:#0c0c11;border:1px solid #2a2a33;color:#fff;border-radius:8px;padding:7px 9px;font-family:'IBM Plex Mono',monospace;font-size:12px;outline:none}
+  .sim-edit input:focus{border-color:#1E6FE6}
+  .sim-actions{display:flex;gap:9px;margin-top:16px}
+  .sim-actions button{flex:1;font-family:'Archivo';font-weight:700;font-size:12.5px;padding:12px;border-radius:11px;cursor:pointer;transition:.14s;border:1px solid #2a2a33;background:#16161c;color:#fff}
+  .sim-actions .png{background:#1E6FE6;border-color:#1E6FE6}
+  .sim-actions .png:hover{background:#1657c2}
+  .sim-actions .zap{background:#1faa59;border-color:#1faa59;color:#04210f}
+  .sim-actions .zap:hover{background:#34D399}
+  .sim-actions .x:hover{border-color:#34343d}
   .cempty{grid-column:1/-1;text-align:center;color:var(--cinza);padding:50px 10px;font-size:14px}
   .cmore{display:block;margin:18px auto 0;background:var(--carvao2);border:1px solid var(--linha);color:#fff;font-family:'Archivo';font-weight:600;font-size:13px;padding:12px 26px;border-radius:10px;cursor:pointer;transition:.12s}
   .cmore:hover{border-color:var(--vermelho)}
@@ -511,6 +562,34 @@
     <div class="cgrid" id="cotasGrid"></div>
     <button class="cmore hide" id="cotasMore">Ver mais cotas</button>
 
+    <!-- ===== MODAL SIMULAÇÃO ESCROW (compartilhável, visual bidcon) ===== -->
+    <div class="simov" id="simOverlay">
+      <div class="simwrap">
+        <div class="simtoggle">
+          <button id="simTabCli" class="on" data-view="cliente">Visão cliente</button>
+          <button id="simTabInt" data-view="interna">Visão interna</button>
+        </div>
+        <div id="simCard"></div>
+        <div class="sim-edit" id="simEdit" style="display:none">
+          <h4>Parâmetros da operação</h4>
+          <div class="grid">
+            <div><label>Entrada (%)</label><input id="spEntrada" type="number" step="0.1" value="46"></div>
+            <div><label>Juros do fundo (%)</label><input id="spJuros" type="number" step="0.1" value="11"></div>
+            <div><label>IOF (%)</label><input id="spIof" type="number" step="0.01" value="0.96"></div>
+            <div><label>Emissão CCB (R$)</label><input id="spCcb" type="number" step="100" value="15000"></div>
+            <div><label>Taxa transf. (R$)</label><input id="spTransf" type="number" step="100" value="40712"></div>
+            <div><label>Prazo (dias)</label><input id="spDias" type="number" step="1" value="60"></div>
+            <div style="grid-column:1/-1"><label>Avaliação do imóvel do cliente — garantia (R$)</label><input id="spAval" type="number" step="1000" value="0" placeholder="ex.: 12000000"></div>
+          </div>
+        </div>
+        <div class="sim-actions">
+          <button class="png" id="simPng">📷 Baixar imagem</button>
+          <button class="zap" id="simZap">📋 Copiar texto</button>
+          <button class="x" id="simFechar">Fechar</button>
+        </div>
+      </div>
+    </div>
+
     <div class="note">
       <b>Como funciona.</b> Cota contemplada = crédito já liberado pra usar agora (imóvel ou veículo), sem sorteio e sem lance. Você paga a <b>entrada</b> e assume as parcelas restantes. Os valores são da carteira atual da Prospere Consórcios e mudam conforme disponibilidade — confirme a cota no atendimento antes de fechar. Nada de "investimento" ou "rendimento garantido": é <b>compra programada / crédito de consórcio</b>.
     </div>
@@ -799,6 +878,7 @@ function renderCotas(){
       <div class="cverif">${SELO}<b>Atendimento verificado · Prospere Corretora</b></div>
       <div class="cbtns">
         <a class="czap" href="${zapLink(co)}" target="_blank" rel="noopener">⬤ Quero esta cota</a>
+        <button class="sbtn" data-sim="${co.n}" title="Gerar simulação para o cliente">💰</button>
         <button class="lbtn ${sel?'on':''}" data-leilao="${co.n}" title="${sel?'Tirar do leilão':'Mandar pro leilão'}">🔨</button>
         <button class="rbtn ${res?'on':''}" data-reserva="${co.n}" title="${res?'Tornar disponível de novo':'Marcar como reservada/vendida'}">🔒</button>
       </div>
@@ -860,6 +940,122 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
     RESERVA.clear();reservaSalvar();reservaBarAtualizar();renderCotas();toast('Reservas limpas');
   });
   reservaBarAtualizar();
+})();
+
+/* ===== SIMULAÇÃO ESCROW — card compartilhável (visual bidcon) ===== */
+(function(){
+  const BRLx=n=>'R$ '+(Number(n)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const SK='bidcon_sim_params';
+  const SEAL='<span class="seal" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><linearGradient id="sgrad" x1="0" y1=".15" x2="1" y2=".85"><stop offset="0" stop-color="#8FB7FF"/><stop offset=".45" stop-color="#36C5F0"/><stop offset="1" stop-color="#1E6FE6"/></linearGradient></defs><circle cx="50" cy="50" r="44" fill="none" stroke="url(#sgrad)" stroke-width="11"/><path d="M33 51 L45 63 L69 38" fill="none" stroke="url(#sgrad)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+  const LOGO='<span class="blogo">bidc'+SEAL+'<b>n</b></span>';
+  let simCota=null, simView='cliente';
+
+  function params(){
+    const g=(id,d)=>{const v=parseFloat(document.getElementById(id).value);return isNaN(v)?d:v;};
+    return {ent:g('spEntrada',46),jur:g('spJuros',11),iof:g('spIof',0.96),ccb:g('spCcb',15000),transf:g('spTransf',40712),dias:g('spDias',60),aval:g('spAval',0)};
+  }
+  function salvarParams(){const p=params();delete p.aval;localStorage.setItem(SK,JSON.stringify(p));}
+  function carregarParams(){try{const p=JSON.parse(localStorage.getItem(SK));if(!p)return;const set=(id,v)=>{if(v!=null)document.getElementById(id).value=v;};set('spEntrada',p.ent);set('spJuros',p.jur);set('spIof',p.iof);set('spCcb',p.ccb);set('spTransf',p.transf);set('spDias',p.dias);}catch(e){}}
+
+  function calc(co){
+    const p=params();
+    const credito=Number(co.c)||0;
+    const entrada=credito*p.ent/100;
+    const iof=entrada*p.iof/100;
+    const juros=entrada*p.jur/100;
+    const ccb=p.ccb, transf=p.transf;
+    const custos=iof+ccb+transf+juros;
+    const liquido=credito-entrada-custos;
+    const saldoDev=(Number(co.p)||0)*(Number(co.x)||0);
+    const custoFinPct=liquido>0?(custos/liquido*100):0;
+    const cobertura=saldoDev>0&&p.aval>0?(p.aval/saldoDev*100):null;
+    return {credito,entrada,entPct:p.ent,iof,iofPct:p.iof,juros,jurPct:p.jur,ccb,transf,custos,liquido,saldoDev,custoFinPct,dias:p.dias,aval:p.aval,cobertura};
+  }
+
+  function renderCard(co){
+    const d=calc(co), tipo=co.t==='imovel'?'🏠 Imóvel':'🚗 Automóvel';
+    const head=`<div class="sim-head"><div><div>${LOGO}</div><div class="by">Simulação · Prospere Corretora</div></div><div class="cota"><div class="n">Carta nº ${co.n}</div><div class="t">${tipo} · ${d.dias} dias</div></div></div>`;
+    let body, cob='';
+    if(d.cobertura!=null){const ok=d.cobertura>=100;cob=`<div class="sim-cob ${ok?'ok':'warn'}"><span>${ok?'✓ Avaliação cobre o saldo devedor':'⚠ Avaliação abaixo do saldo devedor'}</span><span class="pc">${d.cobertura.toFixed(0)}%</span></div>`;}
+    if(simView==='cliente'){
+      body=`<div class="sim-title">Operação de crédito programado</div>`
+        +`<div class="sim-row"><span class="l">Crédito da carta</span><span class="v">${BRL(d.credito)}</span></div>`
+        +`<div class="sim-row"><span class="l">Você investe (entrada)</span><span class="v">${BRL(d.entrada)}<span class="pct">${d.entPct}%</span></span></div>`
+        +`<div class="sim-row"><span class="l">Custos da operação</span><span class="v">${BRL(d.custos)}</span></div>`
+        +`<div class="sim-liq"><span class="l">💰 Você recebe líquido</span><span class="v">${BRL(d.liquido)}</span></div>`
+        +`<div class="sim-parc">Parcela: <b>${BRL(co.p)}</b> × ${co.x||'—'}</div>`
+        +cob;
+    }else{
+      const row=(l,v,extra='')=>`<div class="sim-row"><span class="l">${l}</span><span class="v">${v}${extra}</span></div>`;
+      body=`<div class="sim-title">Demonstrativo da operação (interno)</div>`
+        +row('Crédito',BRL(d.credito))
+        +row('Entrada',BRL(d.entrada),`<span class="pct">${d.entPct}%</span>`)
+        +row('Parcela',`${BRL(co.p)} × ${co.x||'—'}`)
+        +row('IOF',BRLx(d.iof),`<span class="pct">${d.iofPct}%</span>`)
+        +row('Emissão CCB',BRLx(d.ccb))
+        +`<div class="sim-row risca"><span class="l">Taxa de transf.</span><span class="v">${BRLx(d.transf)}</span></div>`
+        +row('Juros do fundo',BRLx(d.juros),`<span class="pct">${d.jurPct}%</span>`)
+        +row('Saldo devedor',BRL(d.saldoDev))
+        +`<div class="sim-liq"><span class="l">Crédito líquido</span><span class="v">${BRL(d.liquido)}</span></div>`
+        +`<div class="sim-parc">Custo financeiro médio: <b>${d.custoFinPct.toFixed(1)}%</b> sobre o líquido</div>`
+        +cob;
+    }
+    const note=`<div class="sim-note">A administradora deposita em conta escrow vinculada ao fundo; o fundo entrega o líquido descontando custos e entrada. Imóvel dado em garantia deve cobrir o saldo devedor.<br>*Custos para operação em ${d.dias} dias. Valores sujeitos a análise.</div>`;
+    const foot=`<div class="sim-foot">${SELO}<span>Atendimento verificado · Prospere Corretora</span></div>`;
+    document.getElementById('simCard').innerHTML=head+body+note+foot;
+  }
+
+  function textoZap(co){
+    const d=calc(co), tipo=co.t==='imovel'?'🏠 Imóvel':'🚗 Automóvel';
+    let t=`*BIDCON · Simulação*\n${tipo} · Carta nº ${co.n}\n\n`;
+    if(simView==='cliente'){
+      t+=`Crédito da carta: *${BRL(d.credito)}*\n`
+        +`Você investe (entrada): ${BRL(d.entrada)} (${d.entPct}%)\n`
+        +`Custos da operação: ${BRL(d.custos)}\n`
+        +`💰 *Você recebe líquido: ${BRL(d.liquido)}*\n`
+        +`Parcela: ${BRL(co.p)} × ${co.x||'—'}\n`;
+    }else{
+      t+=`Crédito: ${BRL(d.credito)}\nEntrada: ${BRL(d.entrada)} (${d.entPct}%)\n`
+        +`IOF: ${BRLx(d.iof)}\nEmissão CCB: ${BRLx(d.ccb)}\nJuros do fundo: ${BRLx(d.juros)} (${d.jurPct}%)\n`
+        +`Saldo devedor: ${BRL(d.saldoDev)}\n*Crédito líquido: ${BRL(d.liquido)}*\nCusto fin. médio: ${d.custoFinPct.toFixed(1)}%\n`;
+    }
+    if(d.cobertura!=null)t+=`Garantia cobre ${d.cobertura.toFixed(0)}% do saldo devedor\n`;
+    t+=`\n_Conta escrow vinculada ao fundo. Custos p/ operação em ${d.dias} dias._\n_Prospere Corretora_`;
+    return t;
+  }
+
+  function abrir(co){simCota=co;simView='cliente';carregarParams();document.getElementById('spAval').value=0;syncTabs();renderCard(co);document.getElementById('simOverlay').classList.add('on');}
+  function fechar(){document.getElementById('simOverlay').classList.remove('on');}
+  function syncTabs(){document.getElementById('simTabCli').classList.toggle('on',simView==='cliente');document.getElementById('simTabInt').classList.toggle('on',simView==='interna');document.getElementById('simEdit').style.display=simView==='interna'?'block':'none';}
+
+  /* botão 💰 no grid (delegação) */
+  document.getElementById('cotasGrid').addEventListener('click',e=>{
+    const b=e.target.closest('.sbtn');if(!b)return;
+    const n=Number(b.dataset.sim);const co=COTAS.find(c=>Number(c.n)===n);if(co)abrir(co);
+  });
+  /* toggle visão */
+  document.getElementById('simTabCli').addEventListener('click',()=>{simView='cliente';syncTabs();if(simCota)renderCard(simCota);});
+  document.getElementById('simTabInt').addEventListener('click',()=>{simView='interna';syncTabs();if(simCota)renderCard(simCota);});
+  /* recalcular ao editar parâmetros */
+  ['spEntrada','spJuros','spIof','spCcb','spTransf','spDias','spAval'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',()=>{salvarParams();if(simCota)renderCard(simCota);});
+  });
+  /* fechar */
+  document.getElementById('simFechar').addEventListener('click',fechar);
+  document.getElementById('simOverlay').addEventListener('click',e=>{if(e.target.id==='simOverlay')fechar();});
+  /* copiar texto whatsapp */
+  document.getElementById('simZap').addEventListener('click',()=>{
+    if(!simCota)return;
+    navigator.clipboard.writeText(textoZap(simCota)).then(()=>toast('Simulação copiada — cole no WhatsApp')).catch(()=>toast('Falha ao copiar'));
+  });
+  /* baixar imagem (html2canvas, carregado sob demanda) */
+  document.getElementById('simPng').addEventListener('click',()=>{
+    if(!simCota)return;
+    const card=document.getElementById('simCard');
+    const gerar=()=>{toast('Gerando imagem...');window.html2canvas(card,{backgroundColor:'#08080b',scale:2}).then(cv=>{const a=document.createElement('a');a.download=`bidcon-simulacao-carta-${simCota.n}.png`;a.href=cv.toDataURL('image/png');a.click();toast('Imagem baixada');}).catch(()=>toast('Falha ao gerar imagem'));};
+    if(window.html2canvas)return gerar();
+    const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onload=gerar;s.onerror=()=>toast('Não foi possível carregar o gerador de imagem');document.head.appendChild(s);
+  });
 })();
 
 /* ===== CHECKLIST OPERACIONAL — processo de aquisição (10 etapas) ===== */
