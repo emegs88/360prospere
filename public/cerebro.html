@@ -975,8 +975,10 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
     const liquido=credito-entrada-custos;
     const saldoDev=(Number(co.p)||0)*(Number(co.x)||0);
     const custoFinPct=liquido>0?(custos/liquido*100):0;
+    // Custo MENSAL real (% a.m.) via IRR: cliente recebe o líquido (PV) e paga parcela × nº parcelas
+    const amLiq=(typeof taxaEfetiva==='function')?taxaEfetiva(liquido, Number(co.p)||0, Number(co.x)||0):0;
     const cobertura=saldoDev>0&&p.aval>0?(p.aval/saldoDev*100):null;
-    return {credito,entrada,entPct,entradaReal,usaReal,iof,iofPct:p.iof,juros,jurPct:p.jur,ccb,transf,custos,liquido,saldoDev,custoFinPct,dias:p.dias,aval:p.aval,cobertura};
+    return {credito,entrada,entPct,entradaReal,usaReal,iof,iofPct:p.iof,juros,jurPct:p.jur,ccb,transf,custos,liquido,saldoDev,custoFinPct,amLiq,dias:p.dias,aval:p.aval,cobertura};
   }
 
   function renderCard(co){
@@ -985,26 +987,26 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
     let body, cob='';
     if(d.cobertura!=null){const ok=d.cobertura>=100;cob=`<div class="sim-cob ${ok?'ok':'warn'}"><span>${ok?'✓ Avaliação cobre o saldo devedor':'⚠ Avaliação abaixo do saldo devedor'}</span><span class="pc">${d.cobertura.toFixed(0)}%</span></div>`;}
     if(simView==='cliente'){
-      body=`<div class="sim-title">Operação de crédito programado</div>`
-        +`<div class="sim-row"><span class="l">Crédito da carta</span><span class="v">${BRL(d.credito)}</span></div>`
-        +`<div class="sim-row"><span class="l">Você investe (entrada)</span><span class="v">${BRL(d.entrada)}<span class="pct">${PCT(d.entPct)}</span></span></div>`
-        +`<div class="sim-row"><span class="l">Custos da operação</span><span class="v">${BRL(d.custos)}</span></div>`
+      body=`<div class="sim-title">Como funciona a operação</div>`
+        +`<div class="sim-row"><span class="l">🎯 Crédito da carta</span><span class="v">${BRL(d.credito)}</span></div>`
+        +`<div class="sim-row"><span class="l">💵 Você investe (entrada)</span><span class="v">${BRL(d.entrada)}<span class="pct">${PCT(d.entPct)}</span></span></div>`
+        +`<div class="sim-row"><span class="l">🧾 Custos da operação</span><span class="v">${BRL(d.custos)}</span></div>`
         +`<div class="sim-liq"><span class="l">💰 Você recebe líquido</span><span class="v">${BRL(d.liquido)}</span></div>`
-        +`<div class="sim-parc">Parcela: <b>${BRL(co.p)}</b> × ${co.x||'—'}</div>`
+        +`<div class="sim-parc">📅 Parcela: <b>${BRL(co.p)}</b> × ${co.x||'—'} · 📈 ${d.amLiq.toFixed(2).replace('.',',')}% a.m.</div>`
         +cob;
     }else{
       const row=(l,v,extra='')=>`<div class="sim-row"><span class="l">${l}</span><span class="v">${v}${extra}</span></div>`;
       body=`<div class="sim-title">Demonstrativo da operação (interno)</div>`
-        +row('Crédito',BRL(d.credito))
-        +row('Entrada',BRL(d.entrada),`<span class="pct">${PCT(d.entPct)}</span>`)
-        +row('Parcela',`${BRL(co.p)} × ${co.x||'—'}`)
-        +row('IOF',BRLx(d.iof),`<span class="pct">${d.iofPct}%</span>`)
-        +row('Emissão CCB',BRLx(d.ccb))
-        +`<div class="sim-row risca"><span class="l">Taxa de transf.</span><span class="v">${BRLx(d.transf)}</span></div>`
-        +row('Juros do fundo',BRLx(d.juros),`<span class="pct">${d.jurPct}%</span>`)
-        +row('Saldo devedor',BRL(d.saldoDev))
+        +row('🎯 Crédito',BRL(d.credito))
+        +row('💵 Entrada',BRL(d.entrada),`<span class="pct">${PCT(d.entPct)}</span>`)
+        +row('📅 Parcela',`${BRL(co.p)} × ${co.x||'—'}`)
+        +row('📋 IOF',BRLx(d.iof),`<span class="pct">${d.iofPct}%</span>`)
+        +row('📄 Emissão CCB',BRLx(d.ccb))
+        +`<div class="sim-row risca"><span class="l">🔄 Taxa de transf.</span><span class="v">${BRLx(d.transf)}</span></div>`
+        +row('🏦 Juros do fundo',BRLx(d.juros),`<span class="pct">${d.jurPct}%</span>`)
+        +row('📉 Saldo devedor',BRL(d.saldoDev))
         +`<div class="sim-liq"><span class="l">Crédito líquido</span><span class="v">${BRL(d.liquido)}</span></div>`
-        +`<div class="sim-parc">Custo financeiro médio: <b>${d.custoFinPct.toFixed(1)}%</b> sobre o líquido</div>`
+        +`<div class="sim-parc">Custo efetivo: <b>${d.amLiq.toFixed(2).replace('.',',')}% a.m.</b> sobre o líquido · total da operação ${PCT(d.custoFinPct)}</div>`
         +cob;
     }
     const note=`<div class="sim-note">A administradora deposita em conta escrow vinculada ao fundo; o fundo entrega o líquido descontando custos e entrada. Imóvel dado em garantia deve cobrir o saldo devedor.<br>*Custos para operação em ${d.dias} dias. Valores sujeitos a análise.</div>`;
@@ -1016,15 +1018,16 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
     const d=calc(co), tipo=co.t==='imovel'?'🏠 Imóvel':'🚗 Automóvel';
     let t=`*BIDCON · Simulação*\n${tipo} · Carta nº ${co.n}\n\n`;
     if(simView==='cliente'){
-      t+=`Crédito da carta: *${BRL(d.credito)}*\n`
-        +`Você investe (entrada): ${BRL(d.entrada)} (${PCT(d.entPct)})\n`
-        +`Custos da operação: ${BRL(d.custos)}\n`
+      t+=`🎯 Crédito da carta: *${BRL(d.credito)}*\n`
+        +`💵 Você investe (entrada): ${BRL(d.entrada)} (${PCT(d.entPct)})\n`
+        +`🧾 Custos da operação: ${BRL(d.custos)}\n`
         +`💰 *Você recebe líquido: ${BRL(d.liquido)}*\n`
-        +`Parcela: ${BRL(co.p)} × ${co.x||'—'}\n`;
+        +`📅 Parcela: ${BRL(co.p)} × ${co.x||'—'}\n`
+        +`📈 Custo efetivo: ${d.amLiq.toFixed(2).replace('.',',')}% a.m.\n`;
     }else{
-      t+=`Crédito: ${BRL(d.credito)}\nEntrada: ${BRL(d.entrada)} (${PCT(d.entPct)})\n`
-        +`IOF: ${BRLx(d.iof)}\nEmissão CCB: ${BRLx(d.ccb)}\nJuros do fundo: ${BRLx(d.juros)} (${d.jurPct}%)\n`
-        +`Saldo devedor: ${BRL(d.saldoDev)}\n*Crédito líquido: ${BRL(d.liquido)}*\nCusto fin. médio: ${d.custoFinPct.toFixed(1)}%\n`;
+      t+=`🎯 Crédito: ${BRL(d.credito)}\n💵 Entrada: ${BRL(d.entrada)} (${PCT(d.entPct)})\n`
+        +`📋 IOF: ${BRLx(d.iof)}\n📄 Emissão CCB: ${BRLx(d.ccb)}\n🏦 Juros do fundo: ${BRLx(d.juros)} (${d.jurPct}%)\n`
+        +`📉 Saldo devedor: ${BRL(d.saldoDev)}\n💰 *Crédito líquido: ${BRL(d.liquido)}*\n📈 Custo efetivo: ${d.amLiq.toFixed(2).replace('.',',')}% a.m. (total ${PCT(d.custoFinPct)})\n`;
     }
     if(d.cobertura!=null)t+=`Garantia cobre ${d.cobertura.toFixed(0)}% do saldo devedor\n`;
     t+=`\n_Conta escrow vinculada ao fundo. Custos p/ operação em ${d.dias} dias._\n_Prospere Corretora_`;
