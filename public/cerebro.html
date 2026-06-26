@@ -573,7 +573,7 @@
         <div class="sim-edit" id="simEdit" style="display:none">
           <h4>Parâmetros da operação</h4>
           <div class="grid">
-            <div><label>Entrada (%)</label><input id="spEntrada" type="number" step="0.1" value="46"></div>
+            <div><label>Entrada (% — vazio = real da cota)</label><input id="spEntrada" type="number" step="0.1" placeholder="real" value=""></div>
             <div><label>Juros do fundo (%)</label><input id="spJuros" type="number" step="0.1" value="11"></div>
             <div><label>IOF (%)</label><input id="spIof" type="number" step="0.01" value="0.96"></div>
             <div><label>Emissão CCB (R$)</label><input id="spCcb" type="number" step="100" value="15000"></div>
@@ -945,6 +945,7 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
 /* ===== SIMULAÇÃO ESCROW — card compartilhável (visual bidcon) ===== */
 (function(){
   const BRLx=n=>'R$ '+(Number(n)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const PCT=n=>{const v=Number(n)||0;return (Math.round(v*10)/10).toString().replace('.',',')+'%';}; // 1 casa, vírgula
   const SK='bidcon_sim_params';
   const SEAL='<span class="seal" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><linearGradient id="sgrad" x1="0" y1=".15" x2="1" y2=".85"><stop offset="0" stop-color="#8FB7FF"/><stop offset=".45" stop-color="#36C5F0"/><stop offset="1" stop-color="#1E6FE6"/></linearGradient></defs><circle cx="50" cy="50" r="44" fill="none" stroke="url(#sgrad)" stroke-width="11"/><path d="M33 51 L45 63 L69 38" fill="none" stroke="url(#sgrad)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
   const LOGO='<span class="blogo">bidc'+SEAL+'<b>n</b></span>';
@@ -952,15 +953,21 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
 
   function params(){
     const g=(id,d)=>{const v=parseFloat(document.getElementById(id).value);return isNaN(v)?d:v;};
-    return {ent:g('spEntrada',46),jur:g('spJuros',11),iof:g('spIof',0.96),ccb:g('spCcb',15000),transf:g('spTransf',40712),dias:g('spDias',60),aval:g('spAval',0)};
+    const entRaw=document.getElementById('spEntrada').value.trim();
+    const entOverride=entRaw===''?null:(isNaN(parseFloat(entRaw))?null:parseFloat(entRaw)); // null = usar entrada real da cota
+    return {entOverride,jur:g('spJuros',11),iof:g('spIof',0.96),ccb:g('spCcb',15000),transf:g('spTransf',40712),dias:g('spDias',60),aval:g('spAval',0)};
   }
   function salvarParams(){const p=params();delete p.aval;localStorage.setItem(SK,JSON.stringify(p));}
-  function carregarParams(){try{const p=JSON.parse(localStorage.getItem(SK));if(!p)return;const set=(id,v)=>{if(v!=null)document.getElementById(id).value=v;};set('spEntrada',p.ent);set('spJuros',p.jur);set('spIof',p.iof);set('spCcb',p.ccb);set('spTransf',p.transf);set('spDias',p.dias);}catch(e){}}
+  function carregarParams(){try{const p=JSON.parse(localStorage.getItem(SK));if(!p)return;const set=(id,v)=>{if(v!=null)document.getElementById(id).value=v;};document.getElementById('spEntrada').value=(p.entOverride==null?'':p.entOverride);set('spJuros',p.jur);set('spIof',p.iof);set('spCcb',p.ccb);set('spTransf',p.transf);set('spDias',p.dias);}catch(e){}}
 
   function calc(co){
     const p=params();
     const credito=Number(co.c)||0;
-    const entrada=credito*p.ent/100;
+    const entradaReal=Number(co.e)||0;                 // entrada real da cota (cotas.js)
+    // Entrada base: real da cota; se o usuário digitou um %, aplica esse % em cima do crédito real
+    const usaReal=p.entOverride==null;
+    const entrada=usaReal?entradaReal:(credito*p.entOverride/100);
+    const entPct=credito>0?(entrada/credito*100):0;    // % sempre derivado dos valores reais
     const iof=entrada*p.iof/100;
     const juros=entrada*p.jur/100;
     const ccb=p.ccb, transf=p.transf;
@@ -969,7 +976,7 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
     const saldoDev=(Number(co.p)||0)*(Number(co.x)||0);
     const custoFinPct=liquido>0?(custos/liquido*100):0;
     const cobertura=saldoDev>0&&p.aval>0?(p.aval/saldoDev*100):null;
-    return {credito,entrada,entPct:p.ent,iof,iofPct:p.iof,juros,jurPct:p.jur,ccb,transf,custos,liquido,saldoDev,custoFinPct,dias:p.dias,aval:p.aval,cobertura};
+    return {credito,entrada,entPct,entradaReal,usaReal,iof,iofPct:p.iof,juros,jurPct:p.jur,ccb,transf,custos,liquido,saldoDev,custoFinPct,dias:p.dias,aval:p.aval,cobertura};
   }
 
   function renderCard(co){
@@ -980,7 +987,7 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
     if(simView==='cliente'){
       body=`<div class="sim-title">Operação de crédito programado</div>`
         +`<div class="sim-row"><span class="l">Crédito da carta</span><span class="v">${BRL(d.credito)}</span></div>`
-        +`<div class="sim-row"><span class="l">Você investe (entrada)</span><span class="v">${BRL(d.entrada)}<span class="pct">${d.entPct}%</span></span></div>`
+        +`<div class="sim-row"><span class="l">Você investe (entrada)</span><span class="v">${BRL(d.entrada)}<span class="pct">${PCT(d.entPct)}</span></span></div>`
         +`<div class="sim-row"><span class="l">Custos da operação</span><span class="v">${BRL(d.custos)}</span></div>`
         +`<div class="sim-liq"><span class="l">💰 Você recebe líquido</span><span class="v">${BRL(d.liquido)}</span></div>`
         +`<div class="sim-parc">Parcela: <b>${BRL(co.p)}</b> × ${co.x||'—'}</div>`
@@ -989,7 +996,7 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
       const row=(l,v,extra='')=>`<div class="sim-row"><span class="l">${l}</span><span class="v">${v}${extra}</span></div>`;
       body=`<div class="sim-title">Demonstrativo da operação (interno)</div>`
         +row('Crédito',BRL(d.credito))
-        +row('Entrada',BRL(d.entrada),`<span class="pct">${d.entPct}%</span>`)
+        +row('Entrada',BRL(d.entrada),`<span class="pct">${PCT(d.entPct)}</span>`)
         +row('Parcela',`${BRL(co.p)} × ${co.x||'—'}`)
         +row('IOF',BRLx(d.iof),`<span class="pct">${d.iofPct}%</span>`)
         +row('Emissão CCB',BRLx(d.ccb))
@@ -1010,12 +1017,12 @@ document.getElementById('cotasGrid').addEventListener('click',e=>{
     let t=`*BIDCON · Simulação*\n${tipo} · Carta nº ${co.n}\n\n`;
     if(simView==='cliente'){
       t+=`Crédito da carta: *${BRL(d.credito)}*\n`
-        +`Você investe (entrada): ${BRL(d.entrada)} (${d.entPct}%)\n`
+        +`Você investe (entrada): ${BRL(d.entrada)} (${PCT(d.entPct)})\n`
         +`Custos da operação: ${BRL(d.custos)}\n`
         +`💰 *Você recebe líquido: ${BRL(d.liquido)}*\n`
         +`Parcela: ${BRL(co.p)} × ${co.x||'—'}\n`;
     }else{
-      t+=`Crédito: ${BRL(d.credito)}\nEntrada: ${BRL(d.entrada)} (${d.entPct}%)\n`
+      t+=`Crédito: ${BRL(d.credito)}\nEntrada: ${BRL(d.entrada)} (${PCT(d.entPct)})\n`
         +`IOF: ${BRLx(d.iof)}\nEmissão CCB: ${BRLx(d.ccb)}\nJuros do fundo: ${BRLx(d.juros)} (${d.jurPct}%)\n`
         +`Saldo devedor: ${BRL(d.saldoDev)}\n*Crédito líquido: ${BRL(d.liquido)}*\nCusto fin. médio: ${d.custoFinPct.toFixed(1)}%\n`;
     }
