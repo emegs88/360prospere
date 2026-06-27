@@ -5,7 +5,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/api/:path(imoveis|estoque|fipe|cotas)',
+        source: '/api/:path(imoveis|estoque|fipe|cotas|cotas-extra)',
         headers: [
           { key: 'Access-Control-Allow-Origin', value: '*' },
           { key: 'Access-Control-Allow-Methods', value: 'GET, OPTIONS' },
