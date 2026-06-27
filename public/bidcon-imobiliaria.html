@@ -278,8 +278,9 @@
 const API360=window.API360||'';
 const DADOS=(window.PROSPERE_COTAS)||{cotas:[],whatsapp:'5519997561909'};
 const CWA=DADOS.whatsapp||'5519997561909';
-// só cotas DISPONÍVEIS: as reservadas/vendidas vêm com r:1 e não aparecem aqui
-const CARTAS=(DADOS.cotas||[]).filter(c=>c.t==='imovel'&&c.c>0&&!c.r);
+// só cotas DISPONÍVEIS: as reservadas/vendidas vêm com r:1 e não aparecem aqui.
+// Base inicial = cotas.js (fallback). Logo após, /api/cotas atualiza AO VIVO (Lance).
+let CARTAS=(DADOS.cotas||[]).filter(c=>c.t==='imovel'&&c.c>0&&!c.r);
 const $=id=>document.getElementById(id);
 const BRL=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
 const NUM=v=>Number(v).toLocaleString('pt-BR');
@@ -471,8 +472,8 @@ $('cOrd').addEventListener('change',()=>{cLimite=18;renderCartas();});
 $('cBusca').addEventListener('input',()=>{cLimite=18;renderCartas();});
 $('cMore').addEventListener('click',()=>{cLimite+=18;renderCartas();});
 
-// ===== STATS =====
-(function(){
+// ===== STATS ===== (recalculável quando a base muda ao vivo)
+function renderStats(){
   const totalCartas=CARTAS.length;
   const credito=CARTAS.reduce((s,c)=>s+c.c,0);
   const maxCred=CARTAS.reduce((m,c)=>Math.max(m,c.c),0);
@@ -483,7 +484,8 @@ $('cMore').addEventListener('click',()=>{cLimite+=18;renderCartas();});
     <div class="stat"><div class="sv">R$ ${mi(credito)}</div><div class="sl">Em crédito disponível</div></div>
     <div class="stat"><div class="sv">R$ ${mi(maxCred)}</div><div class="sl">Maior crédito</div></div>
     <div class="stat"><div class="sv">${BRL(minEnt)}</div><div class="sl">Menor entrada</div></div>`;
-})();
+}
+renderStats();
 
 $('hzap').href=`https://wa.me/${CWA}?text=${encodeURIComponent('Olá! Quero usar uma carta de consórcio contemplada para comprar um imóvel. Como funciona?')}`;
 
@@ -495,6 +497,20 @@ document.querySelectorAll('.fontebtn').forEach(b=>b.addEventListener('click',()=
 
 carregarImoveis();
 renderCartas();
+
+/* ===== CARTEIRA AO VIVO (Lance via /api/cotas) — público vê só DISPONÍVEIS ===== */
+async function cotasAoVivo(){
+  try{
+    const r=await fetch(API360+'/api/cotas',{cache:'no-store'});
+    if(!r.ok)return;
+    const j=await r.json();
+    if(j&&j.ok&&Array.isArray(j.cotas)){
+      CARTAS=j.cotas.filter(c=>c.t==='imovel'&&c.c>0&&!c.r);
+      renderStats();renderCartas();renderImoveis();
+    }
+  }catch(e){/* mantém fallback estático do cotas.js */}
+}
+cotasAoVivo();setInterval(cotasAoVivo,180000); // 1ª carga + revalida a cada 3min
 </script>
 </body>
 </html>

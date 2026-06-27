@@ -742,9 +742,27 @@ document.getElementById('cQ').addEventListener('keydown',e=>{if(e.key==='Enter')
 document.getElementById('cCopy').addEventListener('click',()=>{if(!lastOut)return toast('Rode o cérebro primeiro');navigator.clipboard.writeText(lastOut).then(()=>toast('Copiado'));});
 
 /* ===== COTAS CONTEMPLADAS ===== */
-const COTAS=(window.PROSPERE_COTAS&&window.PROSPERE_COTAS.cotas)||[];
+// Base inicial = cotas.js (fallback estático, carrega instantâneo).
+// Logo após, /api/cotas puxa a carteira AO VIVO da Lance (CORS resolvido no servidor):
+// reservou na Lance -> entra como r:1; entrou cota nova -> aparece sozinha.
+let COTAS=(window.PROSPERE_COTAS&&window.PROSPERE_COTAS.cotas)||[];
 const CWA=(window.PROSPERE_COTAS&&window.PROSPERE_COTAS.whatsapp)||'5519997561909';
 let cFiltroTipo='todos',cLimite=24,cKpisFeitos=false,cModo='market';
+
+/* ===== SINCRONIZAÇÃO AO VIVO (Lance via /api/cotas) ===== */
+// incluir=reservadas: painel interno vê tudo (reservadas marcadas r:1); o bidcon público filtra depois.
+async function cotasAoVivo(){
+  try{
+    const r=await fetch('/api/cotas?incluir=reservadas',{cache:'no-store'});
+    if(!r.ok)return;
+    const j=await r.json();
+    if(j&&j.ok&&Array.isArray(j.cotas)&&j.cotas.length){
+      COTAS=j.cotas;
+      cKpisFeitos=false; // recalcula KPIs com a base nova
+      if(typeof renderCotas==='function')renderCotas();
+    }
+  }catch(e){/* mantém fallback estático do cotas.js */}
+}
 const tipoLabel=t=>t==='imovel'?'Imóvel':'Veículo';
 
 /* ===== SELEÇÃO DO LEILÃO (localStorage) — equipe marca cartas com 🔨 e cola no cotas.js ===== */
@@ -1314,6 +1332,7 @@ document.getElementById('montTexto').addEventListener('keydown',e=>{if(e.key==='
 document.getElementById('montEx').addEventListener('click',e=>{const s=e.target.closest('span[data-ex]');if(!s)return;document.getElementById('montTexto').value=s.dataset.ex;montar();});
 
 clock();setInterval(clock,1000);renderMap();renderModes();renderConsole();
+cotasAoVivo();setInterval(cotasAoVivo,180000); // carteira ao vivo da Lance: 1ª carga + revalida a cada 3min
 </script>
 </body>
 </html>
