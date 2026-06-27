@@ -201,6 +201,10 @@ export async function GET(request) {
 
     // chave canônica + mapa de código estável (ordem alfabética)
     all.forEach((o) => (o.admN = normAdm(o.adm)));
+
+    // exclui administradoras bloqueadas (ex.: Âncora não entra no agregado)
+    const ADM_BLOQUEADAS = new Set(['ANCORA']);
+    all = all.filter((o) => !ADM_BLOQUEADAS.has(o.admN));
     const canon = [...new Set(all.map((o) => o.admN).filter(Boolean))].sort((a, b) =>
       a.localeCompare(b, 'pt-BR')
     );
