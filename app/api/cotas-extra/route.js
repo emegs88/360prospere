@@ -69,8 +69,12 @@ function tds(row) {
 }
 
 // ---------------- normalização de administradora ----------------
-// Agrupa variações de grafia da MESMA administradora numa chave canônica,
-// pra junção funcionar entre fontes (ex.: "PORTO", "PORTO SEGURO", "PORTO AF").
+// Limpa a grafia (uppercase, sem acento, sem pontuação) e unifica APENAS
+// variações de escrita do MESMO nome. NÃO colapsa sufixos de pool (AF, VP,
+// SEGURO, -A, -P): por decisão, PORTO / PORTO AF / PORTO VP / PORTO SEGURO e
+// ITAU / ITAU A / ITAU P são tratados como pools DISTINTOS (default seguro,
+// não podem juntar entre si). Se confirmar-se que são o mesmo pool, colapsar
+// aqui é reversão fácil.
 function normAdm(raw) {
   const s = String(raw || '')
     .toUpperCase()
@@ -80,12 +84,12 @@ function normAdm(raw) {
     .replace(/\s+/g, ' ')
     .trim();
   if (!s) return '';
-  if (/^PORTO/.test(s)) return 'PORTO';
-  if (/^ITAU/.test(s)) return 'ITAU';
-  if (/^ANCORA/.test(s)) return 'ANCORA';
+  // Colapsos seguros: mesma entidade, só grafia/abreviação difere (não é sufixo de pool).
+  if (/^ANCORA/.test(s)) return 'ANCORA'; // precisa canonizar p/ ADM_BLOQUEADAS
   if (/^(BANCO DO BRASIL|BCO BRASIL|BBRASIL|BB)$/.test(s)) return 'BANCO DO BRASIL';
   if (/^(H S|HS)$/.test(s)) return 'HS';
   if (/^VOLKS/.test(s)) return 'VOLKSWAGEN';
+  // PORTO*, ITAU* e demais: preserva o sufixo -> pools distintos.
   return s;
 }
 
