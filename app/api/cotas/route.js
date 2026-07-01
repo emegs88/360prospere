@@ -40,6 +40,8 @@ function normaliza(o) {
   const x = Number(o.parcelas) || 0;
   const p = numBR(o.valor_parcela);
   const co = { n, t: tipoDe(o.categoria), c, e, p, x };
+  const adm = String(o.administradora || '').trim();
+  if (adm) co.adm = adm; // administradora real (visível no painel e no bidcon)
   if (isReservada(o.reserva)) co.r = 1; // marcador de reserva (mesma convenção do cotas.js)
   return co;
 }

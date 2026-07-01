@@ -186,8 +186,6 @@ async function puxa(url, parser) {
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
-    // ?admin=1 -> devolve também o nome real da administradora (só p/ painel interno 360).
-    const isAdmin = searchParams.get('admin') === '1';
     // ?tipo=imovel|veiculo -> filtra (bidcon-imobiliaria / bidcon-lojista).
     const tipoReq = searchParams.get('tipo');
 
@@ -229,11 +227,11 @@ export async function GET(request) {
         e: eExib, // entrada já com a comissão somada
         p: o.p, // valor da parcela
         x: o.x, // nº de parcelas
-        ac: code[o.admN] || 'ADM-00', // código mascarado da administradora
+        ac: code[o.admN] || 'ADM-00', // código da administradora (compat.)
+        adm: o.adm, // administradora real (visível para todos)
         comissao,
         custoEfetivo, // % sobre o crédito (já com comissão)
       };
-      if (isAdmin) out.adm = o.adm; // nome real só p/ admin
       return out;
     });
 

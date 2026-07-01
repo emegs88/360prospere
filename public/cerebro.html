@@ -161,6 +161,9 @@
   .centrada{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(58,209,126,.07);border:1px solid rgba(58,209,126,.3);border-radius:10px;padding:11px 13px}
   .centrada .l{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--verde-l)}
   .centrada .v{font-family:'JetBrains Mono';font-size:20px;font-weight:700;color:#fff}
+  .cadm{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border:1px solid var(--linha);border-radius:9px;padding:8px 11px}
+  .cadm .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
+  .cadm .v{font-size:13px;font-weight:700;color:#fff;text-align:right}
   .crows{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .crow2{background:var(--carvao);border:1px solid var(--linha);border-radius:9px;padding:9px 11px}
   .crow2 .l{font-size:9.5px;color:var(--cinza);letter-spacing:.1em;text-transform:uppercase}
@@ -887,6 +890,7 @@ function renderCotas(){
         <span class="ctag ${co.t}">${tipoLabel(co.t)}</span>
       </div>
       <div class="ccat"><span class="emo">${co.t==='imovel'?'🏠':'🚗'}</span>${co.t==='imovel'?'Imóvel':'Automóvel'} <span class="cnum" style="margin-left:auto">Nº ${co.n}</span></div>
+      ${(co.adm||co.fonte)?`<div class="cadm"><div class="l">Administradora${co.fonte?` · <span style="color:var(--cinza2)">${co.fonte}</span>`:''}</div><div class="v">${co.adm||'—'}</div></div>`:''}
       <div class="ccredito"><div class="l">Crédito contemplado</div><div class="v">${BRL(co.c)}</div></div>
       <div class="centrada"><div class="l">Compra imediata (entrada)</div><div class="v">${BRL(co.e)}${co.c>0?` <span style="color:var(--cinza2);font-size:11px">${(co.e/co.c*100).toFixed(0)}% do crédito</span>`:''}</div></div>
       <div class="crows">
