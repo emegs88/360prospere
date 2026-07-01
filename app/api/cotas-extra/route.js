@@ -93,6 +93,86 @@ function normAdm(raw) {
   return s;
 }
 
+// ---------------- família de administradora (SÓ para deduplicação) ----------------
+// Camada AGRESSIVA, proposital, e SEPARADA do normAdm de pool de junção.
+// Risco assimétrico: no dedup, errar juntando é barato (esconde 1 linha redundante);
+// errar NÃO juntando infla a contagem pública. Por isso aqui PORTO / PORTO SEGURO /
+// PORTO AF / PORTO VP colapsam numa família só, e ITAU / ITAU A / ITAU P idem.
+// NÃO usar esta função para pool de junção (essa continua conservadora no normAdm).
+function familiaAdm(raw) {
+  const s = normAdm(raw); // reaproveita a limpeza de grafia (uppercase/sem acento)
+  if (!s) return '';
+  if (/^PORTO/.test(s)) return 'PORTO';
+  if (/^ITAU/.test(s)) return 'ITAU';
+  return s; // demais famílias = o próprio nome canônico
+}
+
+// ---------------- deduplicação cross-fonte ----------------
+// Colapsa a MESMA carta raspada por caminhos diferentes (ex.: CARTAS x PIFFER,
+// mesma origem sitedeconsorcio.com). Chave de match por TOLERÂNCIA (scrape varia
+// centavos), não igualdade exata:
+//   mesmo tipo (t)
+//   + crédito |Δ| <= 0,1% do maior
+//   + parcela |Δ| <= R$2
+//   + nº de parcelas (x) EXATO   (inteiro; scraper não arredonda contagem)
+//   + mesma FAMÍLIA de administradora (agressiva)
+// Sobrevivência entre duplicatas:
+//   1) mais recente (o.atualizado por carta) — HOJE inerte: nenhum parser extrai
+//      data por linha, então este critério sempre empata e cai pro próximo.
+//      Fica pronto pro dia em que houver data por carta, sem reescrever a regra.
+//   2) menor entrada crua (o.e) — favorece o cliente, determinístico
+//   3) fonte em ordem alfabética — só p/ resultado estável entre execuções
+// Retorna { itens, colapsados } onde colapsados[] registra cada par vencido→vencedor.
+function melhorSobrevivente(a, b) {
+  // 1) mais recente (inerte hoje: undefined === undefined -> empata)
+  const ta = a.atualizado || '';
+  const tb = b.atualizado || '';
+  if (ta !== tb) return ta > tb ? a : b;
+  // 2) menor entrada crua
+  if ((a.e || 0) !== (b.e || 0)) return (a.e || 0) < (b.e || 0) ? a : b;
+  // 3) fonte alfabética
+  return String(a.fonte) <= String(b.fonte) ? a : b;
+}
+function dedup(itens) {
+  const TOL_CRED = 0.001; // 0,1%
+  const TOL_PARC = 2; // R$2
+  const grupos = []; // cada grupo: { rep, membros[] }
+  const colapsados = []; // { vencido, vencedor } — para relatório
+  for (const o of itens) {
+    const fam = familiaAdm(o.adm);
+    let alvo = null;
+    for (const g of grupos) {
+      const r = g.rep;
+      if (r._fam !== fam) continue;
+      if (r.t !== o.t) continue;
+      if ((r.x || 0) !== (o.x || 0)) continue;
+      const maiorC = Math.max(r.c || 0, o.c || 0) || 1;
+      if (Math.abs((r.c || 0) - (o.c || 0)) / maiorC > TOL_CRED) continue;
+      if (Math.abs((r.p || 0) - (o.p || 0)) > TOL_PARC) continue;
+      alvo = g;
+      break;
+    }
+    if (!alvo) {
+      o._fam = fam;
+      grupos.push({ rep: o, membros: [o] });
+    } else {
+      alvo.membros.push(o);
+      const venc = melhorSobrevivente(alvo.rep, o);
+      const perd = venc === alvo.rep ? o : alvo.rep;
+      colapsados.push({
+        vencedorFonte: venc.fonte,
+        vencidoFonte: perd.fonte,
+        c: venc.c,
+        x: venc.x,
+        adm: venc.adm,
+      });
+      venc._fam = fam;
+      alvo.rep = venc;
+    }
+  }
+  return { itens: grupos.map((g) => g.rep), colapsados };
+}
+
 // ---------------- parsers por fonte ----------------
 function parseCBC(csv) {
   const out = [];
@@ -195,6 +275,10 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     // ?tipo=imovel|veiculo -> filtra (bidcon-imobiliaria / bidcon-lojista).
     const tipoReq = searchParams.get('tipo');
+    // painel interno: expõe metadados de dedup (mapa de sobreposição das fontes).
+    // NÃO vai no payload público — é cadeia de suprimento (mesma lógica do sigilo
+    // de margem/mecânica, §1.3): o total real é público, o COMO se chegou nele não.
+    const admReq = searchParams.get('admin') === '1';
 
     const [cbc, pif, car] = await Promise.all([
       puxa(FONTES.cbc, parseCBC),
@@ -210,6 +294,19 @@ export async function GET(request) {
     // exclui administradoras bloqueadas (ex.: Âncora não entra no agregado)
     const ADM_BLOQUEADAS = new Set(['ANCORA']);
     all = all.filter((o) => !ADM_BLOQUEADAS.has(o.admN));
+
+    // deduplicação cross-fonte ANTES de contar/mapear: a mesma carta raspada por
+    // caminhos diferentes (ex.: CARTAS x PIFFER) contava duas vezes e inflava o total.
+    const totalAntesDedup = all.length;
+    const ded = dedup(all);
+    all = ded.itens;
+    // agrega os pares colapsados por par de fonte, para o relatório
+    const colapsosPorPar = {};
+    for (const cp of ded.colapsados) {
+      const par = [cp.vencedorFonte, cp.vencidoFonte].sort().join(' x ');
+      colapsosPorPar[par] = (colapsosPorPar[par] || 0) + 1;
+    }
+
     const canon = [...new Set(all.map((o) => o.admN).filter(Boolean))].sort((a, b) =>
       a.localeCompare(b, 'pt-BR')
     );
@@ -257,9 +354,21 @@ export async function GET(request) {
         atualizado: new Date().toISOString(),
         whatsapp: WHATSAPP,
         admins: canon.length, // nº de administradoras distintas
-        total: cotas.length,
+        total: cotas.length, // já pós-dedup: nº real de cartas distintas (público)
         imovel: cotas.filter((c) => c.t === 'imovel').length,
         veiculo: cotas.filter((c) => c.t === 'veiculo').length,
+        // metadados de dedup SÓ no painel interno (?admin=1): antes/colapsados/porPar
+        // revelam a sobreposição entre fontes (cadeia de suprimento) — não são públicos.
+        ...(admReq
+          ? {
+              dedup: {
+                antes: totalAntesDedup, // total bruto (com duplicatas de scrape)
+                depois: all.length, // total após colapsar duplicatas
+                colapsados: totalAntesDedup - all.length,
+                porPar: colapsosPorPar, // ex.: { "CARTAS x PIFFER": 12 }
+              },
+            }
+          : {}),
         fontes: fontesStatus,
         cotas,
       }),
