@@ -45,8 +45,9 @@ function BRL(a) {
   return 'R$ ' + Math.round(a).toLocaleString('pt-BR');
 }
 
-// monta o Product schema.org a partir de uma cota normalizada
-function produto(a) {
+// monta o Product schema.org a partir de uma cota normalizada.
+// `ts` = timestamp ISO da resposta da API (frescura de dado), um por produto.
+function produto(a, ts) {
   const rotulo = a.t === 'imovel' ? 'Imóvel' : 'Veículo';
   const prop = [
     { '@type': 'PropertyValue', name: 'Poder de compra (carta de crédito)', value: BRL(a.c) },
@@ -58,6 +59,7 @@ function produto(a) {
     '@type': 'Product',
     name: 'Carta de crédito contemplada — ' + rotulo + ' ' + BRL(a.c),
     category: rotulo,
+    dateModified: ts,
     offers: {
       '@type': 'Offer',
       priceCurrency: 'BRL',
@@ -92,6 +94,9 @@ export async function GET() {
       );
     }
 
+    // timestamp da resposta da API — frescura de dado, um por produto
+    const ts = new Date().toISOString();
+
     // só disponíveis, com crédito válido (mesma regra do bidcon público)
     const disp = arr
       .map(normaliza)
@@ -101,7 +106,7 @@ export async function GET() {
     const itemListElement = disp.map((a, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      item: produto(a),
+      item: produto(a, ts),
     }));
 
     const schema = {
