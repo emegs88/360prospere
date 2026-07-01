@@ -15,7 +15,10 @@ export const dynamic = 'force-dynamic'; // executa a cada request; cache real fi
 //   - Como as administradoras são diferentes, o cliente só pode JUNTAR cartas
 //     da MESMA administradora e do MESMO tipo -> chave de junção = `ac` (código) + `t`.
 //
-// Saída por carta: { id, fonte, t, c, e, p, x, ac, custoEfetivo, comissao, [adm] }
+// Saída por carta: { id, fonte, t, c, e, p, x, ac, adm, custoEfetivo }
+// Nota: comissao_pct e o campo comissao (R$) NÃO entram no payload público
+// (mecânica/margem — §1.3). A comissão segue embutida em `e` (entrada exibida)
+// e no custoEfetivo, mas não é exposta como campo isolado.
 
 const FONTES = {
   cbc: 'https://docs.google.com/spreadsheets/d/1bUFgA8qUTXSAC4gqhsUTU25_dMEaKbM3YgWp4yg8tcU/export?format=csv&gid=0',
@@ -229,8 +232,7 @@ export async function GET(request) {
         x: o.x, // nº de parcelas
         ac: code[o.admN] || 'ADM-00', // código da administradora (compat.)
         adm: o.adm, // administradora real (visível para todos)
-        comissao,
-        custoEfetivo, // % sobre o crédito (já com comissão)
+        custoEfetivo, // % sobre o crédito (já com comissão embutida)
       };
       return out;
     });
@@ -250,7 +252,6 @@ export async function GET(request) {
         ok: true,
         atualizado: new Date().toISOString(),
         whatsapp: WHATSAPP,
-        comissao_pct: COMISSAO,
         admins: canon.length, // nº de administradoras distintas
         total: cotas.length,
         imovel: cotas.filter((c) => c.t === 'imovel').length,
