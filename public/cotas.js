@@ -7,6 +7,9 @@
    Cotas com r:1 são tratadas como indisponíveis e NÃO aparecem em nenhuma
    página bidcon (só puxamos as disponíveis). */
 window.PROSPERE_COTAS = {
+  // Fonte operacional da carteira de cotas contempladas (Carla Picinini/Seguros).
+  // Distinta da EGS Capital, que é a controladora de dados da Bidcon (ver
+  // privacidade.html) — não é divergência, são papéis diferentes.
   fonte: "Central de Contempladas · Prospere Corretora de Seguros LTDA",
   atualizado: "2026-06",
   whatsapp: "5519997561909",
