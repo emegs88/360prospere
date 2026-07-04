@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Conta Notarial · bidcon | Dinheiro protegido pelo Estado — Prospere</title>
-<meta name="description" content="Conta Notarial da bidcon: negocie sua cota de consórcio com o dinheiro custodiado em cartório e protegido pelo Estado. A primeira e única com canal próprio. Parceiro notarial 5notas.">
+<meta name="description" content="Conta Notarial da bidcon: negocie sua cota de consórcio com o dinheiro custodiado em cartório e protegido pelo Estado. Canal próprio no 5º Tabelionato de Notas de Campinas · conta vinculada Banco Safra · Provimento CNJ nº 197/2025.">
 <meta property="og:title" content="Conta Notarial · bidcon — o novo padrão de segurança para negociar cotas">
-<meta property="og:description" content="O dinheiro fica custodiado em cartório até a administradora aprovar a transferência. Sem custódia, sem risco de calote.">
+<meta property="og:description" content="Dinheiro custodiado em cartório até a administradora aprovar a transferência. A primeira e única com canal próprio.">
+<meta property="og:image" content="/selo-notarial.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Archivo+Narrow:wght@600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
@@ -14,13 +15,13 @@
   :root{
     --preto:#070709;--carvao:#121216;--carvao2:#1a1a20;--linha:#28282f;--linha2:#37373f;
     --branco:#f5f5f7;--cinza:#8c8c95;--cinza2:#54545c;
-    --vermelho:#D4111E;--vermelho-l:#ff4651;--vermelho-d:#9c0c16;
+    --vermelho:#D4111E;--vermelho-l:#ff4651;
     --verde:#1faa59;--verde-l:#3ad17e;--ambar:#e3a008;--ambar-l:#f3c34a;
     --azul:#2f6df0;--azul-l:#5b93ff;--azul-d:#1b47a8;--raio:18px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--preto);color:var(--branco);font-family:'Archivo',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 0 80px;
-    background-image:radial-gradient(1100px 480px at 84% -18%,rgba(47,109,240,.10),transparent 62%),radial-gradient(900px 420px at 8% 4%,rgba(212,17,30,.05),transparent 60%);}
+    background-image:radial-gradient(1200px 520px at 82% -18%,rgba(47,109,240,.13),transparent 60%),radial-gradient(900px 420px at 6% 3%,rgba(227,160,8,.05),transparent 60%);}
   .mono{font-family:'JetBrains Mono',monospace}
   .wrap{max-width:1180px;margin:0 auto;padding:0 26px}
   ::selection{background:var(--azul);color:#fff}
@@ -42,43 +43,75 @@
   .hzap:hover{background:var(--verde-l)}
 
   /* HERO */
-  .hero{margin:34px 0 8px;display:grid;grid-template-columns:1.35fr .95fr;gap:28px;align-items:center;
-    background:linear-gradient(150deg,rgba(47,109,240,.12),rgba(47,109,240,.02));border:1px solid rgba(47,109,240,.24);border-radius:var(--raio);padding:34px}
+  .hero{margin:34px 0 6px;display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center;
+    background:linear-gradient(150deg,rgba(47,109,240,.13),rgba(47,109,240,.02));border:1px solid rgba(47,109,240,.24);border-radius:var(--raio);padding:38px 38px 34px;position:relative;overflow:hidden}
   .hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--azul-l);font-weight:700}
   .hero .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--azul-l);box-shadow:0 0 0 4px rgba(91,147,255,.18)}
-  .hero h1{font-family:'Archivo Narrow';font-weight:700;font-size:44px;line-height:1.04;text-transform:uppercase;letter-spacing:.005em;margin:14px 0 12px}
+  .hero h1{font-family:'Archivo Narrow';font-weight:700;font-size:46px;line-height:1.03;text-transform:uppercase;letter-spacing:.005em;margin:15px 0 13px}
   .hero h1 b{color:var(--azul-l)}
   .hero p.lead{color:#d3d3d8;font-size:16px;max-width:52ch;line-height:1.55}
   .hero p.lead b{color:#fff}
-  .hero .cta-row{display:flex;gap:11px;flex-wrap:wrap;margin-top:22px}
+  .hero .cta-row{display:flex;gap:11px;flex-wrap:wrap;margin-top:24px}
   .btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--azul);color:#fff;font-weight:700;font-size:14px;text-decoration:none;border-radius:11px;padding:13px 20px;transition:.12s;border:0;cursor:pointer}
   .btn-primary:hover{background:var(--azul-l)}
   .btn-ghost{display:inline-flex;align-items:center;gap:9px;background:transparent;color:#fff;font-weight:700;font-size:14px;text-decoration:none;border:1px solid var(--linha2);border-radius:11px;padding:13px 20px;transition:.12s}
   .btn-ghost:hover{border-color:var(--branco)}
-  .hero .selos{display:flex;gap:16px;flex-wrap:wrap;margin-top:22px}
+  .hero .selos{display:flex;gap:16px;flex-wrap:wrap;margin-top:24px}
   .hero .selo{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#cfcfd4;font-weight:600}
   .hero .selo svg{width:17px;height:17px;flex:none}
-  /* emblema */
-  .emblema{display:flex;align-items:center;justify-content:center}
-  .emblema .ring{width:230px;height:230px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    background:radial-gradient(circle at 50% 38%,#141a2c,#0a0c14 72%);border:2px solid transparent;
-    background-clip:padding-box;position:relative}
-  .emblema .ring::before{content:"";position:absolute;inset:-2px;border-radius:50%;padding:2px;
-    background:conic-gradient(from 200deg,var(--azul-l),var(--azul-d),var(--azul-l));
-    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-  .emblema svg{width:118px;height:118px}
-  .emblema .cap{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:'JetBrains Mono';font-weight:700;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul-l);background:var(--preto);border:1px solid rgba(47,109,240,.3);border-radius:20px;padding:5px 13px}
-  @media(max-width:840px){.hero{grid-template-columns:1fr;padding:28px 24px}.emblema{order:-1}.emblema .ring{width:180px;height:180px}.emblema svg{width:92px;height:92px}.hero h1{font-size:34px}}
+  .hero .emblema{display:flex;align-items:center;justify-content:center}
+  .hero .emblema img{width:100%;max-width:340px;height:auto;filter:drop-shadow(0 18px 46px rgba(47,109,240,.28))}
+  @media(max-width:860px){.hero{grid-template-columns:1fr;padding:30px 24px}.hero .emblema{order:-1}.hero .emblema img{max-width:250px}.hero h1{font-size:35px}}
 
-  /* SECTION TITLES */
-  section{margin-top:52px}
+  /* CHIPS REGULATÓRIOS */
+  .regs{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:14px}
+  .reg{display:flex;align-items:flex-start;gap:11px;background:var(--carvao);border:1px solid var(--linha);border-radius:13px;padding:15px 16px}
+  .reg .ri{flex:none;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;background:rgba(47,109,240,.1);border:1px solid rgba(47,109,240,.24)}
+  .reg .rt{font-family:'Archivo Narrow';font-weight:700;font-size:14.5px;color:#fff;line-height:1.15;letter-spacing:.01em}
+  .reg .rs{font-family:'JetBrains Mono';font-size:10.5px;color:var(--azul-l);letter-spacing:.04em;margin-top:3px;text-transform:uppercase}
+  @media(max-width:900px){.regs{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.regs{grid-template-columns:1fr}}
+
+  /* SECTION */
+  section{margin-top:54px}
   .stitle{font-family:'Archivo Narrow';font-weight:700;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--azul-l)}
-  h2.sh{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:5px 0 8px;line-height:1.1}
+  h2.sh{font-size:31px;font-weight:800;letter-spacing:-.5px;margin:5px 0 8px;line-height:1.1}
   h2.sh b{color:var(--azul-l)}
-  .ssub{color:var(--cinza);font-size:14.5px;max-width:66ch;line-height:1.6}
+  .ssub{color:var(--cinza);font-size:14.5px;max-width:68ch;line-height:1.6}
   .ssub b{color:#cfcfd4}
 
-  /* O QUE É — 3 cards */
+  /* CANAL DEDICADO */
+  .canal{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:center;margin-top:26px;
+    background:linear-gradient(150deg,rgba(227,160,8,.06),rgba(47,109,240,.05));border:1px solid var(--linha2);border-radius:20px;padding:32px}
+  .canal .ceye{font-family:'JetBrains Mono';font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ambar-l)}
+  .canal h3{font-family:'Archivo Narrow';font-weight:700;font-size:30px;text-transform:uppercase;letter-spacing:.01em;line-height:1.06;margin:10px 0 12px}
+  .canal h3 b{color:var(--azul-l)}
+  .canal p{color:#cfcfd4;font-size:14.5px;line-height:1.65}
+  .canal p b{color:#fff}
+  .canal p+p{margin-top:12px}
+  .canal ul{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:9px}
+  .canal li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#dcdce0}
+  .canal li .mk{flex:none;width:20px;height:20px;border-radius:6px;background:rgba(58,209,126,.16);color:var(--verde-l);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px}
+  .canal .addr{background:var(--preto);border:1px solid var(--linha);border-radius:14px;padding:20px}
+  .canal .addr .al{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza);margin-bottom:4px}
+  .canal .addr .av{font-weight:800;font-size:15px;color:#fff;margin-bottom:14px}
+  .canal .addr .av span{color:var(--azul-l)}
+  .canal .addr .arow{display:flex;align-items:center;gap:10px;font-size:12.5px;color:#cfcfd4;padding:8px 0;border-top:1px dashed var(--linha)}
+  .canal .addr .arow:first-of-type{border-top:0}
+  .canal .addr .arow .e{font-size:15px}
+  @media(max-width:800px){.canal{grid-template-columns:1fr;padding:26px 22px}.canal h3{font-size:25px}}
+
+  /* VÍDEO */
+  .videobox{margin-top:24px;border:1px solid var(--linha2);border-radius:20px;overflow:hidden;background:#05070d;position:relative;aspect-ratio:16/9}
+  .videobox video{width:100%;height:100%;object-fit:cover;display:block;background:#05070d}
+  .videobox .vfallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;
+    background:radial-gradient(700px 380px at 50% 30%,rgba(47,109,240,.16),transparent 62%),linear-gradient(160deg,#0a1020,#05070d)}
+  .videobox .vplay{width:66px;height:66px;border-radius:50%;background:rgba(47,109,240,.9);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 34px rgba(47,109,240,.4)}
+  .videobox .vplay svg{width:26px;height:26px;fill:#fff;margin-left:4px}
+  .videobox .vf-t{font-family:'Archivo Narrow';font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.03em;color:#fff}
+  .videobox .vf-s{font-size:12.5px;color:var(--cinza);max-width:42ch;line-height:1.5}
+
+  /* O QUE É */
   .oque{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
   .oqc{background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:20px 20px 18px;position:relative}
   .oqc .n{position:absolute;top:15px;right:18px;font-family:'JetBrains Mono';font-weight:800;font-size:34px;color:var(--linha2);line-height:1}
@@ -88,8 +121,8 @@
   .oqc b{color:var(--azul-l)}
   @media(max-width:720px){.oque{grid-template-columns:1fr}}
 
-  /* FLUXO DO DINHEIRO */
-  .fluxo{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:26px;position:relative}
+  /* FLUXO */
+  .fluxo{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:26px}
   .fstep{background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:18px 16px;position:relative;z-index:2;margin-right:14px}
   .fstep:last-child{margin-right:0}
   .fstep .fn{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-weight:800;font-size:14px;background:rgba(47,109,240,.14);color:var(--azul-l);border:1px solid rgba(47,109,240,.3)}
@@ -139,8 +172,8 @@
   .fitem .ans .tag{color:var(--azul-l);font-weight:700}
 
   /* CTA FINAL */
-  .ctafinal{margin-top:52px;background:linear-gradient(150deg,rgba(47,109,240,.14),rgba(47,109,240,.03));border:1px solid rgba(47,109,240,.3);border-radius:20px;padding:36px 34px;text-align:center}
-  .ctafinal h2{font-family:'Archivo Narrow';font-weight:700;font-size:34px;text-transform:uppercase;letter-spacing:.01em;line-height:1.05}
+  .ctafinal{margin-top:54px;background:linear-gradient(150deg,rgba(47,109,240,.14),rgba(47,109,240,.03));border:1px solid rgba(47,109,240,.3);border-radius:20px;padding:38px 34px;text-align:center}
+  .ctafinal h2{font-family:'Archivo Narrow';font-weight:700;font-size:35px;text-transform:uppercase;letter-spacing:.01em;line-height:1.05}
   .ctafinal h2 b{color:var(--azul-l)}
   .ctafinal p{color:#cfcfd4;font-size:15px;max-width:56ch;margin:12px auto 0;line-height:1.6}
   .ctafinal .cta-row{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin-top:24px}
@@ -200,16 +233,59 @@
       </div>
     </div>
     <div class="emblema">
-      <div class="ring">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2.2l9.5 4.4v1.1H2.5V6.6L12 2.2z" fill="#eef2ff"/>
-          <rect x="4.4" y="9.2" width="1.9" height="8.1" rx=".3" fill="#eef2ff"/>
-          <rect x="8.2" y="9.2" width="1.9" height="8.1" rx=".3" fill="#eef2ff"/>
-          <rect x="13.9" y="9.2" width="1.9" height="8.1" rx=".3" fill="#eef2ff"/>
-          <rect x="17.7" y="9.2" width="1.9" height="8.1" rx=".3" fill="#eef2ff"/>
-          <rect x="3.2" y="18.4" width="17.6" height="2.1" rx=".4" fill="#eef2ff"/>
-        </svg>
-        <span class="cap">Conta Notarial</span>
+      <img src="/selo-notarial.png" alt="Selo Conta Notarial bidcon — 5º Tabelionato de Notas de Campinas · Conta vinculada Banco Safra · CNJ 197/2025" width="340" height="340">
+    </div>
+  </section>
+
+  <!-- CHIPS REGULATÓRIOS -->
+  <div class="regs">
+    <div class="reg"><div class="ri">🏛️</div><div><div class="rt">5º Tabelionato de Notas</div><div class="rs">Campinas · SP</div></div></div>
+    <div class="reg"><div class="ri">🏦</div><div><div class="rt">Banco Safra</div><div class="rs">Conta vinculada</div></div></div>
+    <div class="reg"><div class="ri">⚖️</div><div><div class="rt">Provimento CNJ nº 197/2025</div><div class="rs">Base regulamentar</div></div></div>
+    <div class="reg"><div class="ri">🔗</div><div><div class="rt">Convênio CNB/CF</div><div class="rs">Ecossistema e-Notariado</div></div></div>
+  </div>
+
+  <!-- CANAL DEDICADO -->
+  <section id="canal">
+    <div class="stitle">Canal dedicado · dentro do cartório</div>
+    <h2 class="sh">A bidcon tem um <b>endereço próprio</b> no 5º Tabelionato</h2>
+    <p class="ssub">Não é um serviço genérico adaptado. Cada operação da bidcon entra na serventia por um <b>canal exclusivo</b>, no domínio oficial do e-Notariado — sem fila de balcão, sem intermediário improvisado. É a materialização da segurança notarial aplicada à negociação de cotas.</p>
+    <div class="canal">
+      <div>
+        <div class="ceye">Por que isso importa</div>
+        <h3>Custódia <b>oficial</b>, do começo ao fim</h3>
+        <p>O dinheiro entra numa <b>conta vinculada no Banco Safra</b>, administrada sob a fé pública do <b>5º Tabelionato de Notas de Campinas</b>. Tudo com base no <b>Provimento CNJ nº 197/2025</b> e no convênio CNB/CF que estrutura o e-Notariado.</p>
+        <p>Ou seja: a garantia não depende da palavra da bidcon nem de nenhuma das partes — depende de uma <b>estrutura de Estado</b>.</p>
+        <ul>
+          <li><span class="mk">✓</span>Canal exclusivo, no domínio oficial da serventia</li>
+          <li><span class="mk">✓</span>Conta vinculada e segregada, não a conta da bidcon</li>
+          <li><span class="mk">✓</span>Fluxo registrado, rastreável e com respaldo notarial</li>
+        </ul>
+      </div>
+      <div class="addr">
+        <div class="al">Serventia responsável</div>
+        <div class="av">5º Tabelionato de Notas <span>· Campinas / SP</span></div>
+        <div class="arow"><span class="e">🏦</span> Custódia em <b style="color:#fff">&nbsp;conta vinculada Banco Safra</b></div>
+        <div class="arow"><span class="e">⚖️</span> Base: Provimento CNJ nº 197/2025</div>
+        <div class="arow"><span class="e">🔗</span> Convênio CNB/CF · e-Notariado</div>
+        <div class="arow"><span class="e">🌐</span> Serviço nacional: contanotarial.org.br</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VÍDEO -->
+  <section id="video">
+    <div class="stitle">Veja em 1 minuto</div>
+    <h2 class="sh">Como a Conta Notarial <b>protege a sua negociação</b></h2>
+    <p class="ssub">Um resumo visual do caminho do dinheiro — do depósito em custódia à liberação após a transferência efetivada.</p>
+    <div class="videobox">
+      <video id="notVideo" controls playsinline preload="none" poster="/selo-notarial.png">
+        <source src="/notarial-video.mp4" type="video/mp4">
+      </video>
+      <div class="vfallback" id="vfallback">
+        <div class="vplay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="vf-t">Vídeo da Conta Notarial</div>
+        <div class="vf-s">Assim que o arquivo <b>notarial-video.mp4</b> for publicado em <b>/public</b>, ele aparece aqui automaticamente.</div>
       </div>
     </div>
   </section>
@@ -256,7 +332,7 @@
       <div class="fstep">
         <div class="fn">2</div>
         <h4>Depósito em custódia</h4>
-        <p>O comprador deposita na Conta Notarial. O valor fica <b>bloqueado no cartório</b>, à vista de ambos.</p>
+        <p>O comprador deposita na conta vinculada. O valor fica <b>bloqueado no cartório</b>, à vista de ambos.</p>
         <span class="arr">→</span>
       </div>
       <div class="fstep">
@@ -283,12 +359,12 @@
       <div class="gcard">
         <div class="gic">⚖️</div>
         <h3>Fé pública do tabelião</h3>
-        <p>Cartórios são delegatários do poder público. A custódia é feita sob <b>fé pública</b>, com registro formal — o mesmo respaldo que dá segurança a escrituras e a atos notariais.</p>
+        <p>Cartórios são delegatários do poder público. A custódia é feita sob <b>fé pública</b>, com base no Provimento CNJ nº 197/2025 — o mesmo respaldo que dá segurança a escrituras e atos notariais.</p>
       </div>
       <div class="gcard">
-        <div class="gic">🔍</div>
-        <h3>Dinheiro rastreável e segregado</h3>
-        <p>O valor não passa pela conta da bidcon nem do vendedor. Fica <b>segregado</b> em conta vinculada, com origem e destino documentados de ponta a ponta.</p>
+        <div class="gic">🏦</div>
+        <h3>Conta vinculada, dinheiro segregado</h3>
+        <p>O valor não passa pela conta da bidcon nem do vendedor. Fica <b>segregado em conta vinculada no Banco Safra</b>, com origem e destino documentados de ponta a ponta.</p>
       </div>
       <div class="gcard">
         <div class="gic">🤝</div>
@@ -298,7 +374,7 @@
       <div class="gcard">
         <div class="gic">📡</div>
         <h3>Canal próprio bidcon</h3>
-        <p>Somos a <b>primeira e única</b> com um canal de Conta Notarial dedicado — operado com o parceiro notarial 5notas. Um fluxo pensado para cotas de consórcio, não um genérico adaptado.</p>
+        <p>Somos a <b>primeira e única</b> com um canal de Conta Notarial dedicado, no domínio oficial do e-Notariado — um fluxo pensado para cotas de consórcio, não um genérico adaptado.</p>
       </div>
     </div>
   </section>
@@ -356,7 +432,7 @@
       </details>
       <details class="fitem">
         <summary>A bidcon fica com o meu dinheiro? <span class="ch">+</span></summary>
-        <div class="ans"><b>Não.</b> O valor não passa pela conta da bidcon nem do vendedor — fica em <b>conta vinculada ao cartório</b>, segregado, sob fé pública. A bidcon conduz a negociação e a operação; a guarda do dinheiro é do serviço notarial.</div>
+        <div class="ans"><b>Não.</b> O valor não passa pela conta da bidcon nem do vendedor — fica em <b>conta vinculada no Banco Safra</b>, segregada, sob a fé pública do 5º Tabelionato de Notas de Campinas. A bidcon conduz a negociação e a operação; a guarda do dinheiro é do serviço notarial.</div>
       </details>
     </div>
   </section>
@@ -375,12 +451,13 @@
     <div class="parc">
       <div>Serviço nacional<b><a href="https://contanotarial.org.br" target="_blank" rel="noopener">contanotarial.org.br</a></b></div>
       <div>Parceiro notarial<b><a href="https://5notas.com.br" target="_blank" rel="noopener">5notas.com.br</a></b></div>
+      <div>Serventia<b>5º Tabelionato · Campinas/SP</b></div>
     </div>
   </section>
 
   <!-- DISCLAIMER -->
   <div class="disc">
-    <b>Importante.</b> A bidcon / Prospere Consórcios intermedia a negociação de cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. A Conta Notarial é um serviço de custódia notarial que protege o pagamento da negociação; a guarda do valor é feita pelo serviço notarial parceiro. <b>Toda cessão, repasse ou transferência está sujeita à análise e aprovação da administradora do consórcio.</b> Consórcio é <b>compra programada / planejamento patrimonial</b>, não investimento — a contemplação ocorre exclusivamente por sorteio ou lance. Valores, prazos e disponibilidade sujeitos a confirmação no atendimento.
+    <b>Importante.</b> A bidcon / Prospere Consórcios intermedia a negociação de cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. A Conta Notarial é um serviço de custódia notarial que protege o pagamento da negociação; a guarda do valor é feita em conta vinculada, sob a fé pública do serviço notarial parceiro. <b>Toda cessão, repasse ou transferência está sujeita à análise e aprovação da administradora do consórcio.</b> Consórcio é <b>compra programada / planejamento patrimonial</b>, não investimento — a contemplação ocorre exclusivamente por sorteio ou lance. Valores, prazos e disponibilidade sujeitos a confirmação no atendimento.
   </div>
 
   <div class="footnav">
@@ -391,6 +468,7 @@
 
   <div class="foot">
     bidcon · Conta Notarial — dinheiro protegido pelo Estado<br>
+    5º Tabelionato de Notas · Campinas/SP · Conta vinculada Banco Safra · CNJ 197/2025<br>
     by <b>Prospere Consórcios</b> · Grupo Âncora · Parceiro notarial <b>5notas</b>
   </div>
 
@@ -402,6 +480,14 @@ var CWA=(window.BIDCON_WA||'5519997561909');
 var MSG=encodeURIComponent('Olá! Quero saber mais sobre a Conta Notarial da bidcon para negociar minha cota com segurança.');
 var link='https://wa.me/'+CWA+'?text='+MSG;
 ['hzap','ctaEspec','ctaEspec2'].forEach(function(id){var el=document.getElementById(id);if(el)el.href=link;});
+
+// Vídeo: se o arquivo existir e carregar, esconde o fallback; senão mantém o cartaz.
+(function(){
+  var v=document.getElementById('notVideo'),fb=document.getElementById('vfallback');
+  if(!v||!fb)return;
+  v.addEventListener('loadeddata',function(){fb.style.display='none';});
+  v.addEventListener('play',function(){fb.style.display='none';});
+})();
 </script>
 
 </body>
