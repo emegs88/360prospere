@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conta Notarial · bidcon | Dinheiro protegido pelo Estado — Prospere</title>
+<meta name="description" content="Conta Notarial da bidcon: negocie sua cota de consórcio com o dinheiro custodiado em cartório e protegido pelo Estado. A primeira e única com canal próprio. Parceiro notarial 5notas.">
+<meta property="og:title" content="Conta Notarial · bidcon — o novo padrão de segurança para negociar cotas">
+<meta property="og:description" content="O dinheiro fica custodiado em cartório até a administradora aprovar a transferência. Sem custódia, sem risco de calote.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Archivo+Narrow:wght@600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#070709;--carvao:#121216;--carvao2:#1a1a20;--linha:#28282f;--linha2:#37373f;
+    --branco:#f5f5f7;--cinza:#8c8c95;--cinza2:#54545c;
+    --vermelho:#D4111E;--vermelho-l:#ff4651;--vermelho-d:#9c0c16;
+    --verde:#1faa59;--verde-l:#3ad17e;--ambar:#e3a008;--ambar-l:#f3c34a;
+    --azul:#2f6df0;--azul-l:#5b93ff;--azul-d:#1b47a8;--raio:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--preto);color:var(--branco);font-family:'Archivo',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 0 80px;
+    background-image:radial-gradient(1100px 480px at 84% -18%,rgba(47,109,240,.10),transparent 62%),radial-gradient(900px 420px at 8% 4%,rgba(212,17,30,.05),transparent 60%);}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 26px}
+  ::selection{background:var(--azul);color:#fff}
+  a{color:inherit}
+
+  /* HEADER */
+  header{border-bottom:1px solid var(--linha);background:rgba(7,7,9,.72);position:sticky;top:0;z-index:50;backdrop-filter:blur(16px) saturate(1.2)}
+  .hbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:13px}
+  .blogo{font-family:'Archivo Narrow';font-weight:700;font-size:26px;letter-spacing:-.02em;line-height:1;color:#fff}
+  .blogo b{color:var(--vermelho-l);font-weight:700}
+  .blogo .seg{display:inline-flex;align-items:center;font-family:'Archivo';font-weight:700;font-size:12px;letter-spacing:.02em;color:var(--azul-l);background:rgba(47,109,240,.12);border:1px solid rgba(47,109,240,.3);border-radius:8px;padding:4px 9px;vertical-align:middle;margin-left:6px}
+  .bsel{font-size:10.5px;color:var(--cinza);letter-spacing:.08em;text-transform:uppercase;border-left:1px solid var(--linha);padding-left:13px}
+  .bsel b{color:#cfcfd4;font-weight:600}
+  .hcta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .hnav{display:inline-flex;align-items:center;gap:7px;background:transparent;color:#cfcfd4;font-weight:600;font-size:13px;text-decoration:none;border:1px solid var(--linha2);border-radius:10px;padding:9px 14px;transition:.12s}
+  .hnav:hover{border-color:var(--branco);color:#fff}
+  .hzap{display:inline-flex;align-items:center;gap:8px;background:var(--verde);color:#04210f;font-weight:700;font-size:13px;text-decoration:none;border-radius:10px;padding:10px 16px;transition:.12s}
+  .hzap:hover{background:var(--verde-l)}
+
+  /* HERO */
+  .hero{margin:34px 0 8px;display:grid;grid-template-columns:1.35fr .95fr;gap:28px;align-items:center;
+    background:linear-gradient(150deg,rgba(47,109,240,.12),rgba(47,109,240,.02));border:1px solid rgba(47,109,240,.24);border-radius:var(--raio);padding:34px}
+  .hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--azul-l);font-weight:700}
+  .hero .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--azul-l);box-shadow:0 0 0 4px rgba(91,147,255,.18)}
+  .hero h1{font-family:'Archivo Narrow';font-weight:700;font-size:44px;line-height:1.04;text-transform:uppercase;letter-spacing:.005em;margin:14px 0 12px}
+  .hero h1 b{color:var(--azul-l)}
+  .hero p.lead{color:#d3d3d8;font-size:16px;max-width:52ch;line-height:1.55}
+  .hero p.lead b{color:#fff}
+  .hero .cta-row{display:flex;gap:11px;flex-wrap:wrap;margin-top:22px}
+  .btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--azul);color:#fff;font-weight:700;font-size:14px;text-decoration:none;border-radius:11px;padding:13px 20px;transition:.12s;border:0;cursor:pointer}
+  .btn-primary:hover{background:var(--azul-l)}
+  .btn-ghost{display:inline-flex;align-items:center;gap:9px;background:transparent;color:#fff;font-weight:700;font-size:14px;text-decoration:none;border:1px solid var(--linha2);border-radius:11px;padding:13px 20px;transition:.12s}
+  .btn-ghost:hover{border-color:var(--branco)}
+  .hero .selos{display:flex;gap:16px;flex-wrap:wrap;margin-top:22px}
+  .hero .selo{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#cfcfd4;font-weight:600}
+  .hero .selo svg{width:17px;height:17px;flex:none}
+  /* emblema */
+  .emblema{display:flex;align-items:center;justify-content:center}
+  .emblema .ring{width:230px;height:230px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 38%,#141a2c,#0a0c14 72%);border:2px solid transparent;
+    background-clip:padding-box;position:relative}
+  .emblema .ring::before{content:"";position:absolute;inset:-2px;border-radius:50%;padding:2px;
+    background:conic-gradient(from 200deg,var(--azul-l),var(--azul-d),var(--azul-l));
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+  .emblema svg{width:118px;height:118px}
+  .emblema .cap{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:'JetBrains Mono';font-weight:700;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul-l);background:var(--preto);border:1px solid rgba(47,109,240,.3);border-radius:20px;padding:5px 13px}
+  @media(max-width:840px){.hero{grid-template-columns:1fr;padding:28px 24px}.emblema{order:-1}.emblema .ring{width:180px;height:180px}.emblema svg{width:92px;height:92px}.hero h1{font-size:34px}}
+
+  /* SECTION TITLES */
+  section{margin-top:52px}
+  .stitle{font-family:'Archivo Narrow';font-weight:700;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--azul-l)}
+  h2.sh{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:5px 0 8px;line-height:1.1}
+  h2.sh b{color:var(--azul-l)}
+  .ssub{color:var(--cinza);font-size:14.5px;max-width:66ch;line-height:1.6}
+  .ssub b{color:#cfcfd4}
+
+  /* O QUE É — 3 cards */
+  .oque{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+  .oqc{background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:20px 20px 18px;position:relative}
+  .oqc .n{position:absolute;top:15px;right:18px;font-family:'JetBrains Mono';font-weight:800;font-size:34px;color:var(--linha2);line-height:1}
+  .oqc .ic{font-size:24px;line-height:1}
+  .oqc h3{font-family:'Archivo Narrow';font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.02em;margin:12px 0 6px;color:#fff}
+  .oqc p{font-size:13px;color:var(--cinza);line-height:1.6}
+  .oqc b{color:var(--azul-l)}
+  @media(max-width:720px){.oque{grid-template-columns:1fr}}
+
+  /* FLUXO DO DINHEIRO */
+  .fluxo{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:26px;position:relative}
+  .fstep{background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:18px 16px;position:relative;z-index:2;margin-right:14px}
+  .fstep:last-child{margin-right:0}
+  .fstep .fn{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-weight:800;font-size:14px;background:rgba(47,109,240,.14);color:var(--azul-l);border:1px solid rgba(47,109,240,.3)}
+  .fstep h4{font-weight:800;font-size:14px;margin:12px 0 5px;letter-spacing:.01em}
+  .fstep p{font-size:12px;color:var(--cinza);line-height:1.55}
+  .fstep .arr{position:absolute;top:50%;right:-13px;transform:translateY(-50%);z-index:3;color:var(--azul-l);font-size:18px}
+  .fstep:last-child .arr{display:none}
+  .fstep.ok{border-color:rgba(58,209,126,.32)}
+  .fstep.ok .fn{background:rgba(58,209,126,.14);color:var(--verde-l);border-color:rgba(58,209,126,.32)}
+  .fstep.ok .arr{color:var(--verde-l)}
+  @media(max-width:820px){.fluxo{grid-template-columns:1fr}.fstep{margin:0 0 12px}.fstep .arr{top:auto;bottom:-13px;right:50%;transform:translateX(50%) rotate(90deg)}}
+
+  /* GARANTIAS */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+  .gcard{background:var(--carvao);border:1px solid var(--linha);border-radius:14px;padding:20px}
+  .gcard .gic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(47,109,240,.1);border:1px solid rgba(47,109,240,.24)}
+  .gcard h3{font-size:16px;font-weight:800;margin:13px 0 6px}
+  .gcard p{font-size:13.5px;color:var(--cinza);line-height:1.6}
+  .gcard p b{color:#cfcfd4}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+
+  /* COMPARATIVO */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+  .cmpcard{border-radius:16px;padding:22px 22px 20px;border:1px solid var(--linha)}
+  .cmpcard.sem{background:rgba(212,17,30,.05);border-color:rgba(212,17,30,.24)}
+  .cmpcard.com{background:rgba(47,109,240,.06);border-color:rgba(47,109,240,.3)}
+  .cmpcard .ch{display:flex;align-items:center;gap:9px;font-family:'Archivo Narrow';font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:14px}
+  .cmpcard.sem .ch{color:var(--vermelho-l)}
+  .cmpcard.com .ch{color:var(--azul-l)}
+  .cmpcard ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+  .cmpcard li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#dcdce0;line-height:1.5}
+  .cmpcard li .mk{flex:none;width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px}
+  .cmpcard.sem .mk{background:rgba(212,17,30,.16);color:var(--vermelho-l)}
+  .cmpcard.com .mk{background:rgba(58,209,126,.16);color:var(--verde-l)}
+  @media(max-width:640px){.cmp{grid-template-columns:1fr}}
+
+  /* FAQ */
+  .faq{margin-top:24px;display:flex;flex-direction:column;gap:9px}
+  .fitem{background:var(--carvao);border:1px solid var(--linha);border-radius:13px;overflow:hidden;transition:.14s}
+  .fitem[open]{border-color:rgba(47,109,240,.4);background:var(--carvao2)}
+  .fitem summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 20px;font-weight:700;font-size:15px;color:#fff}
+  .fitem summary::-webkit-details-marker{display:none}
+  .fitem summary .ch{flex:none;width:26px;height:26px;border-radius:8px;border:1px solid var(--linha2);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--azul-l);transition:.18s;font-weight:400}
+  .fitem[open] summary .ch{transform:rotate(45deg);border-color:var(--azul);background:rgba(47,109,240,.12)}
+  .fitem .ans{padding:0 20px 18px;color:var(--cinza);font-size:14px;line-height:1.65}
+  .fitem .ans b{color:#cfcfd4}
+  .fitem .ans .tag{color:var(--azul-l);font-weight:700}
+
+  /* CTA FINAL */
+  .ctafinal{margin-top:52px;background:linear-gradient(150deg,rgba(47,109,240,.14),rgba(47,109,240,.03));border:1px solid rgba(47,109,240,.3);border-radius:20px;padding:36px 34px;text-align:center}
+  .ctafinal h2{font-family:'Archivo Narrow';font-weight:700;font-size:34px;text-transform:uppercase;letter-spacing:.01em;line-height:1.05}
+  .ctafinal h2 b{color:var(--azul-l)}
+  .ctafinal p{color:#cfcfd4;font-size:15px;max-width:56ch;margin:12px auto 0;line-height:1.6}
+  .ctafinal .cta-row{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+  .ctafinal .parc{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-top:26px;padding-top:22px;border-top:1px solid rgba(47,109,240,.18)}
+  .ctafinal .parc div{font-size:12.5px;color:var(--cinza);line-height:1.5}
+  .ctafinal .parc b{color:#fff;display:block;font-family:'JetBrains Mono';font-size:13px;letter-spacing:.02em}
+  .ctafinal .parc a{color:var(--azul-l);text-decoration:none}
+  .ctafinal .parc a:hover{text-decoration:underline}
+
+  /* DISCLAIMER / FOOT */
+  .disc{background:var(--carvao);border:1px solid var(--linha);border-left:3px solid var(--azul);border-radius:12px;padding:16px 18px;margin-top:30px;font-size:12.5px;color:#cfcfd4;line-height:1.65}
+  .disc b{color:var(--azul-l)}
+  .footnav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:34px 0 4px}
+  .footnav a{display:inline-flex;align-items:center;gap:7px;background:var(--carvao);border:1px solid var(--linha);color:#cfcfd4;font-size:13px;font-weight:600;text-decoration:none;border-radius:10px;padding:11px 18px;transition:.12s}
+  .footnav a:hover{border-color:var(--linha2);color:#fff}
+  .foot{margin-top:26px;text-align:center;color:var(--cinza2);font-size:11px;letter-spacing:.1em;text-transform:uppercase;line-height:1.8}
+  .foot b{color:var(--cinza)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hbar">
+    <div class="brand">
+      <div class="blogo">bid<b>con</b> <span class="seg">Conta Notarial</span></div>
+      <div class="bsel">by <b>Prospere Consórcios</b></div>
+    </div>
+    <div class="hcta">
+      <a class="hnav" href="/bidcon.html">← Marketplace</a>
+      <a class="hzap" id="hzap" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.739-.981z"/></svg>
+        Falar no WhatsApp
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" style="margin-top:34px">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>Custódia notarial · exclusividade bidcon</div>
+      <h1>A primeira.<br>A única com <b>canal próprio</b>.<br>O novo padrão.</h1>
+      <p class="lead">Negocie sua cota de consórcio com o dinheiro <b>custodiado em cartório e protegido pelo Estado</b>. O valor só é liberado quando a transferência é efetivada pela administradora — <b>sem custódia, sem risco de calote</b> para nenhum dos lados.</p>
+      <div class="cta-row">
+        <a class="btn-primary" id="ctaEspec" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.739-.981z"/></svg>
+          Falar com um especialista
+        </a>
+        <a class="btn-ghost" href="#como">Ver como funciona</a>
+      </div>
+      <div class="selos">
+        <div class="selo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#2f6df0"/><path d="M8 12l2.5 2.5L16 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Custódia em cartório (fé pública)</div>
+        <div class="selo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#2f6df0"/><path d="M8 12l2.5 2.5L16 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Libera só com transferência efetivada</div>
+        <div class="selo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#2f6df0"/><path d="M8 12l2.5 2.5L16 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Se a administradora negar, o valor volta</div>
+      </div>
+    </div>
+    <div class="emblema">
+      <div class="ring">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2.2l9.5 4.4v1.1H2.5V6.6L12 2.2z" fill="#eef2ff"/>
+          <rect x="4.4" y="9.2" width="1.9" height="8.1" rx=".3" fill="#eef2ff"/>
+          <rect x="8.2" y="9.2" width="1.9" height="8.1" rx=".3" fill="#eef2ff"/>
+          <rect x="13.9" y="9.2" width="1.9" height="8.1" rx=".3" fill="#eef2ff"/>
+          <rect x="17.7" y="9.2" width="1.9" height="8.1" rx=".3" fill="#eef2ff"/>
+          <rect x="3.2" y="18.4" width="17.6" height="2.1" rx=".4" fill="#eef2ff"/>
+        </svg>
+        <span class="cap">Conta Notarial</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- O QUE É -->
+  <section id="oque">
+    <div class="stitle">O que é a Conta Notarial</div>
+    <h2 class="sh">Um cofre neutro entre <b>comprador e vendedor</b></h2>
+    <p class="ssub">Toda negociação de cota tem um ponto de tensão: quem paga primeiro? A Conta Notarial resolve isso colocando o dinheiro sob a guarda de um cartório — um terceiro imparcial, com <b>fé pública</b>. Ninguém segura o dinheiro do outro.</p>
+    <div class="oque">
+      <div class="oqc">
+        <span class="n">1</span>
+        <div class="ic">🏛️</div>
+        <h3>Custódia com fé pública</h3>
+        <p>O comprador deposita o valor numa conta vinculada ao <b>cartório</b>, não à bidcon nem ao vendedor. É um depósito com respaldo do <b>tabelião</b>, registrado e rastreável.</p>
+      </div>
+      <div class="oqc">
+        <span class="n">2</span>
+        <div class="ic">🔒</div>
+        <h3>Liberação condicionada</h3>
+        <p>O dinheiro fica <b>bloqueado</b> e só é liberado ao vendedor quando a <b>administradora confirma</b> a transferência da cota para o nome do comprador. Antes disso, ninguém saca.</p>
+      </div>
+      <div class="oqc">
+        <span class="n">3</span>
+        <div class="ic">↩️</div>
+        <h3>Devolução automática</h3>
+        <p>Se a administradora <b>negar</b> a transferência, o valor custodiado <b>volta integralmente</b> para o comprador. O risco de pagar e não receber a cota deixa de existir.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section id="como">
+    <div class="stitle">Como funciona · passo a passo</div>
+    <h2 class="sh">O caminho do dinheiro, <b>protegido do início ao fim</b></h2>
+    <p class="ssub">Do acordo até a liberação, cada etapa é registrada. A bidcon conduz a negociação; o cartório guarda o dinheiro; a administradora efetiva a transferência.</p>
+    <div class="fluxo">
+      <div class="fstep">
+        <div class="fn">1</div>
+        <h4>Acordo fechado</h4>
+        <p>Comprador e vendedor definem o valor da cota. A bidcon emite as instruções da custódia.</p>
+        <span class="arr">→</span>
+      </div>
+      <div class="fstep">
+        <div class="fn">2</div>
+        <h4>Depósito em custódia</h4>
+        <p>O comprador deposita na Conta Notarial. O valor fica <b>bloqueado no cartório</b>, à vista de ambos.</p>
+        <span class="arr">→</span>
+      </div>
+      <div class="fstep">
+        <div class="fn">3</div>
+        <h4>Transferência na administradora</h4>
+        <p>Com o valor já custodiado, o vendedor autoriza e a administradora processa a passagem da cota.</p>
+        <span class="arr">→</span>
+      </div>
+      <div class="fstep ok">
+        <div class="fn">✓</div>
+        <h4>Liberação ao vendedor</h4>
+        <p>Confirmada a transferência, o cartório libera o valor ao vendedor. <b>Negada, devolve ao comprador.</b></p>
+        <span class="arr">→</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUE É SEGURO -->
+  <section id="seguranca">
+    <div class="stitle">Por que é seguro</div>
+    <h2 class="sh">Dinheiro <b>protegido pelo Estado</b>, não por promessa</h2>
+    <p class="ssub">A segurança não vem de confiança na palavra da outra parte — vem da estrutura jurídica do cartório e do controle notarial do fluxo.</p>
+    <div class="grid2">
+      <div class="gcard">
+        <div class="gic">⚖️</div>
+        <h3>Fé pública do tabelião</h3>
+        <p>Cartórios são delegatários do poder público. A custódia é feita sob <b>fé pública</b>, com registro formal — o mesmo respaldo que dá segurança a escrituras e a atos notariais.</p>
+      </div>
+      <div class="gcard">
+        <div class="gic">🔍</div>
+        <h3>Dinheiro rastreável e segregado</h3>
+        <p>O valor não passa pela conta da bidcon nem do vendedor. Fica <b>segregado</b> em conta vinculada, com origem e destino documentados de ponta a ponta.</p>
+      </div>
+      <div class="gcard">
+        <div class="gic">🤝</div>
+        <h3>Regras iguais para os dois lados</h3>
+        <p>O vendedor tem a <b>garantia de que o dinheiro existe</b> e está reservado antes de transferir. O comprador tem a <b>garantia de que só paga</b> quando a cota é efetivamente sua.</p>
+      </div>
+      <div class="gcard">
+        <div class="gic">📡</div>
+        <h3>Canal próprio bidcon</h3>
+        <p>Somos a <b>primeira e única</b> com um canal de Conta Notarial dedicado — operado com o parceiro notarial 5notas. Um fluxo pensado para cotas de consórcio, não um genérico adaptado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARATIVO -->
+  <section id="comparativo">
+    <div class="stitle">Com × sem Conta Notarial</div>
+    <h2 class="sh">A diferença na hora de negociar</h2>
+    <div class="cmp">
+      <div class="cmpcard sem">
+        <div class="ch">✕ Negociação comum</div>
+        <ul>
+          <li><span class="mk">✕</span>Alguém precisa pagar ou transferir primeiro — e confiar.</li>
+          <li><span class="mk">✕</span>Se a transferência é negada depois do pagamento, recuperar o dinheiro vira disputa.</li>
+          <li><span class="mk">✕</span>Dinheiro passa direto entre pessoas, sem rastro formal.</li>
+          <li><span class="mk">✕</span>Sem terceiro imparcial: cada lado protege só a si.</li>
+        </ul>
+      </div>
+      <div class="cmpcard com">
+        <div class="ch">✓ Com Conta Notarial</div>
+        <ul>
+          <li><span class="mk">✓</span>Ninguém paga no escuro: o valor fica custodiado antes da transferência.</li>
+          <li><span class="mk">✓</span>Transferência negada = <b>devolução automática</b> ao comprador.</li>
+          <li><span class="mk">✓</span>Fluxo registrado em cartório, com fé pública e rastreabilidade.</li>
+          <li><span class="mk">✓</span>Cartório neutro garante as regras para os dois lados.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="stitle">Perguntas frequentes</div>
+    <h2 class="sh">Tudo o que perguntam <b>antes de custodiar</b></h2>
+    <div class="faq">
+      <details class="fitem">
+        <summary>O valor custodiado rende? <span class="ch">+</span></summary>
+        <div class="ans">A Conta Notarial existe para <b>proteger</b>, não para render. O valor fica custodiado como garantia da negociação e é liberado assim que a transferência se efetiva — normalmente em poucos dias. <span class="tag">Não é investimento</span> nem promete rendimento: é um mecanismo de segurança da compra da cota.</div>
+      </details>
+      <details class="fitem">
+        <summary>Por que vocês pedem os dados bancários das duas partes? <span class="ch">+</span></summary>
+        <div class="ans">Porque a custódia tem <b>dois destinos possíveis</b> e precisa estar tudo pré-configurado antes do depósito: o valor vai para o <b>vendedor</b> se a transferência for efetivada, ou <b>volta para o comprador</b> se for negada. Ter os dados das duas partes é o que garante a devolução automática — sem depender de ninguém digitar conta na hora da tensão.</div>
+      </details>
+      <details class="fitem">
+        <summary>E se a administradora negar a transferência? <span class="ch">+</span></summary>
+        <div class="ans">O valor custodiado <b>retorna integralmente ao comprador</b>, pelos dados já cadastrados. Como o dinheiro nunca chegou a ser liberado ao vendedor, não há calote nem disputa para recuperar valor — a devolução é a regra pré-combinada da custódia. Lembrando: <b>toda cessão, repasse ou transferência está sujeita à análise e aprovação da administradora</b>.</div>
+      </details>
+      <details class="fitem">
+        <summary>Quanto custa a Conta Notarial para mim? <span class="ch">+</span></summary>
+        <div class="ans">O custo é o da <b>custódia notarial</b>, definido pela tabela do serviço em cada operação — proporcional ao valor e informado <b>antes</b> de qualquer depósito, sem surpresa. Fale com um especialista para receber o valor exato da sua negociação; você só segue se fizer sentido para você.</div>
+      </details>
+      <details class="fitem">
+        <summary>Isso vale para qual administradora? <span class="ch">+</span></summary>
+        <div class="ans">A Conta Notarial é um mecanismo de <b>custódia do dinheiro</b> — funciona independentemente da administradora, porque protege o pagamento da negociação, não substitui o processo dela. A <b>efetivação da transferência</b> continua sendo feita por cada administradora, conforme as regras dela. Confirme o seu caso no atendimento.</div>
+      </details>
+      <details class="fitem">
+        <summary>A bidcon fica com o meu dinheiro? <span class="ch">+</span></summary>
+        <div class="ans"><b>Não.</b> O valor não passa pela conta da bidcon nem do vendedor — fica em <b>conta vinculada ao cartório</b>, segregado, sob fé pública. A bidcon conduz a negociação e a operação; a guarda do dinheiro é do serviço notarial.</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="ctafinal">
+    <h2>Negocie sua cota com o <b>dinheiro protegido</b></h2>
+    <p>Fale com um especialista da bidcon e monte sua Conta Notarial. Sem compromisso: você recebe o passo a passo e o custo exato antes de decidir.</p>
+    <div class="cta-row">
+      <a class="btn-primary" id="ctaEspec2" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.739-.981z"/></svg>
+        Falar com um especialista
+      </a>
+      <a class="btn-ghost" id="ctaEmail" href="mailto:bidconcontanotarial@5notas.com.br">✉️ bidconcontanotarial@5notas.com.br</a>
+    </div>
+    <div class="parc">
+      <div>Serviço nacional<b><a href="https://contanotarial.org.br" target="_blank" rel="noopener">contanotarial.org.br</a></b></div>
+      <div>Parceiro notarial<b><a href="https://5notas.com.br" target="_blank" rel="noopener">5notas.com.br</a></b></div>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <div class="disc">
+    <b>Importante.</b> A bidcon / Prospere Consórcios intermedia a negociação de cotas de consórcio já contempladas — <b>não somos instituição financeira e não aprovamos crédito</b>. A Conta Notarial é um serviço de custódia notarial que protege o pagamento da negociação; a guarda do valor é feita pelo serviço notarial parceiro. <b>Toda cessão, repasse ou transferência está sujeita à análise e aprovação da administradora do consórcio.</b> Consórcio é <b>compra programada / planejamento patrimonial</b>, não investimento — a contemplação ocorre exclusivamente por sorteio ou lance. Valores, prazos e disponibilidade sujeitos a confirmação no atendimento.
+  </div>
+
+  <div class="footnav">
+    <a href="/bidcon.html">🛒 <b style="color:var(--vermelho-l)">Marketplace</b> — cotas contempladas</a>
+    <a href="/bidcon-imobiliaria.html">🏡 <b style="color:var(--azul-l)">Imóveis × cartas</b></a>
+    <a href="/bidcon-lojista.html">🚗 <b style="color:var(--ambar-l)">Sou lojista</b></a>
+  </div>
+
+  <div class="foot">
+    bidcon · Conta Notarial — dinheiro protegido pelo Estado<br>
+    by <b>Prospere Consórcios</b> · Grupo Âncora · Parceiro notarial <b>5notas</b>
+  </div>
+
+</main>
+
+<script>
+// WhatsApp: mesma base das demais páginas bidcon (config.js pode sobrescrever).
+var CWA=(window.BIDCON_WA||'5519997561909');
+var MSG=encodeURIComponent('Olá! Quero saber mais sobre a Conta Notarial da bidcon para negociar minha cota com segurança.');
+var link='https://wa.me/'+CWA+'?text='+MSG;
+['hzap','ctaEspec','ctaEspec2'].forEach(function(id){var el=document.getElementById(id);if(el)el.href=link;});
+</script>
+
+</body>
+</html>

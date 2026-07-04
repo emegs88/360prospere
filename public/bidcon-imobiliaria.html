@@ -478,11 +478,11 @@ function renderStats(){
   const credito=CARTAS.reduce((s,c)=>s+c.c,0);
   const maxCred=CARTAS.reduce((m,c)=>Math.max(m,c.c),0);
   const minEnt=CARTAS.length?CARTAS.reduce((m,c)=>Math.min(m,c.e),Infinity):0;
-  const mi=v=>v>=1e6?(v/1e6).toFixed(1).replace('.',',')+' mi':BRL(v);
+  const mi=v=>v>=1e6?'R$ '+(v/1e6).toFixed(1).replace('.',',')+' mi':BRL(v);
   $('stats').innerHTML=`
     <div class="stat"><div class="sv">${NUM(totalCartas)}</div><div class="sl">Cartas de imóvel 🏡</div></div>
-    <div class="stat"><div class="sv">R$ ${mi(credito)}</div><div class="sl">Em crédito disponível</div></div>
-    <div class="stat"><div class="sv">R$ ${mi(maxCred)}</div><div class="sl">Maior crédito</div></div>
+    <div class="stat"><div class="sv">${mi(credito)}</div><div class="sl">Em crédito disponível</div></div>
+    <div class="stat"><div class="sv">${mi(maxCred)}</div><div class="sl">Maior crédito</div></div>
     <div class="stat"><div class="sv">${BRL(minEnt)}</div><div class="sl">Menor entrada</div></div>`;
 }
 renderStats();
