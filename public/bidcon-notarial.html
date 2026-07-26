@@ -7,7 +7,6 @@
 <meta name="description" content="Conta Notarial da bidcon: negocie sua cota de consórcio com o dinheiro custodiado em cartório e protegido pelo Estado. Canal próprio no 5º Tabelionato de Notas de Campinas · conta vinculada Banco Safra · Provimento CNJ nº 197/2025.">
 <meta property="og:title" content="Conta Notarial · bidcon — o novo padrão de segurança para negociar cotas">
 <meta property="og:description" content="Dinheiro custodiado em cartório até a administradora aprovar a transferência. A primeira e única com canal próprio.">
-<meta property="og:image" content="/selo-notarial.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Archivo+Narrow:wght@600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
@@ -60,8 +59,18 @@
   .hero .selo{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#cfcfd4;font-weight:600}
   .hero .selo svg{width:17px;height:17px;flex:none}
   .hero .emblema{display:flex;align-items:center;justify-content:center}
-  .hero .emblema img{width:100%;max-width:340px;height:auto;filter:drop-shadow(0 18px 46px rgba(47,109,240,.28))}
-  @media(max-width:860px){.hero{grid-template-columns:1fr;padding:30px 24px}.hero .emblema{order:-1}.hero .emblema img{max-width:250px}.hero h1{font-size:35px}}
+  .custpanel{width:100%;max-width:390px;background:var(--carvao);border:1px solid var(--linha);border-radius:16px;padding:22px 22px 20px;position:relative;overflow:hidden}
+  .custpanel::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--azul-l),var(--azul))}
+  .custpanel .cph{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cinza);font-weight:700;margin-bottom:16px}
+  .custpanel .cpr{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--linha)}
+  .custpanel .cpr:last-of-type{border-bottom:none}
+  .custpanel .cpn{font-family:'JetBrains Mono';font-size:12px;color:var(--cinza2);min-width:20px;padding-top:2px}
+  .custpanel .cpt{font-weight:700;font-size:15px;color:#fff}
+  .custpanel .cpd{color:var(--cinza);font-size:12.5px;margin-top:3px;line-height:1.5}
+  .custpanel .cpr.on .cpt,.custpanel .cpr.on .cpn{color:var(--azul-l)}
+  .custpanel .cptag{margin-top:16px;padding-top:15px;border-top:1px solid var(--linha);font-size:12px;color:#cfcfd4;line-height:1.6}
+  .custpanel .cptag b{color:#fff}
+  @media(max-width:860px){.hero{grid-template-columns:1fr;padding:30px 24px}.hero .emblema{order:-1}.hero h1{font-size:35px}}
 
   /* CHIPS REGULATÓRIOS */
   .regs{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:14px}
@@ -233,7 +242,13 @@
       </div>
     </div>
     <div class="emblema">
-      <img src="/selo-notarial.png" alt="Selo Conta Notarial bidcon — 5º Tabelionato de Notas de Campinas · Conta vinculada Banco Safra · CNJ 197/2025" width="340" height="340">
+      <div class="custpanel">
+        <div class="cph">Estado da custódia</div>
+        <div class="cpr on"><span class="cpn">01</span><div><div class="cpt">Depositado</div><div class="cpd">O valor entra por boleto na conta vinculada da operação.</div></div></div>
+        <div class="cpr on"><span class="cpn">02</span><div><div class="cpt">Retido</div><div class="cpd">Nem comprador, nem vendedor, nem a bidcon movimentam a conta.</div></div></div>
+        <div class="cpr"><span class="cpn">03</span><div><div class="cpt">Liberado</div><div class="cpd">Somente após a anuência da administradora, verificada pelo tabelião.</div></div></div>
+        <div class="cptag">Se a administradora negar, o valor <b>retorna ao comprador</b> — o pagamento não chega ao vendedor antes da aprovação.</div>
+      </div>
     </div>
   </section>
 
@@ -463,7 +478,7 @@
   <div class="foot">
     bidcon · Conta Notarial — dinheiro protegido pelo Estado<br>
     5º Tabelionato de Notas · Campinas/SP · Conta vinculada Banco Safra · CNJ 197/2025<br>
-    by <b>Prospere Consórcios</b> · Grupo Âncora · Parceiro notarial <b>5notas</b>
+    by <b>Prospere Consórcios</b> · Parceiro notarial <b>5notas</b>
   </div>
 
 </main>
